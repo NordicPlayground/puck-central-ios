@@ -57,7 +57,7 @@
                                                  name:NSPDidLeaveZone
                                                object:nil];
     
-    self.locationManager = [[NSPLocationManager alloc] init];
+    self.locationManager = [NSPLocationManager sharedManager];
 }
 
 - (void)restartRanging

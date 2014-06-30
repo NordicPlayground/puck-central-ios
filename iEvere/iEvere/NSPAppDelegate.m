@@ -2,6 +2,8 @@
 #import "NSPAppDelegate.h"
 #import "NSPInitialViewController.h"
 #import "NSPLocationPuckController.h"
+#import "NSPLocationManager.h"
+#import "LocationPuck.h"
 
 @import CoreLocation;
 
@@ -157,12 +159,16 @@
     return _persistentStoreCoordinator;
 }
 
+#pragma mark CLLocationManagerDelegate
+
 - (void)locationManager:(CLLocationManager *)manager didEnterRegion:(CLRegion *)region
 {
     if ([region isKindOfClass:[CLBeaconRegion class]]) {
+        [self.locationManager startRangingBeaconsInRegion:(CLBeaconRegion *)region];
+        
         UILocalNotification *notification = [[UILocalNotification alloc] init];
         notification.alertBody = [NSString stringWithFormat:@"Entered region %@", region.identifier];
-        notification.soundName = @"Default";
+        notification.soundName = nil;
         [[UIApplication sharedApplication] presentLocalNotificationNow:notification];
     }
 }
@@ -170,11 +176,20 @@
 - (void)locationManager:(CLLocationManager *)manager didExitRegion:(CLRegion *)region
 {
     if ([region isKindOfClass:[CLBeaconRegion class]]) {
+        [self.locationManager stopRangingBeaconsInRegion:(CLBeaconRegion *)region];
+        
         UILocalNotification *notification = [[UILocalNotification alloc] init];
         notification.alertBody = [NSString stringWithFormat:@"Left region %@", region.identifier];
-        notification.soundName = @"Default";
+        notification.soundName = nil;
         [[UIApplication sharedApplication] presentLocalNotificationNow:notification];
     }
+}
+
+- (void)locationManager:(CLLocationManager *)manager
+        didRangeBeacons:(NSArray *)beacons
+               inRegion:(CLBeaconRegion *)region
+{
+    [[NSPLocationManager sharedManager] updateLocation:beacons];
 }
 
 #pragma mark - Application's Documents directory

@@ -16,6 +16,18 @@ static const int THROTTLE = 3;
 
 @implementation NSPLocationManager
 
++ (NSPLocationManager *)sharedManager
+{
+    static NSPLocationManager *sharedManager;
+    
+    @synchronized(self) {
+        if (!sharedManager) {
+            sharedManager = [[NSPLocationManager alloc] init];
+        }
+        return sharedManager;
+    }
+}
+
 - (id)init
 {
     if (self = [super init]) {
@@ -162,24 +174,6 @@ static const int THROTTLE = 3;
                inRegion:(CLBeaconRegion *)region
 {
     NSLog(@"Did range beacons %ld", beacons.count);
-    for (CLBeacon *beacon in beacons) {
-        NSString *proximityText;
-        switch (beacon.proximity) {
-            case CLProximityNear:
-                proximityText = @"Near";
-                break;
-            case CLProximityImmediate:
-                proximityText = @"Immediate";
-                break;
-            case CLProximityFar:
-                proximityText = @"Far";
-                break;
-            case CLProximityUnknown:
-                proximityText = @"Unknown";
-                break;
-        }
-        NSLog(@"Prox: %@", proximityText);
-    }
     [self updateLocation:beacons];
 }
 

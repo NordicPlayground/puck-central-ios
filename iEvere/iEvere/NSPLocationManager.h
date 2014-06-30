@@ -1,5 +1,6 @@
 
 @import Foundation;
+@import CoreLocation;
 
 @class LocationPuck;
 
@@ -7,6 +8,8 @@
 
 @property (nonatomic, strong) LocationPuck *closestPuck;
 
++ (NSPLocationManager *)sharedManager;
 - (void)forceRestartRanging;
+- (void)updateLocation:(NSArray *)beacons;
 
 @end
