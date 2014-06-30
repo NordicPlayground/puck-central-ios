@@ -1,14 +1,22 @@
 
 #import "NSPInitialViewController.h"
-#import "LocationPuck.h"
-#import "NSPLocationPuckController.h"
+#import "Puck.h"
+#import "NSPPuckController.h"
 #import "NSPLocationManager.h"
+#import "NSPSelectPuckViewController.h"
+#import "NSPRuleController.h"
+#import "Rule.h"
+#import "NSPRuleTableViewCell.h"
+
 
 @interface NSPInitialViewController ()
 
 @property (nonatomic, strong) UITextField *textField;
 @property (nonatomic, strong) CLBeacon *tempBeacon;
 @property (nonatomic, strong) NSPLocationManager *locationManager;
+@property (nonatomic, assign) BOOL alertViewOpen;
+
+@property (nonatomic, strong) NSMutableArray *pucks;
 
 @end
 
@@ -27,22 +35,24 @@
 {
     [super viewDidLoad];
     
-    UIBarButtonItem *beaconButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(restartRanging)];
+    UIBarButtonItem *beaconButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh
+                                                                                  target:self
+                                                                                  action:@selector(restartRanging)];
+    UIBarButtonItem *addRuleButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
+                                                                                   target:self
+                                                                                   action:@selector(addRule)];
     
     self.navigationItem.leftBarButtonItem = beaconButton;
+    self.navigationItem.rightBarButtonItem = addRuleButton;
     
-    NSFetchRequest *request = [[NSFetchRequest alloc] init];
-    NSEntityDescription *entity = [NSEntityDescription entityForName:@"LocationPuck"
-                                              inManagedObjectContext:self.managedObjectContext];
-    [request setEntity:entity];
-    
+    NSFetchRequest *request = [[NSPPuckController sharedController] fetchRequest];
     NSError *error;
-    NSMutableArray *mutableFetchResults = [[self.managedObjectContext executeFetchRequest:request error:&error] mutableCopy];
-    if (mutableFetchResults == nil) {
-        NSLog(@"Error");
+    NSMutableArray *fetchResults = [[[[NSPPuckController sharedController] managedObjectContext] executeFetchRequest:request error:&error] mutableCopy];
+    if (fetchResults == nil) {
+        NSLog(@"Error %@", error);
     }
     
-    self.locationPucks = mutableFetchResults;
+    self.pucks = fetchResults;
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(foundBeacon:)
@@ -60,14 +70,26 @@
     self.locationManager = [NSPLocationManager sharedManager];
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    [self.tableView reloadData];
+}
+
 - (void)restartRanging
 {
     [self.locationManager forceRestartRanging];
 }
 
+- (void)addRule
+{
+    NSPSelectPuckViewController *selectPuckViewController = [[NSPSelectPuckViewController alloc] init];
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:selectPuckViewController];
+    [self presentViewController:navController animated:YES completion:nil];
+}
+
 - (void)enteredZone:(NSNotification *)notification
 {
-    self.title = notification.userInfo[@"title"];
+    self.title = [notification.userInfo[@"puck"] name];
 }
 
 - (void)didLeaveZone
@@ -77,8 +99,6 @@
 
 - (void)foundBeacon:(NSNotification *)notification
 {
-    NSLog(@"Found beacon notification");
-    
     self.tempBeacon = notification.userInfo[@"beacon"];
     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Found new beacon"
                                                         message:@"Add it to your beacons"
@@ -86,50 +106,83 @@
                                               cancelButtonTitle:@"Cancel"
                                               otherButtonTitles:@"Add", nil];
     alertView.alertViewStyle = UIAlertViewStylePlainTextInput;
+    self.alertViewOpen = YES;
     [alertView show];
 }
+
+#pragma mark UIAlertViewDelegate
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     if (buttonIndex != 0) {
         NSString *name = [[alertView textFieldAtIndex:0] text];
-        LocationPuck *locationPuck = [[NSPLocationPuckController sharedController] insertPuck:name
-                                                                            withProximityUUID:self.tempBeacon.proximityUUID
-                                                                                        major:self.tempBeacon.major
-                                                                                        minor:self.tempBeacon.minor];
-        [self.locationPucks addObject:locationPuck];
+        Puck *puck = [[NSPPuckController sharedController] insertPuck:name
+                                                    withProximityUUID:self.tempBeacon.proximityUUID
+                                                                major:self.tempBeacon.major
+                                                                minor:self.tempBeacon.minor];
+        self.alertViewOpen = NO;
+        [self.pucks addObject:puck];
         [self.tableView reloadData];
     }
 }
 
+#pragma mark UITableViewDelegate + UITableViewDataSource
+
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 1;
+    return self.pucks.count;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    NSLog(@"pucks %ld", self.locationPucks.count);
-    return self.locationPucks.count;
+    Puck *puckForSection = [self.pucks objectAtIndex:section];
+    return puckForSection.rules.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView
          cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell"];
+    NSPRuleTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell"];
     if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"cell"];
+        cell = [[NSPRuleTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"cell"];
     }
     
-    LocationPuck *locationPuck = self.locationPucks[indexPath.row];
+    Puck *puck = self.pucks[indexPath.section];
+    Rule *rule = [puck.rules objectAtIndex:indexPath.row];
     
-    NSLog(@"Cell %ld", indexPath.row);
+    NSString *trigger;
+    switch (rule.trigger.intValue) {
+        case NSPTriggerEnterZone:
+            trigger = @"Enter zone";
+            break;
+        case NSPTriggerLeaveZone:
+            trigger = @"Leave zone";
+            break;
+        default:
+            trigger = @"";
+            break;
+    }
     
-    uint16_t minor = [locationPuck.minor integerValue];
+    cell.triggerLabel.text = [NSString stringWithFormat:@"When: %@", trigger];
     
-    cell.textLabel.text = [NSString stringWithFormat:@"Puck: %@, %u", locationPuck.name, minor];
+    cell.actions = rule.actions.allObjects;
     
     return cell;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return 36.f + [[[[self.pucks[indexPath.section] rules] objectAtIndex:indexPath.row] actions] count] * 20.f;
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+{
+    return [self.pucks[section] name];
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    return UITableViewAutomaticDimension;
 }
 
 - (UITableViewCellEditingStyle)tableView:(UITableView *)tableView
@@ -141,10 +194,13 @@
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
-        NSManagedObject *puckToDelete = self.locationPucks[indexPath.row];
-        [self.managedObjectContext deleteObject:puckToDelete];
+        NSManagedObject *ruleToDelete = [[self.pucks[indexPath.section] rules] objectAtIndex:indexPath.row];
+        [self.managedObjectContext deleteObject:ruleToDelete];
         
-        [self.locationPucks removeObjectAtIndex:indexPath.row];
+        NSMutableOrderedSet *rules = [[self.pucks[indexPath.section] rules] mutableCopy];
+        [rules removeObjectAtIndex:indexPath.row];
+        [self.pucks[indexPath.section] setRules:rules];
+
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationLeft];
         
         NSError *error;
@@ -153,6 +209,8 @@
         }
     }
 }
+
+#pragma mark NSObject
 
 - (void)didReceiveMemoryWarning
 {

@@ -1,12 +1,25 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="5064" systemVersion="13D65" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
-    <entity name="LocationPuck" representedClassName="LocationPuck" syncable="YES">
+    <entity name="Action" representedClassName="Action" syncable="YES">
+        <attribute name="actuatorId" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="options" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="rule" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Rule" inverseName="actions" inverseEntity="Rule" syncable="YES"/>
+    </entity>
+    <entity name="Puck" representedClassName="Puck" syncable="YES">
         <attribute name="major" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="minor" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="proximityUUID" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="rules" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="Rule" inverseName="puck" inverseEntity="Rule" syncable="YES"/>
+    </entity>
+    <entity name="Rule" representedClassName="Rule" syncable="YES">
+        <attribute name="trigger" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <relationship name="actions" optional="YES" toMany="YES" minCount="1" deletionRule="Cascade" destinationEntity="Action" inverseName="rule" inverseEntity="Action" syncable="YES"/>
+        <relationship name="puck" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Puck" inverseName="rules" inverseEntity="Puck" syncable="YES"/>
     </entity>
     <elements>
-        <element name="LocationPuck" positionX="0" positionY="0" width="128" height="105"/>
+        <element name="Action" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="Puck" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="Rule" positionX="0" positionY="0" width="0" height="0"/>
     </elements>
 </model>

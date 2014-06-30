@@ -2,11 +2,11 @@
 @import Foundation;
 @import CoreLocation;
 
-@class LocationPuck;
+@class Puck;
 
 @interface NSPLocationManager : NSObject <CLLocationManagerDelegate>
 
-@property (nonatomic, strong) LocationPuck *closestPuck;
+@property (nonatomic, strong) Puck *closestPuck;
 
 + (NSPLocationManager *)sharedManager;
 - (void)forceRestartRanging;

@@ -2,7 +2,7 @@
 @import CoreLocation;
 
 #import "NSPLocationManager.h"
-#import "LocationPuck.h"
+#import "Puck.h"
 
 static const int THROTTLE = 3;
 
@@ -43,7 +43,6 @@ static const int THROTTLE = 3;
                                                                identifier:@"Puck"];
         self.beaconRegion.notifyEntryStateOnDisplay = YES;
         [self.locationManager startMonitoringForRegion:self.beaconRegion];
-        NSLog(@"Start monitoring");
     }
     return self;
 }
@@ -55,8 +54,6 @@ static const int THROTTLE = 3;
     
     [self.locationManager startMonitoringForRegion:self.beaconRegion];
     [self.locationManager startRangingBeaconsInRegion:self.beaconRegion];
-    
-    NSLog(@"Force restarted");
 }
 
 - (void)updateLocation:(NSArray *)beacons
@@ -91,7 +88,6 @@ static const int THROTTLE = 3;
 
 - (void)setLocation:(CLBeacon *)beacon
 {
-    NSLog(@"setLocation");
     self.lastChanged = [[NSDate alloc] init];
     
     if (beacon == nil) {
@@ -99,11 +95,9 @@ static const int THROTTLE = 3;
         return;
     }
     
-    LocationPuck *locationPuck = [LocationPuck puckForBeacon:beacon];
+    Puck *locationPuck = [Puck puckForBeacon:beacon];
     if (locationPuck == nil) {
-        NSLog(@"Found new beacon");
         if (beacon.proximity == CLProximityImmediate) {
-            NSLog(@"Found immediate beacon");
             [[NSNotificationCenter defaultCenter] postNotificationName:NSPDidFindNewBeacon
                                                                 object:self
                                                               userInfo:@{
@@ -125,8 +119,6 @@ static const int THROTTLE = 3;
         return;
     }
     
-    // Trigger leave zone
-    
     [[NSNotificationCenter defaultCenter] postNotificationName:NSPDidLeaveZone
                                                         object:self];
     
@@ -135,13 +127,10 @@ static const int THROTTLE = 3;
 
 - (void)enterCurrentZone
 {
-    // Trigger enter zone
-    NSLog(@"Enter zone");
-    
     [[NSNotificationCenter defaultCenter] postNotificationName:NSPDidEnterZone
                                                         object:self
                                                       userInfo:@{
-                                                                 @"title": self.closestPuck.name
+                                                                 @"puck": self.closestPuck
                                                                  }];
 }
 
@@ -173,7 +162,6 @@ static const int THROTTLE = 3;
         didRangeBeacons:(NSArray *)beacons
                inRegion:(CLBeaconRegion *)region
 {
-    NSLog(@"Did range beacons %ld", beacons.count);
     [self updateLocation:beacons];
 }
 
@@ -196,7 +184,6 @@ static const int THROTTLE = 3;
       didDetermineState:(CLRegionState)state
               forRegion:(CLRegion *)region
 {
-    NSLog(@"Did determine state");
     if (state == CLRegionStateInside) {
         [_locationManager startRangingBeaconsInRegion:self.beaconRegion];
     }

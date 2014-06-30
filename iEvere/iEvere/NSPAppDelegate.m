@@ -1,16 +1,18 @@
 
 #import "NSPAppDelegate.h"
 #import "NSPInitialViewController.h"
-#import "NSPLocationPuckController.h"
+#import "NSPPuckController.h"
+#import "NSPActionController.h"
+#import "NSPRuleController.h"
 #import "NSPLocationManager.h"
-#import "LocationPuck.h"
+#import "Puck.h"
 
 @import CoreLocation;
 
 @interface NSPAppDelegate () <CLLocationManagerDelegate>
 
 @property (nonatomic, strong) CLLocationManager *locationManager;
-@property (nonatomic, strong) NSPLocationPuckController *locationPuckController;
+@property (nonatomic, strong) NSPPuckController *puckController;
 
 @end
 
@@ -34,8 +36,14 @@
         NSLog(@"Could not initialize object context");
     }
     initialViewController.managedObjectContext = context;
-    self.locationPuckController = [NSPLocationPuckController sharedController];
-    self.locationPuckController.managedObjectContext = context;
+    self.puckController = [NSPPuckController sharedController];
+    self.puckController.managedObjectContext = context;
+    
+    NSPActionController *actionController = [NSPActionController sharedController];
+    actionController.managedObjectContext = context;
+    
+    NSPRuleController *ruleController = [NSPRuleController sharedController];
+    ruleController.managedObjectContext = context;
     
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:initialViewController];
     self.window.rootViewController = navController;

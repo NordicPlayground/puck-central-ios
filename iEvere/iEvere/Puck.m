@@ -1,23 +1,26 @@
 
-#import "LocationPuck.h"
-#import "NSPLocationPuckController.h"
+#import "Puck.h"
+#import "NSPPuckController.h"
 
-@implementation LocationPuck
+@class Rule;
+
+@implementation Puck
 
 @dynamic major;
 @dynamic minor;
 @dynamic name;
 @dynamic proximityUUID;
+@dynamic rules;
 
 + (instancetype)puckForBeacon:(CLBeacon *)beacon
 {
-    NSPLocationPuckController *locationPuckController = [NSPLocationPuckController sharedController];
-    NSFetchRequest *request = [locationPuckController fetchRequest];
+    NSPPuckController *puckController = [NSPPuckController sharedController];
+    NSFetchRequest *request = [puckController fetchRequest];
     
     request.predicate = [NSPredicate predicateWithFormat:@"minor == %@", beacon.minor];
     
     NSError *error;
-    NSArray *puckResults = [[locationPuckController managedObjectContext] executeFetchRequest:request error:&error];
+    NSArray *puckResults = [[puckController managedObjectContext] executeFetchRequest:request error:&error];
     if (puckResults == nil) {
         NSLog(@"Fetch error: %@", error);
     } else if (puckResults.count > 0) {
