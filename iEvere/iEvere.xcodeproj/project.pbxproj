@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		CC01978B195AF2800032A0E1 /* LocationPuck.m in Sources */ = {isa = PBXBuildFile; fileRef = CC01978A195AF27F0032A0E1 /* LocationPuck.m */; };
 		CC20B18B1959A41B0084E3AB /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC20B18A1959A41B0084E3AB /* Foundation.framework */; };
 		CC20B18D1959A41B0084E3AB /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC20B18C1959A41B0084E3AB /* CoreGraphics.framework */; };
 		CC20B18F1959A41B0084E3AB /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC20B18E1959A41B0084E3AB /* UIKit.framework */; };
@@ -22,9 +23,11 @@
 		CC20B1AC1959A41B0084E3AB /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC20B1901959A41B0084E3AB /* CoreData.framework */; };
 		CC20B1B41959A41B0084E3AB /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = CC20B1B21959A41B0084E3AB /* InfoPlist.strings */; };
 		CC20B1B61959A41B0084E3AB /* iEvereTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CC20B1B51959A41B0084E3AB /* iEvereTests.m */; };
-		CC20B1C11959A7780084E3AB /* NSPMainNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = CC20B1C01959A7780084E3AB /* NSPMainNavigationController.m */; };
 		CC20B1C51959AAF70084E3AB /* NSPInitialViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CC20B1C31959AAF70084E3AB /* NSPInitialViewController.m */; };
 		CC20B1C61959AAF70084E3AB /* NSPInitialViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CC20B1C41959AAF70084E3AB /* NSPInitialViewController.xib */; };
+		CC37956F195D85C300E8A0C8 /* NSPLocationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CC37956E195D85C300E8A0C8 /* NSPLocationManager.m */; };
+		CC379572195D8FEF00E8A0C8 /* NSPLocationPuckController.m in Sources */ = {isa = PBXBuildFile; fileRef = CC379571195D8FEF00E8A0C8 /* NSPLocationPuckController.m */; };
+		CC3795761961522300E8A0C8 /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = CC3795751961522300E8A0C8 /* Constants.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -38,6 +41,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		CC019789195AF27F0032A0E1 /* LocationPuck.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocationPuck.h; sourceTree = "<group>"; };
+		CC01978A195AF27F0032A0E1 /* LocationPuck.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocationPuck.m; sourceTree = "<group>"; };
 		CC20B1871959A41B0084E3AB /* iEvere.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iEvere.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CC20B18A1959A41B0084E3AB /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		CC20B18C1959A41B0084E3AB /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -56,11 +61,15 @@
 		CC20B1B11959A41B0084E3AB /* iEvereTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "iEvereTests-Info.plist"; sourceTree = "<group>"; };
 		CC20B1B31959A41B0084E3AB /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		CC20B1B51959A41B0084E3AB /* iEvereTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = iEvereTests.m; sourceTree = "<group>"; };
-		CC20B1BF1959A7780084E3AB /* NSPMainNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSPMainNavigationController.h; sourceTree = "<group>"; };
-		CC20B1C01959A7780084E3AB /* NSPMainNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSPMainNavigationController.m; sourceTree = "<group>"; };
 		CC20B1C21959AAF70084E3AB /* NSPInitialViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSPInitialViewController.h; sourceTree = "<group>"; };
 		CC20B1C31959AAF70084E3AB /* NSPInitialViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSPInitialViewController.m; sourceTree = "<group>"; };
 		CC20B1C41959AAF70084E3AB /* NSPInitialViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NSPInitialViewController.xib; sourceTree = "<group>"; };
+		CC37956D195D85C300E8A0C8 /* NSPLocationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSPLocationManager.h; sourceTree = "<group>"; };
+		CC37956E195D85C300E8A0C8 /* NSPLocationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSPLocationManager.m; sourceTree = "<group>"; };
+		CC379570195D8FEF00E8A0C8 /* NSPLocationPuckController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSPLocationPuckController.h; sourceTree = "<group>"; };
+		CC379571195D8FEF00E8A0C8 /* NSPLocationPuckController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSPLocationPuckController.m; sourceTree = "<group>"; };
+		CC3795741961522300E8A0C8 /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
+		CC3795751961522300E8A0C8 /* Constants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Constants.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -89,6 +98,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		CC019788195AE5EB0032A0E1 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				CC019789195AF27F0032A0E1 /* LocationPuck.h */,
+				CC01978A195AF27F0032A0E1 /* LocationPuck.m */,
+			);
+			name = Models;
+			sourceTree = "<group>";
+		};
 		CC20B17E1959A41B0084E3AB = {
 			isa = PBXGroup;
 			children = (
@@ -125,14 +143,16 @@
 			children = (
 				CC20B19B1959A41B0084E3AB /* NSPAppDelegate.h */,
 				CC20B19C1959A41B0084E3AB /* NSPAppDelegate.m */,
+				CC3795741961522300E8A0C8 /* Constants.h */,
+				CC3795751961522300E8A0C8 /* Constants.m */,
 				CC20B1A11959A41B0084E3AB /* Images.xcassets */,
 				CC20B19E1959A41B0084E3AB /* iEvere.xcdatamodeld */,
 				CC20B1931959A41B0084E3AB /* Supporting Files */,
-				CC20B1BF1959A7780084E3AB /* NSPMainNavigationController.h */,
-				CC20B1C01959A7780084E3AB /* NSPMainNavigationController.m */,
 				CC20B1C21959AAF70084E3AB /* NSPInitialViewController.h */,
 				CC20B1C31959AAF70084E3AB /* NSPInitialViewController.m */,
 				CC20B1C41959AAF70084E3AB /* NSPInitialViewController.xib */,
+				CC37956C195D85AE00E8A0C8 /* Location */,
+				CC019788195AE5EB0032A0E1 /* Models */,
 			);
 			path = iEvere;
 			sourceTree = "<group>";
@@ -164,6 +184,17 @@
 				CC20B1B21959A41B0084E3AB /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		CC37956C195D85AE00E8A0C8 /* Location */ = {
+			isa = PBXGroup;
+			children = (
+				CC37956D195D85C300E8A0C8 /* NSPLocationManager.h */,
+				CC37956E195D85C300E8A0C8 /* NSPLocationManager.m */,
+				CC379570195D8FEF00E8A0C8 /* NSPLocationPuckController.h */,
+				CC379571195D8FEF00E8A0C8 /* NSPLocationPuckController.m */,
+			);
+			name = Location;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -214,6 +245,9 @@
 				LastUpgradeCheck = 0500;
 				ORGANIZATIONNAME = "Nordic Semiconductor";
 				TargetAttributes = {
+					CC20B1861959A41B0084E3AB = {
+						DevelopmentTeam = YLJ647697R;
+					};
 					CC20B1A61959A41B0084E3AB = {
 						TestTargetID = CC20B1861959A41B0084E3AB;
 					};
@@ -263,11 +297,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CC3795761961522300E8A0C8 /* Constants.m in Sources */,
 				CC20B19D1959A41B0084E3AB /* NSPAppDelegate.m in Sources */,
 				CC20B1991959A41B0084E3AB /* main.m in Sources */,
+				CC37956F195D85C300E8A0C8 /* NSPLocationManager.m in Sources */,
 				CC20B1C51959AAF70084E3AB /* NSPInitialViewController.m in Sources */,
-				CC20B1C11959A7780084E3AB /* NSPMainNavigationController.m in Sources */,
+				CC01978B195AF2800032A0E1 /* LocationPuck.m in Sources */,
 				CC20B1A01959A41B0084E3AB /* iEvere.xcdatamodeld in Sources */,
+				CC379572195D8FEF00E8A0C8 /* NSPLocationPuckController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -468,6 +505,7 @@
 				CC20B1BB1959A41B0084E3AB /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		CC20B1BC1959A41B0084E3AB /* Build configuration list for PBXNativeTarget "iEvereTests" */ = {
 			isa = XCConfigurationList;
@@ -476,6 +514,7 @@
 				CC20B1BE1959A41B0084E3AB /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 

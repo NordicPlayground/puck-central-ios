@@ -1,6 +1,16 @@
 
 #import "NSPAppDelegate.h"
-#import "NSPMainNavigationController.h"
+#import "NSPInitialViewController.h"
+#import "NSPLocationPuckController.h"
+
+@import CoreLocation;
+
+@interface NSPAppDelegate () <CLLocationManagerDelegate>
+
+@property (nonatomic, strong) CLLocationManager *locationManager;
+@property (nonatomic, strong) NSPLocationPuckController *locationPuckController;
+
+@end
 
 @implementation NSPAppDelegate
 
@@ -10,9 +20,23 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    self.locationManager = [[CLLocationManager alloc] init];
+    self.locationManager.delegate = self;
+    
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    UIViewController *viewController = [[NSPMainNavigationController alloc] init];
-    self.window.rootViewController = viewController;
+    
+    NSPInitialViewController *initialViewController = [[NSPInitialViewController alloc] init];
+    
+    NSManagedObjectContext *context = [self managedObjectContext];
+    if (!context) {
+        NSLog(@"Could not initialize object context");
+    }
+    initialViewController.managedObjectContext = context;
+    self.locationPuckController = [NSPLocationPuckController sharedController];
+    self.locationPuckController.managedObjectContext = context;
+    
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:initialViewController];
+    self.window.rootViewController = navController;
     
     [self.window makeKeyAndVisible];
     return YES;
@@ -131,6 +155,26 @@
     }    
     
     return _persistentStoreCoordinator;
+}
+
+- (void)locationManager:(CLLocationManager *)manager didEnterRegion:(CLRegion *)region
+{
+    if ([region isKindOfClass:[CLBeaconRegion class]]) {
+        UILocalNotification *notification = [[UILocalNotification alloc] init];
+        notification.alertBody = [NSString stringWithFormat:@"Entered region %@", region.identifier];
+        notification.soundName = @"Default";
+        [[UIApplication sharedApplication] presentLocalNotificationNow:notification];
+    }
+}
+
+- (void)locationManager:(CLLocationManager *)manager didExitRegion:(CLRegion *)region
+{
+    if ([region isKindOfClass:[CLBeaconRegion class]]) {
+        UILocalNotification *notification = [[UILocalNotification alloc] init];
+        notification.alertBody = [NSString stringWithFormat:@"Left region %@", region.identifier];
+        notification.soundName = @"Default";
+        [[UIApplication sharedApplication] presentLocalNotificationNow:notification];
+    }
 }
 
 #pragma mark - Application's Documents directory
