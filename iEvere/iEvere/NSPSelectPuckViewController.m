@@ -75,6 +75,8 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSPAddTriggerViewController *addTriggerViewController = [[NSPAddTriggerViewController alloc] initWithPuck:self.pucks[indexPath.row]];
+
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
     [self.navigationController pushViewController:addTriggerViewController animated:YES];
 }
 

@@ -10,4 +10,6 @@
 @property (nonatomic, retain) NSString * options;
 @property (nonatomic, retain) Rule *rule;
 
+-(NSDictionary *)decodedOptions;
+
 @end

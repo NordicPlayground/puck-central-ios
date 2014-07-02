@@ -61,6 +61,8 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSPSelectActuatorViewController *selectActuatorViewController = [[NSPSelectActuatorViewController alloc] initWithTrigger:(int)indexPath.row andPuck:self.puck];
+    
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
     [self.navigationController pushViewController:selectActuatorViewController animated:YES];
 }
 

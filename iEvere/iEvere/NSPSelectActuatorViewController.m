@@ -1,5 +1,6 @@
 
 #import "NSPSelectActuatorViewController.h"
+#import "NSPConfigureActionViewController.h"
 #import "NSPActuatorController.h"
 #import "NSPActuator.h"
 #import "NSPActionController.h"
@@ -53,6 +54,7 @@
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"cell"];
     }
+    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     
     cell.textLabel.text = NSStringFromClass([[self.actuators allValues] objectAtIndex:indexPath.row]);
     
@@ -62,23 +64,11 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     id<NSPActuator> actuatorClass = [[self.actuators allValues] objectAtIndex:indexPath.row];
-    NSNumber *actuatorId = [actuatorClass index];
-    
-    NSPActionController *actionController = [NSPActionController sharedController];
-    Action *action = [actionController insertAction:actuatorId withOptions:@{
-                                                                             @"url":@"http://dev.stianj.com:1337/message",
-                                                                             @"data":@"message=yolo-ios"
-                                                                             }];
-    
-    NSPRuleController *ruleController = [NSPRuleController sharedController];
-    Rule *rule = [ruleController insertRuleWithTrigger:@(self.trigger)
-                                     puck:self.puck];
-    [rule addActionsObject:action];
-    
-    NSError *error;
-    [[ruleController managedObjectContext] save:&error];
-    
-    [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+
+    NSPConfigureActionViewController *configureActionViewController = [[NSPConfigureActionViewController alloc] initWithTrigger:self.trigger andPuck:self.puck andActuator:actuatorClass];
+
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    [self.navigationController pushViewController:configureActionViewController animated:YES];
 }
 
 #pragma mark NSObject

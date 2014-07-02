@@ -7,7 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5FF0F57227374219ACD267BA /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B48E46EBAE6040238F4620E9 /* libPods.a */; };
 		879CAF591962E4AA00DF8492 /* NSPRuleTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 879CAF581962E4AA00DF8492 /* NSPRuleTableViewCell.m */; };
+		87A385101966963A003D2CFB /* NSPConfigureActionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 879CAF5B1962F56D00DF8492 /* NSPConfigureActionViewController.m */; };
 		CC01978B195AF2800032A0E1 /* Puck.m in Sources */ = {isa = PBXBuildFile; fileRef = CC01978A195AF27F0032A0E1 /* Puck.m */; };
 		CC20B18B1959A41B0084E3AB /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC20B18A1959A41B0084E3AB /* Foundation.framework */; };
 		CC20B18D1959A41B0084E3AB /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC20B18C1959A41B0084E3AB /* CoreGraphics.framework */; };
@@ -56,6 +58,9 @@
 /* Begin PBXFileReference section */
 		879CAF571962E4AA00DF8492 /* NSPRuleTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSPRuleTableViewCell.h; sourceTree = "<group>"; };
 		879CAF581962E4AA00DF8492 /* NSPRuleTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSPRuleTableViewCell.m; sourceTree = "<group>"; };
+		879CAF5A1962F56D00DF8492 /* NSPConfigureActionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSPConfigureActionViewController.h; sourceTree = "<group>"; };
+		879CAF5B1962F56D00DF8492 /* NSPConfigureActionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSPConfigureActionViewController.m; sourceTree = "<group>"; };
+		B48E46EBAE6040238F4620E9 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		CC019789195AF27F0032A0E1 /* Puck.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Puck.h; sourceTree = "<group>"; };
 		CC01978A195AF27F0032A0E1 /* Puck.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Puck.m; sourceTree = "<group>"; };
 		CC20B1871959A41B0084E3AB /* iEvere.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iEvere.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -107,6 +112,7 @@
 		CCFBDA54196196D6001B26B8 /* Action.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Action.m; sourceTree = "<group>"; };
 		CCFBDA571961A058001B26B8 /* NSPActionController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSPActionController.h; sourceTree = "<group>"; };
 		CCFBDA581961A058001B26B8 /* NSPActionController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSPActionController.m; sourceTree = "<group>"; };
+		DF418DD3E5AA4EC6A888FD0C /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -118,6 +124,7 @@
 				CC20B1911959A41B0084E3AB /* CoreData.framework in Frameworks */,
 				CC20B18F1959A41B0084E3AB /* UIKit.framework in Frameworks */,
 				CC20B18B1959A41B0084E3AB /* Foundation.framework in Frameworks */,
+				5FF0F57227374219ACD267BA /* libPods.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -147,6 +154,8 @@
 				CCFBDA3F196183D3001B26B8 /* NSPSelectActuatorViewController.h */,
 				CCFBDA40196183D3001B26B8 /* NSPSelectActuatorViewController.m */,
 				CCFBDA41196183D3001B26B8 /* NSPSelectActuatorViewController.xib */,
+				879CAF5A1962F56D00DF8492 /* NSPConfigureActionViewController.h */,
+				879CAF5B1962F56D00DF8492 /* NSPConfigureActionViewController.m */,
 			);
 			name = "Add Rule UI";
 			sourceTree = "<group>";
@@ -169,6 +178,7 @@
 				CC20B1AF1959A41B0084E3AB /* iEvereTests */,
 				CC20B1891959A41B0084E3AB /* Frameworks */,
 				CC20B1881959A41B0084E3AB /* Products */,
+				DF418DD3E5AA4EC6A888FD0C /* Pods.xcconfig */,
 			);
 			sourceTree = "<group>";
 		};
@@ -189,6 +199,7 @@
 				CC20B18E1959A41B0084E3AB /* UIKit.framework */,
 				CC20B1901959A41B0084E3AB /* CoreData.framework */,
 				CC20B1A81959A41B0084E3AB /* XCTest.framework */,
+				B48E46EBAE6040238F4620E9 /* libPods.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -297,9 +308,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = CC20B1B91959A41B0084E3AB /* Build configuration list for PBXNativeTarget "iEvere" */;
 			buildPhases = (
+				E82F3A0C603042EB86C3AB08 /* Check Pods Manifest.lock */,
 				CC20B1831959A41B0084E3AB /* Sources */,
 				CC20B1841959A41B0084E3AB /* Frameworks */,
 				CC20B1851959A41B0084E3AB /* Resources */,
+				55EB26F878C44C6387A6EF30 /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -388,11 +401,45 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		55EB26F878C44C6387A6EF30 /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Pods-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		E82F3A0C603042EB86C3AB08 /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		CC20B1831959A41B0084E3AB /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				87A385101966963A003D2CFB /* NSPConfigureActionViewController.m in Sources */,
 				CCFBDA4819618561001B26B8 /* NSPHTTPActuator.m in Sources */,
 				CCFBDA55196196D6001B26B8 /* Action.m in Sources */,
 				CC3795761961522300E8A0C8 /* Constants.m in Sources */,
@@ -526,6 +573,7 @@
 		};
 		CC20B1BA1959A41B0084E3AB /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = DF418DD3E5AA4EC6A888FD0C /* Pods.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -542,6 +590,7 @@
 		};
 		CC20B1BB1959A41B0084E3AB /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = DF418DD3E5AA4EC6A888FD0C /* Pods.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;

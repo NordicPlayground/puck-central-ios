@@ -1,5 +1,6 @@
 
 #import "NSPHTTPActuator.h"
+#import <XLForm/XLForm.h>
 
 @implementation NSPHTTPActuator
 
@@ -13,12 +14,34 @@
     return @"HTTP Actuator";
 }
 
++ (XLFormDescriptor *)optionsForm
+{
+    XLFormDescriptor *form = [XLFormDescriptor formDescriptor];
+    
+    XLFormSectionDescriptor *section = [XLFormSectionDescriptor formSection];
+    [form addFormSection:section];
+    
+    XLFormRowDescriptor *URLRow = [XLFormRowDescriptor formRowDescriptorWithTag:@"url" rowType:XLFormRowDescriptorTypeURL title:@"URL"];
+    [section addFormRow:URLRow];
+    
+    XLFormRowDescriptor *dataRow = [XLFormRowDescriptor formRowDescriptorWithTag:@"data" rowType:XLFormRowDescriptorTypeTextView title:@"Data"];
+    [section addFormRow:dataRow];
+    
+    return form;
+}
+
 - (void)actuate:(NSDictionary *)options
 {
     NSURL *URL = [NSURL URLWithString:options[@"url"]];
-    NSLog(@"Post data to %@", URL);
+    NSLog(@"Post data %@ to %@", options[@"data"], URL);
     [self postData:options[@"data"] toURL:URL];
 }
+
+- (NSString *)stringForOptions:(NSDictionary *)options
+{
+    return [NSString stringWithFormat:@"POST %@ to %@", options[@"data"], options[@"url"]];
+}
+
 
 - (void)postData:(NSString *)data toURL:(NSURL *)URL
 {

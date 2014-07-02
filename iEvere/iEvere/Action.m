@@ -9,4 +9,15 @@
 @dynamic options;
 @dynamic rule;
 
+- (NSDictionary *)decodedOptions
+{
+    NSData *jsonData = [self.options dataUsingEncoding:NSUTF8StringEncoding];
+    NSError *error;
+    NSDictionary *parsedOptions = [NSJSONSerialization JSONObjectWithData:jsonData options:kNilOptions error:&error];
+    if (error) {
+        NSLog(@"Error: %@", error);
+    }
+    return parsedOptions;
+}
+
 @end

@@ -80,13 +80,7 @@
     } else {
         for (Rule *rule in rules) {
             for (Action *action in rule.actions) {
-                NSData *jsonData = [action.options dataUsingEncoding:NSUTF8StringEncoding];
-                NSError *error;
-                NSDictionary *parsedOptions = [NSJSONSerialization JSONObjectWithData:jsonData options:kNilOptions error:&error];
-                if (error) {
-                    NSLog(@"Error: %@", error);
-                }
-                [NSPActuatorController actuate:action.actuatorId withOptions:parsedOptions];
+                [NSPActuatorController actuate:action.actuatorId withOptions:[action decodedOptions]];
             }
         }
     }

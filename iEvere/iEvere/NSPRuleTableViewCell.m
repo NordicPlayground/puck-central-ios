@@ -40,9 +40,10 @@
         UILabel *actionLabel = [[UILabel alloc] initWithFrame:CGRectMake(16.f, 20.f * i + 36.f, size.width - 16.f, 18.f)];
         Class actuatorClass = [[NSPActuatorController actuators] objectForKey:action.actuatorId];
         if ([actuatorClass conformsToProtocol:@protocol(NSPActuator)]) {
-            actionLabel.text = [actuatorClass name];
+            id<NSPActuator> actuator = [[actuatorClass alloc] init];
+            actionLabel.text = [NSString stringWithFormat:@"%@: %@", [actuatorClass name],
+                                [actuator stringForOptions:[action decodedOptions]]];
         }
-        actionLabel.text = [actuatorClass name];
         [self.contentView addSubview:actionLabel];
         i++;
     }
