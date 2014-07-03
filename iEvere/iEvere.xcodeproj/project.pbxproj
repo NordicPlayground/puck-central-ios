@@ -11,7 +11,7 @@
 		874907391964311D00ED254D /* NSPEditRuleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 874907371964311D00ED254D /* NSPEditRuleViewController.m */; };
 		8749073A1964311D00ED254D /* NSPEditRuleViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 874907381964311D00ED254D /* NSPEditRuleViewController.xib */; };
 		879CAF591962E4AA00DF8492 /* NSPRuleTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 879CAF581962E4AA00DF8492 /* NSPRuleTableViewCell.m */; };
-		87A384CE196443F5003D2CFB /* NSPConfigureActionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 879CAF5B1962F56D00DF8492 /* NSPConfigureActionViewController.m */; };
+		87A384CF196545D9003D2CFB /* NSPConfigureActionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 879CAF5B1962F56D00DF8492 /* NSPConfigureActionViewController.m */; };
 		CC01978B195AF2800032A0E1 /* Puck.m in Sources */ = {isa = PBXBuildFile; fileRef = CC01978A195AF27F0032A0E1 /* Puck.m */; };
 		CC20B18B1959A41B0084E3AB /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC20B18A1959A41B0084E3AB /* Foundation.framework */; };
 		CC20B18D1959A41B0084E3AB /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC20B18C1959A41B0084E3AB /* CoreGraphics.framework */; };
@@ -456,7 +456,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				87A384CE196443F5003D2CFB /* NSPConfigureActionViewController.m in Sources */,
+				87A384CF196545D9003D2CFB /* NSPConfigureActionViewController.m in Sources */,
 				CCFBDA4819618561001B26B8 /* NSPHTTPActuator.m in Sources */,
 				CCFBDA55196196D6001B26B8 /* Action.m in Sources */,
 				CC3795761961522300E8A0C8 /* Constants.m in Sources */,

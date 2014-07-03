@@ -28,7 +28,7 @@
                                                      name:NSPDidEnterZone
                                                    object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(leaveZone)
+                                                 selector:@selector(leaveZone:)
                                                      name:NSPDidLeaveZone
                                                    object:nil];
     }
@@ -63,15 +63,23 @@
 
 - (void)enterZone:(NSNotification *)notification
 {
-    NSFetchRequest *request = [self fetchRequest];
-    
     Puck *puck = notification.userInfo[@"puck"];
-    
+    [self executeTrigger:NSPTriggerEnterZone withPuck:puck];
+}
+
+- (void)leaveZone:(NSNotification *)notification
+{
+    Puck *puck = notification.userInfo[@"puck"];
+    [self executeTrigger:NSPTriggerLeaveZone withPuck:puck];
+}
+
+- (void)executeTrigger:(NSPTrigger)trigger withPuck:(Puck *)puck
+{
+    NSFetchRequest *request = [self fetchRequest];
     NSArray *predicates = @[
-                            [NSPredicate predicateWithFormat:@"trigger == %d", 0],
+                            [NSPredicate predicateWithFormat:@"trigger == %d", trigger],
                             [NSPredicate predicateWithFormat:@"puck == %@", puck]
                             ];
-    
     request.predicate = [NSCompoundPredicate andPredicateWithSubpredicates:predicates];
     
     NSError *error;
@@ -85,11 +93,6 @@
             }
         }
     }
-}
-
-- (void)leaveZone
-{
-    NSLog(@"Leave zone trigger");
 }
 
 - (void)dealloc

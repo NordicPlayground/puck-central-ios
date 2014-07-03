@@ -122,7 +122,10 @@ static const int THROTTLE = 3;
     }
     
     [[NSNotificationCenter defaultCenter] postNotificationName:NSPDidLeaveZone
-                                                        object:self];
+                                                        object:self
+                                                      userInfo:@{
+                                                                 @"puck": self.closestPuck
+                                                                 }];
     
     self.closestPuck = nil;
 }
