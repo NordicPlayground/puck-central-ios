@@ -84,6 +84,8 @@ static const int THROTTLE = 3;
             return;
         }
     }
+    
+    [self setLocation:nil];
 }
 
 - (void)setLocation:(CLBeacon *)beacon
