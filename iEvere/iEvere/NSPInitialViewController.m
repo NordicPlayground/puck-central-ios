@@ -7,6 +7,7 @@
 #import "NSPRuleController.h"
 #import "Rule.h"
 #import "NSPRuleTableViewCell.h"
+#import "NSPEditRuleViewController.h"
 
 
 @interface NSPInitialViewController ()
@@ -146,24 +147,12 @@
     if (cell == nil) {
         cell = [[NSPRuleTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"cell"];
     }
+    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     
     Puck *puck = self.pucks[indexPath.section];
     Rule *rule = [puck.rules objectAtIndex:indexPath.row];
     
-    NSString *trigger;
-    switch (rule.trigger.intValue) {
-        case NSPTriggerEnterZone:
-            trigger = @"Enter zone";
-            break;
-        case NSPTriggerLeaveZone:
-            trigger = @"Leave zone";
-            break;
-        default:
-            trigger = @"";
-            break;
-    }
-    
-    cell.triggerLabel.text = [NSString stringWithFormat:@"When: %@", trigger];
+    cell.triggerLabel.text = [NSString stringWithFormat:@"When: %@", [Rule nameForTrigger:rule.trigger.intValue]];
     
     cell.actions = rule.actions.allObjects;
     
@@ -172,7 +161,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 36.f + [[[[self.pucks[indexPath.section] rules] objectAtIndex:indexPath.row] actions] count] * 20.f;
+    return 40.f + [[[[self.pucks[indexPath.section] rules] objectAtIndex:indexPath.row] actions] count] * 20.f;
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
@@ -208,6 +197,16 @@
             NSLog(@"Could not delete");
         }
     }
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    Puck *puck = self.pucks[indexPath.section];
+    Rule *rule = puck.rules[indexPath.row];
+    NSPEditRuleViewController *editRuleVC = [[NSPEditRuleViewController alloc] initWithRule:rule forPuck:puck];
+    
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    [self.navigationController pushViewController:editRuleVC animated:YES];
 }
 
 #pragma mark NSObject

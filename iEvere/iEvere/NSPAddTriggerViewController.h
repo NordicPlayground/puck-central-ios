@@ -1,12 +1,12 @@
 
 @import UIKit;
 
-@class Puck;
+@class Rule;
 
 @interface NSPAddTriggerViewController : UIViewController <UITableViewDelegate, UITableViewDataSource>
 
 @property (weak) IBOutlet UITableView *tableView;
 
-- (id)initWithPuck:(Puck *)puck;
+- (id)initWithRule:(Rule *)rule;
 
 @end

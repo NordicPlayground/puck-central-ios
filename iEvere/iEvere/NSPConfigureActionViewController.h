@@ -3,12 +3,11 @@
 
 #import <XLForm/XLForm.h>
 
-@class Puck;
+@class Rule;
 
 @interface NSPConfigureActionViewController : XLFormViewController
 
-- (id)initWithTrigger:(NSPTrigger)trigger
-              andPuck:(Puck *)puck
-          andActuator:(Class)actuatorClass;
+- (id)initWithRule:(Rule *)rule
+       andActuator:(Class)actuatorClass;
 
 @end

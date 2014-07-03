@@ -1,12 +1,12 @@
 
 @import UIKit;
 
-@class Puck;
+@class Rule;
 
 @interface NSPSelectActuatorViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
 
 @property (weak) IBOutlet UITableView *tableView;
 
-- (id)initWithTrigger:(NSPTrigger)trigger andPuck:(Puck *)puck;
+- (id)initWithRule:(Rule *)rule;
 
 @end

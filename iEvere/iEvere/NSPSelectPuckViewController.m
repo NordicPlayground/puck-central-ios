@@ -3,10 +3,13 @@
 #import "NSPPuckController.h"
 #import "Puck.h"
 #import "NSPAddTriggerViewController.h"
+#import "NSPRuleController.h"
+#import "Rule.h"
 
 @interface NSPSelectPuckViewController ()
 
 @property (nonatomic, strong) NSMutableArray *pucks;
+@property (nonatomic, strong) Rule *rule;
 
 @end
 
@@ -17,6 +20,9 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         self.title = @"Select puck";
+        
+        NSManagedObjectContext *context = [[NSPRuleController sharedController] managedObjectContext];
+        self.rule = [[Rule alloc] initWithEntity:[NSEntityDescription entityForName:@"Rule" inManagedObjectContext:context] insertIntoManagedObjectContext:context];
     }
     return self;
 }
@@ -41,6 +47,7 @@
 
 - (void)close
 {
+    [[[NSPRuleController sharedController] managedObjectContext] deleteObject:self.rule];
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
@@ -74,7 +81,8 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSPAddTriggerViewController *addTriggerViewController = [[NSPAddTriggerViewController alloc] initWithPuck:self.pucks[indexPath.row]];
+    self.rule.puck = self.pucks[indexPath.row];
+    NSPAddTriggerViewController *addTriggerViewController = [[NSPAddTriggerViewController alloc] initWithRule:self.rule];
 
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     [self.navigationController pushViewController:addTriggerViewController animated:YES];

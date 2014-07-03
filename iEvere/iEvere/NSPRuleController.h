@@ -2,8 +2,6 @@
 @import Foundation;
 
 @class Rule;
-@class Puck;
-@class Action;
 
 @interface NSPRuleController : NSObject
 
@@ -11,7 +9,6 @@
 
 + (NSPRuleController *)sharedController;
 - (NSFetchRequest *)fetchRequest;
-- (Rule *)insertRuleWithTrigger:(NSNumber *)trigger
-                           puck:(Puck *)puck;
+- (void)conditionalInsertRule:(Rule *)rule;
 
 @end

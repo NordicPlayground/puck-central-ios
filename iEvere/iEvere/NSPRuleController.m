@@ -41,23 +41,24 @@
     return request;
 }
 
-- (Rule *)insertRuleWithTrigger:(NSNumber *)trigger
-                           puck:(Puck *)puck
+- (void)conditionalInsertRule:(Rule *)rule
 {
-    Rule *rule = [NSEntityDescription insertNewObjectForEntityForName:@"Rule"
-                                               inManagedObjectContext:self.managedObjectContext];
-    
-    rule.trigger = trigger;
-    rule.puck = puck;
-    
     NSError *error;
-    if (![self.managedObjectContext save:&error]) {
-        NSLog(@"Error: %@", error);
+    NSFetchRequest *request = [self fetchRequest];
+    request.fetchLimit = 1;
+    
+    [request setPredicate:[NSPredicate predicateWithFormat:@"self == %@", rule]];
+    
+    NSUInteger count = [self.managedObjectContext countForFetchRequest:request error:&error];
+    if (count == NSNotFound) {
+        if (error) {
+            NSLog(@"Error: %@", error);
+        } else {
+            if (![self.managedObjectContext save:&error]) {
+                NSLog(@"Error: %@", error);
+            }
+        }
     }
-    
-    NSLog(@"Inserted");
-    
-    return rule;
 }
 
 - (void)enterZone:(NSNotification *)notification

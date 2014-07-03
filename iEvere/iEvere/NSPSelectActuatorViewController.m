@@ -10,21 +10,19 @@
 
 @interface NSPSelectActuatorViewController ()
 
-@property (nonatomic, assign) NSPTrigger trigger;
-@property (nonatomic, strong) Puck *puck;
+@property (nonatomic, strong) Rule *rule;
 @property (nonatomic, strong) NSDictionary *actuators;
 
 @end
 
 @implementation NSPSelectActuatorViewController
 
-- (id)initWithTrigger:(NSPTrigger)trigger andPuck:(Puck *)puck
+- (id)initWithRule:(Rule *)rule
 {
     self = [super initWithNibName:@"NSPSelectActuatorViewController" bundle:nil];
     if (self) {
         self.title = @"Select actuator";
-        self.trigger = trigger;
-        self.puck = puck;
+        self.rule = rule;
     }
     return self;
 }
@@ -33,7 +31,19 @@
 {
     [super viewDidLoad];
     
+    if (self == [self.navigationController.viewControllers objectAtIndex:0]) {
+        UIBarButtonItem *closeButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
+                                                                                     target:self
+                                                                                     action:@selector(close)];
+        self.navigationItem.leftBarButtonItem = closeButton;
+    }
+    
     self.actuators = [NSPActuatorController actuators];
+}
+
+- (void)close
+{
+    [self.navigationController dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark UITableViewDelegate + UITableViewDataSource
@@ -63,9 +73,9 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    id<NSPActuator> actuatorClass = [[self.actuators allValues] objectAtIndex:indexPath.row];
+    Class actuatorClass = [[self.actuators allValues] objectAtIndex:indexPath.row];
 
-    NSPConfigureActionViewController *configureActionViewController = [[NSPConfigureActionViewController alloc] initWithTrigger:self.trigger andPuck:self.puck andActuator:actuatorClass];
+    NSPConfigureActionViewController *configureActionViewController = [[NSPConfigureActionViewController alloc] initWithRule:self.rule andActuator:actuatorClass];
 
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     [self.navigationController pushViewController:configureActionViewController animated:YES];

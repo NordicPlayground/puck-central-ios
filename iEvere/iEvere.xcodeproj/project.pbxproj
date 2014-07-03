@@ -8,8 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		5FF0F57227374219ACD267BA /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B48E46EBAE6040238F4620E9 /* libPods.a */; };
+		874907391964311D00ED254D /* NSPEditRuleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 874907371964311D00ED254D /* NSPEditRuleViewController.m */; };
+		8749073A1964311D00ED254D /* NSPEditRuleViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 874907381964311D00ED254D /* NSPEditRuleViewController.xib */; };
 		879CAF591962E4AA00DF8492 /* NSPRuleTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 879CAF581962E4AA00DF8492 /* NSPRuleTableViewCell.m */; };
-		87A385101966963A003D2CFB /* NSPConfigureActionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 879CAF5B1962F56D00DF8492 /* NSPConfigureActionViewController.m */; };
+		87A384CE196443F5003D2CFB /* NSPConfigureActionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 879CAF5B1962F56D00DF8492 /* NSPConfigureActionViewController.m */; };
 		CC01978B195AF2800032A0E1 /* Puck.m in Sources */ = {isa = PBXBuildFile; fileRef = CC01978A195AF27F0032A0E1 /* Puck.m */; };
 		CC20B18B1959A41B0084E3AB /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC20B18A1959A41B0084E3AB /* Foundation.framework */; };
 		CC20B18D1959A41B0084E3AB /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC20B18C1959A41B0084E3AB /* CoreGraphics.framework */; };
@@ -56,6 +58,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		874907361964311D00ED254D /* NSPEditRuleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSPEditRuleViewController.h; sourceTree = "<group>"; };
+		874907371964311D00ED254D /* NSPEditRuleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSPEditRuleViewController.m; sourceTree = "<group>"; };
+		874907381964311D00ED254D /* NSPEditRuleViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NSPEditRuleViewController.xib; sourceTree = "<group>"; };
 		879CAF571962E4AA00DF8492 /* NSPRuleTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSPRuleTableViewCell.h; sourceTree = "<group>"; };
 		879CAF581962E4AA00DF8492 /* NSPRuleTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSPRuleTableViewCell.m; sourceTree = "<group>"; };
 		879CAF5A1962F56D00DF8492 /* NSPConfigureActionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSPConfigureActionViewController.h; sourceTree = "<group>"; };
@@ -142,6 +147,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		874907351964310100ED254D /* Edit Rule UI */ = {
+			isa = PBXGroup;
+			children = (
+				874907361964311D00ED254D /* NSPEditRuleViewController.h */,
+				874907371964311D00ED254D /* NSPEditRuleViewController.m */,
+				874907381964311D00ED254D /* NSPEditRuleViewController.xib */,
+			);
+			name = "Edit Rule UI";
+			sourceTree = "<group>";
+		};
 		879CAF561962D5A700DF8492 /* Add Rule UI */ = {
 			isa = PBXGroup;
 			children = (
@@ -220,6 +235,7 @@
 				879CAF581962E4AA00DF8492 /* NSPRuleTableViewCell.m */,
 				CC20B1C41959AAF70084E3AB /* NSPInitialViewController.xib */,
 				879CAF561962D5A700DF8492 /* Add Rule UI */,
+				874907351964310100ED254D /* Edit Rule UI */,
 				CC37956C195D85AE00E8A0C8 /* Location */,
 				CC019788195AE5EB0032A0E1 /* Puck */,
 				CCFBDA4F19619543001B26B8 /* Rule */,
@@ -383,6 +399,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CC20B1C61959AAF70084E3AB /* NSPInitialViewController.xib in Resources */,
+				8749073A1964311D00ED254D /* NSPEditRuleViewController.xib in Resources */,
 				CCFBDA3E19617D54001B26B8 /* NSPAddTriggerViewController.xib in Resources */,
 				CC3AAAC1195AB29600DCA6C0 /* NSPSelectPuckViewController.xib in Resources */,
 				CC20B1971959A41B0084E3AB /* InfoPlist.strings in Resources */,
@@ -439,7 +456,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				87A385101966963A003D2CFB /* NSPConfigureActionViewController.m in Sources */,
+				87A384CE196443F5003D2CFB /* NSPConfigureActionViewController.m in Sources */,
 				CCFBDA4819618561001B26B8 /* NSPHTTPActuator.m in Sources */,
 				CCFBDA55196196D6001B26B8 /* Action.m in Sources */,
 				CC3795761961522300E8A0C8 /* Constants.m in Sources */,
@@ -457,6 +474,7 @@
 				CC379572195D8FEF00E8A0C8 /* NSPPuckController.m in Sources */,
 				CCFBDA4E196194F3001B26B8 /* Rule.m in Sources */,
 				CCFBDA521961955E001B26B8 /* NSPRuleController.m in Sources */,
+				874907391964311D00ED254D /* NSPEditRuleViewController.m in Sources */,
 				CCFBDA591961A058001B26B8 /* NSPActionController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

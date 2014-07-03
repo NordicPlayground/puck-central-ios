@@ -19,4 +19,15 @@
     self.actions = [self.actions setByAddingObjectsFromSet:objects];
 }
 
++ (NSString *)nameForTrigger:(NSPTrigger)trigger
+{
+    switch (trigger) {
+        case NSPTriggerEnterZone:
+            return @"Enter zone";
+            break;
+        case NSPTriggerLeaveZone:
+            return @"Leave zone";
+    }
+}
+
 @end

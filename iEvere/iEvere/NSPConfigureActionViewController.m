@@ -7,20 +7,18 @@
 
 @interface NSPConfigureActionViewController ()
 
-@property (nonatomic, assign) NSPTrigger trigger;
-@property (nonatomic, strong) Puck *puck;
+@property (nonatomic, strong) Rule *rule;
 @property (nonatomic, strong) Class actuatorClass;
 
 @end
 
 @implementation NSPConfigureActionViewController
 
-- (id)initWithTrigger:(NSPTrigger)trigger andPuck:(Puck *)puck andActuator:(Class)actuatorClass
+- (id)initWithRule:(Rule *)rule andActuator:(Class)actuatorClass
 {
     self = [super init];
     if (self) {
-        self.trigger = trigger;
-        self.puck = puck;
+        self.rule = rule;
         self.actuatorClass = actuatorClass;
         
         self.form = [actuatorClass optionsForm];
@@ -47,9 +45,8 @@
     Action *action = [actionController insertAction:actuatorId withOptions:[self formValues]];
     
     NSPRuleController *ruleController = [NSPRuleController sharedController];
-    Rule *rule = [ruleController insertRuleWithTrigger:@(self.trigger)
-                                                  puck:self.puck];
-    [rule addActionsObject:action];
+    [ruleController conditionalInsertRule:self.rule];
+    [self.rule addActionsObject:action];
     
     NSError *error;
     [[ruleController managedObjectContext] save:&error];
