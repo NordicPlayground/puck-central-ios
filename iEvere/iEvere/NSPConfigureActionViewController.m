@@ -38,6 +38,13 @@
 
 - (void)done
 {
+    NSArray *errors = [self formValidationErrors];
+    if (errors.count > 0) {
+        NSLog(@"Errors");
+        [self showFormValidationError:[errors firstObject]];
+        return;
+    }
+
     NSNumber *actuatorId = [self.actuatorClass index];
     
     NSPActionController *actionController = [NSPActionController sharedController];

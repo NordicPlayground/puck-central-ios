@@ -22,9 +22,11 @@
     [form addFormSection:section];
     
     XLFormRowDescriptor *URLRow = [XLFormRowDescriptor formRowDescriptorWithTag:@"url" rowType:XLFormRowDescriptorTypeURL title:@"URL"];
+    URLRow.required = YES;
     [section addFormRow:URLRow];
     
     XLFormRowDescriptor *dataRow = [XLFormRowDescriptor formRowDescriptorWithTag:@"data" rowType:XLFormRowDescriptorTypeTextView title:@"Data"];
+    dataRow.required = YES;
     [section addFormRow:dataRow];
     
     return form;
