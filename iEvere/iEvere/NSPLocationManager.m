@@ -47,13 +47,22 @@ static const int THROTTLE = 3;
     return self;
 }
 
-- (void)forceRestartRanging
+- (void)stopLookingForBeacons
 {
     [self.locationManager stopMonitoringForRegion:self.beaconRegion];
     [self.locationManager stopRangingBeaconsInRegion:self.beaconRegion];
-    
+}
+
+- (void)startLookingForBeacons
+{
     [self.locationManager startMonitoringForRegion:self.beaconRegion];
     [self.locationManager startRangingBeaconsInRegion:self.beaconRegion];
+}
+
+- (void)forceRestartRanging
+{
+    [self stopLookingForBeacons];
+    [self startLookingForBeacons];
 }
 
 - (void)updateLocation:(NSArray *)beacons

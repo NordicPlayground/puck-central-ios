@@ -15,7 +15,7 @@
 @property (nonatomic, strong) UITextField *textField;
 @property (nonatomic, strong) CLBeacon *tempBeacon;
 @property (nonatomic, strong) NSPLocationManager *locationManager;
-@property (nonatomic, assign) BOOL alertViewOpen;
+@property (nonatomic, strong) NSPBluetoothManager *bluetoothManager;
 
 @property (nonatomic, strong) NSMutableArray *pucks;
 
@@ -107,7 +107,7 @@
                                               cancelButtonTitle:@"Cancel"
                                               otherButtonTitles:@"Add", nil];
     alertView.alertViewStyle = UIAlertViewStylePlainTextInput;
-    self.alertViewOpen = YES;
+    [[NSPLocationManager sharedManager] stopLookingForBeacons];
     [alertView show];
 }
 
@@ -121,10 +121,10 @@
                                                     withProximityUUID:self.tempBeacon.proximityUUID
                                                                 major:self.tempBeacon.major
                                                                 minor:self.tempBeacon.minor];
-        self.alertViewOpen = NO;
         [self.pucks addObject:puck];
         [self.tableView reloadData];
     }
+    [[NSPLocationManager sharedManager] startLookingForBeacons];
 }
 
 #pragma mark UITableViewDelegate + UITableViewDataSource

@@ -10,6 +10,8 @@
 
 + (NSPLocationManager *)sharedManager;
 - (void)forceRestartRanging;
+- (void)stopLookingForBeacons;
+- (void)startLookingForBeacons;
 - (void)updateLocation:(NSArray *)beacons;
 
 @end
