@@ -15,7 +15,6 @@
 @property (nonatomic, strong) UITextField *textField;
 @property (nonatomic, strong) CLBeacon *tempBeacon;
 @property (nonatomic, strong) NSPLocationManager *locationManager;
-@property (nonatomic, strong) NSPBluetoothManager *bluetoothManager;
 
 @property (nonatomic, strong) NSMutableArray *pucks;
 
