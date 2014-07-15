@@ -100,8 +100,9 @@
 - (void)foundBeacon:(NSNotification *)notification
 {
     self.tempBeacon = notification.userInfo[@"beacon"];
+    NSString *message = [NSString stringWithFormat:@"Add %04X to your beacons", self.tempBeacon.minor.intValue];
     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Found new beacon"
-                                                        message:@"Add it to your beacons"
+                                                        message:message
                                                        delegate:self
                                               cancelButtonTitle:@"Cancel"
                                               otherButtonTitles:@"Add", nil];
