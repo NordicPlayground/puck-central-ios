@@ -10,13 +10,15 @@
 #import "NSPEditRuleViewController.h"
 
 
-@interface NSPInitialViewController ()
+@interface NSPInitialViewController () <UIActionSheetDelegate>
 
 @property (nonatomic, strong) UITextField *textField;
 @property (nonatomic, strong) CLBeacon *tempBeacon;
 @property (nonatomic, strong) NSPLocationManager *locationManager;
 
 @property (nonatomic, strong) NSMutableArray *pucks;
+
+@property (nonatomic, assign) NSUInteger currentSelectedPuckIndex;
 
 @end
 
@@ -137,30 +139,43 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     Puck *puckForSection = [self.pucks objectAtIndex:section];
-    return puckForSection.rules.count;
+    return puckForSection.rules.count + 1;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView
          cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSPRuleTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell"];
-    if (cell == nil) {
-        cell = [[NSPRuleTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"cell"];
+    if (![self isLastRow:indexPath]) {
+        NSPRuleTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell"];
+        if (cell == nil) {
+            cell = [[NSPRuleTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"cell"];
+        }
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        
+        Puck *puck = self.pucks[indexPath.section];
+        Rule *rule = [puck.rules objectAtIndex:indexPath.row];
+        
+        cell.triggerLabel.text = [NSString stringWithFormat:@"When: %@", [Rule nameForTrigger:rule.trigger.intValue]];
+        
+        cell.actions = rule.actions.allObjects;
+        
+        return cell;
+    } else {
+        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"deleteCell"];
+        if (cell == nil) {
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"deleteCell"];
+        }
+        cell.textLabel.text = @"Remove puck";
+        cell.textLabel.textColor = [UIColor redColor];
+        return cell;
     }
-    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-    
-    Puck *puck = self.pucks[indexPath.section];
-    Rule *rule = [puck.rules objectAtIndex:indexPath.row];
-    
-    cell.triggerLabel.text = [NSString stringWithFormat:@"When: %@", [Rule nameForTrigger:rule.trigger.intValue]];
-    
-    cell.actions = rule.actions.allObjects;
-    
-    return cell;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    if ([self isLastRow:indexPath]) {
+        return 44.f;
+    }
     return 40.f + [[[[self.pucks[indexPath.section] rules] objectAtIndex:indexPath.row] actions] count] * 20.f;
 }
 
@@ -177,7 +192,10 @@
 - (UITableViewCellEditingStyle)tableView:(UITableView *)tableView
            editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return UITableViewCellEditingStyleDelete;
+    if ([self isLastRow:indexPath]) {
+        return UITableViewCellEditingStyleDelete;
+    }
+    return UITableViewCellEditingStyleNone;
 }
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
@@ -201,12 +219,46 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    Puck *puck = self.pucks[indexPath.section];
-    Rule *rule = puck.rules[indexPath.row];
-    NSPEditRuleViewController *editRuleVC = [[NSPEditRuleViewController alloc] initWithRule:rule forPuck:puck];
-    
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    [self.navigationController pushViewController:editRuleVC animated:YES];
+    if ([self isLastRow:indexPath]) {
+        self.currentSelectedPuckIndex = indexPath.section;
+        [tableView deselectRowAtIndexPath:indexPath animated:YES];
+        
+        UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
+                                                                 delegate:self
+                                                        cancelButtonTitle:@"Cancel"
+                                                   destructiveButtonTitle:@"Remove puck"
+                                                        otherButtonTitles:nil];
+        [actionSheet showInView:self.view];
+    } else {
+        Puck *puck = self.pucks[indexPath.section];
+        Rule *rule = puck.rules[indexPath.row];
+        NSPEditRuleViewController *editRuleVC = [[NSPEditRuleViewController alloc] initWithRule:rule forPuck:puck];
+        
+        [tableView deselectRowAtIndexPath:indexPath animated:YES];
+        [self.navigationController pushViewController:editRuleVC animated:YES];
+    }
+}
+
+- (BOOL)isLastRow:(NSIndexPath *)indexPath {
+    return [[self.pucks[indexPath.section] rules] count] == indexPath.row;
+}
+
+#pragma mark UIActionSheetDelegate
+
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex == 0) {
+        [[[NSPPuckController sharedController] managedObjectContext] deleteObject:self.pucks[self.currentSelectedPuckIndex]];
+        [self.pucks removeObjectAtIndex:self.currentSelectedPuckIndex];
+        
+        [self.tableView deleteSections:[NSIndexSet indexSetWithIndex:self.currentSelectedPuckIndex]
+                      withRowAnimation:UITableViewRowAnimationTop];
+        
+        NSError *error;
+        if (![self.managedObjectContext save:&error]) {
+            NSLog(@"Error: %@", error);
+        }
+    }
 }
 
 #pragma mark NSObject
