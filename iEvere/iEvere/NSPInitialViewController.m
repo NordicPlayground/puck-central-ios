@@ -108,7 +108,6 @@
     CLBeacon *tempBeacon = notification.userInfo[@"beacon"];
     Puck *puck = [[NSPPuckController sharedController] insertPuck:nil
                                                 withProximityUUID:tempBeacon.proximityUUID
-                                                       identifier:nil
                                                             major:tempBeacon.major
                                                             minor:tempBeacon.minor];
     self.tempPuck = puck;
