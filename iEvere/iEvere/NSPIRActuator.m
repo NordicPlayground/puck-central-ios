@@ -3,6 +3,7 @@
 #import "NSPBluetoothManager.h"
 #import "NSPPuckController.h"
 #import "NSPUUIDUtils.h"
+#import "NSPBluetoothWriteTransaction.h"
 
 @implementation NSPIRActuator
 
@@ -47,6 +48,10 @@
 
 - (void)actuate:(NSDictionary *)options
 {
+    if(![options[@"device"] isEqualToString:@"Apple"]) {
+        NSLog(@"Error, device not Apple!");
+        return;
+    }
     Puck *puck = nil;
     NSScanner *scanner = [NSScanner scannerWithString:options[@"minor"]];
     unsigned int minor;
@@ -63,19 +68,30 @@
          puck = result[0];
     }
 
-    NSPBluetoothManager *blManager = [NSPBluetoothManager sharedManager];
-    [blManager findPeripheralFromBeacon:puck];
+    int dataRaw = 0x23281194;
+    NSData *data = [NSData dataWithBytes:&dataRaw length:16];
+    [self writeData:data
+         forService:[NSPUUIDUtils stringToUUID:@"bftj ir         "]
+             toPuck:puck];
 
-    int dataRaw = 0xdeadbeef;
-    NSData *data = [NSData dataWithBytes:&dataRaw length:sizeof(data)];
-    [blManager writeValue:data
-        forCharacteristic:[[CBMutableCharacteristic alloc] initWithType:[CBUUID UUIDWithNSUUID:[NSPUUIDUtils stringToUUID:@"bftj ir one     "]]
-                                                             properties:CBCharacteristicPropertyWrite
-                                                                  value:nil
-                                                            permissions:CBAttributePermissionsWriteable]
-                     type:CBCharacteristicWriteWithResponse
-                   toPuck:puck];
-    NSLog(@"sending ir to all devices!");
+}
+
+- (void)writeData:(NSData *)data forService:(NSUUID *)serviceUUID toPuck:(Puck *)puck
+{
+
+    NSPBluetoothWriteTransaction *writeTransaction =
+    [[NSPBluetoothWriteTransaction alloc] initWithPuck:puck
+                                           serviceUUID:serviceUUID
+                                    andCompletionBlock:^(CBPeripheral *peripheral, NSArray *characteristics) {
+                                        NSLog(@"Did call block from bluetoothwritetransaction");
+                                        for(CBCharacteristic *characteristic in characteristics){
+                                                          [peripheral writeValue:data
+                                                               forCharacteristic:characteristic
+                                                                            type:CBCharacteristicWriteWithoutResponse];
+                                        }
+                                    }];
+
+    [[NSPBluetoothManager sharedManager] addToTransactionQueue:writeTransaction];
 }
 
 @end

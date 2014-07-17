@@ -8,8 +8,7 @@
 
 + (NSPBluetoothManager *)sharedManager;
 
-- (CBPeripheral *)findPeripheralFromBeacon:(Puck *)puck;
-- (void)writeValue:(NSData *)data forCharacteristic:(CBCharacteristic *)characteristic type:(CBCharacteristicWriteType)type toPuck:(Puck *)puck;
 - (void)stopSearchingForPeripherals;
+- (void)addToTransactionQueue:(id)object;
 
 @end

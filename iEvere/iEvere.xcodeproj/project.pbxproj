@@ -40,6 +40,9 @@
 		CC888AB41966CE3A00248026 /* NSPBluetoothManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CC888AB11966CE3A00248026 /* NSPBluetoothManager.m */; };
 		CC888AB51966CE3A00248026 /* NSPIRActuator.m in Sources */ = {isa = PBXBuildFile; fileRef = CC888AB31966CE3A00248026 /* NSPIRActuator.m */; };
 		CCADFDC019742C9D00D85696 /* NSPUUIDUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = CCADFDBF19742C9D00D85696 /* NSPUUIDUtils.m */; };
+		CCCC23311977C9D00002F246 /* NSPBluetoothScanTransaction.m in Sources */ = {isa = PBXBuildFile; fileRef = CCCC23301977C9CF0002F246 /* NSPBluetoothScanTransaction.m */; };
+		CCCC23341977CA520002F246 /* NSPBluetoothWriteTransaction.m in Sources */ = {isa = PBXBuildFile; fileRef = CCCC23331977CA520002F246 /* NSPBluetoothWriteTransaction.m */; };
+		CCCC2337197805A10002F246 /* NSPTransaction.m in Sources */ = {isa = PBXBuildFile; fileRef = CCCC2336197805A10002F246 /* NSPTransaction.m */; };
 		CCFBDA3D19617D54001B26B8 /* NSPAddTriggerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CCFBDA3B19617D54001B26B8 /* NSPAddTriggerViewController.m */; };
 		CCFBDA3E19617D54001B26B8 /* NSPAddTriggerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CCFBDA3C19617D54001B26B8 /* NSPAddTriggerViewController.xib */; };
 		CCFBDA42196183D3001B26B8 /* NSPSelectActuatorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CCFBDA40196183D3001B26B8 /* NSPSelectActuatorViewController.m */; };
@@ -127,6 +130,12 @@
 		CC888AB71966DDA500248026 /* NSPLocationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSPLocationManager.h; sourceTree = "<group>"; };
 		CCADFDBE19742C9D00D85696 /* NSPUUIDUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSPUUIDUtils.h; sourceTree = "<group>"; };
 		CCADFDBF19742C9D00D85696 /* NSPUUIDUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSPUUIDUtils.m; sourceTree = "<group>"; };
+		CCCC232F1977C9CF0002F246 /* NSPBluetoothScanTransaction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSPBluetoothScanTransaction.h; sourceTree = "<group>"; };
+		CCCC23301977C9CF0002F246 /* NSPBluetoothScanTransaction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSPBluetoothScanTransaction.m; sourceTree = "<group>"; };
+		CCCC23321977CA520002F246 /* NSPBluetoothWriteTransaction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSPBluetoothWriteTransaction.h; sourceTree = "<group>"; };
+		CCCC23331977CA520002F246 /* NSPBluetoothWriteTransaction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSPBluetoothWriteTransaction.m; sourceTree = "<group>"; };
+		CCCC23351977FB950002F246 /* NSPTransaction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSPTransaction.h; sourceTree = "<group>"; };
+		CCCC2336197805A10002F246 /* NSPTransaction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSPTransaction.m; sourceTree = "<group>"; };
 		CCFBDA3A19617D54001B26B8 /* NSPAddTriggerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSPAddTriggerViewController.h; sourceTree = "<group>"; };
 		CCFBDA3B19617D54001B26B8 /* NSPAddTriggerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSPAddTriggerViewController.m; sourceTree = "<group>"; };
 		CCFBDA3C19617D54001B26B8 /* NSPAddTriggerViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NSPAddTriggerViewController.xib; sourceTree = "<group>"; };
@@ -277,6 +286,7 @@
 				879CAF561962D5A700DF8492 /* Add Rule UI */,
 				874907351964310100ED254D /* Edit Rule UI */,
 				CC888AB61966CE4100248026 /* Bluetooth */,
+				CCCC232E1977C9130002F246 /* Transactions */,
 				CC37956C195D85AE00E8A0C8 /* Location */,
 				CC019788195AE5EB0032A0E1 /* Puck */,
 				CCFBDA4F19619543001B26B8 /* Rule */,
@@ -342,6 +352,19 @@
 				CCADFDBF19742C9D00D85696 /* NSPUUIDUtils.m */,
 			);
 			name = Utils;
+			sourceTree = "<group>";
+		};
+		CCCC232E1977C9130002F246 /* Transactions */ = {
+			isa = PBXGroup;
+			children = (
+				CCCC23351977FB950002F246 /* NSPTransaction.h */,
+				CCCC2336197805A10002F246 /* NSPTransaction.m */,
+				CCCC232F1977C9CF0002F246 /* NSPBluetoothScanTransaction.h */,
+				CCCC23301977C9CF0002F246 /* NSPBluetoothScanTransaction.m */,
+				CCCC23321977CA520002F246 /* NSPBluetoothWriteTransaction.h */,
+				CCCC23331977CA520002F246 /* NSPBluetoothWriteTransaction.m */,
+			);
+			name = Transactions;
 			sourceTree = "<group>";
 		};
 		CCFBDA4419618502001B26B8 /* Actuators */ = {
@@ -528,6 +551,7 @@
 				CC3795761961522300E8A0C8 /* Constants.m in Sources */,
 				879CAF591962E4AA00DF8492 /* NSPRuleTableViewCell.m in Sources */,
 				CCFBDA42196183D3001B26B8 /* NSPSelectActuatorViewController.m in Sources */,
+				CCCC23341977CA520002F246 /* NSPBluetoothWriteTransaction.m in Sources */,
 				CCFBDA4B19618A22001B26B8 /* NSPActuatorController.m in Sources */,
 				CC20790119750AEB00205FB0 /* ServiceUUID.m in Sources */,
 				CC20B19D1959A41B0084E3AB /* NSPAppDelegate.m in Sources */,
@@ -545,6 +569,8 @@
 				874907391964311D00ED254D /* NSPEditRuleViewController.m in Sources */,
 				CCADFDC019742C9D00D85696 /* NSPUUIDUtils.m in Sources */,
 				CCFBDA591961A058001B26B8 /* NSPActionController.m in Sources */,
+				CCCC23311977C9D00002F246 /* NSPBluetoothScanTransaction.m in Sources */,
+				CCCC2337197805A10002F246 /* NSPTransaction.m in Sources */,
 				CC2079051975142B00205FB0 /* NSPServiceUUIDController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

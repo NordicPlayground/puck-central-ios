@@ -10,6 +10,7 @@
 #import "NSPRuleTableViewCell.h"
 #import "NSPEditRuleViewController.h"
 #import "NSPServiceUUIDController.h"
+#import "NSPBluetoothScanTransaction.h"
 
 
 @interface NSPInitialViewController () <UIActionSheetDelegate>
@@ -111,7 +112,10 @@
                                                             major:tempBeacon.major
                                                             minor:tempBeacon.minor];
     self.tempPuck = puck;
-    [self.bluetoothManager findPeripheralFromBeacon:self.tempPuck];
+
+    NSPBluetoothScanTransaction *scanTransaction = [[NSPBluetoothScanTransaction alloc] initWithPuck:self.tempPuck];
+    [[NSPBluetoothManager sharedManager] addToTransactionQueue:scanTransaction];
+
     NSLog(@"userinfo: %@", notification.userInfo);
     NSString *message = [NSString stringWithFormat:@"Add %04X to your beacons", self.tempPuck.minor.intValue];
     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Found new beacon"
