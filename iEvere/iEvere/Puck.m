@@ -3,6 +3,7 @@
 #import "NSPPuckController.h"
 
 @class Rule;
+@class ServiceUUID;
 
 @implementation Puck
 
@@ -11,6 +12,17 @@
 @dynamic name;
 @dynamic proximityUUID;
 @dynamic rules;
+@dynamic serviceIDs;
+
+- (void)addServiceIDsObject:(ServiceUUID *)object
+{
+    self.serviceIDs = [self.serviceIDs setByAddingObject:object];
+}
+
+- (void)addServiceIDs:(NSSet *)objects
+{
+    self.serviceIDs = [self.serviceIDs setByAddingObjectsFromSet:objects];
+}
 
 + (instancetype)puckForBeacon:(CLBeacon *)beacon
 {

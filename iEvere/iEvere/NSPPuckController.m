@@ -3,6 +3,7 @@
 
 #import "NSPPuckController.h"
 #import "Puck.h"
+#import "NSPServiceUUIDController.h"
 
 @implementation NSPPuckController
 
@@ -28,6 +29,7 @@
 
 - (Puck *)insertPuck:(NSString *)name
    withProximityUUID:(NSUUID *)proximityUUID
+          identifier:(NSUUID *)identifier
                major:(NSNumber *)major
                minor:(NSNumber *)minor
 {

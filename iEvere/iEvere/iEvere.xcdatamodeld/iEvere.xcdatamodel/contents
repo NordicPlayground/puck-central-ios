@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="5064" systemVersion="13D65" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="6198" systemVersion="13E28" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="Action" representedClassName="Action" syncable="YES">
         <attribute name="actuatorId" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="options" optional="YES" attributeType="String" syncable="YES"/>
@@ -11,15 +11,20 @@
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="proximityUUID" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="rules" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="Rule" inverseName="puck" inverseEntity="Rule" syncable="YES"/>
+        <relationship name="serviceIDs" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ServiceID" syncable="YES"/>
     </entity>
     <entity name="Rule" representedClassName="Rule" syncable="YES">
         <attribute name="trigger" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <relationship name="actions" optional="YES" toMany="YES" minCount="1" deletionRule="Cascade" destinationEntity="Action" inverseName="rule" inverseEntity="Action" syncable="YES"/>
         <relationship name="puck" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Puck" inverseName="rules" inverseEntity="Puck" syncable="YES"/>
     </entity>
+    <entity name="ServiceID" syncable="YES">
+        <attribute name="uuid" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
     <elements>
-        <element name="Action" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="Puck" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="Rule" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="Action" positionX="52" positionY="-27" width="128" height="90"/>
+        <element name="Puck" positionX="-308" positionY="-70" width="128" height="133"/>
+        <element name="Rule" positionX="-144" positionY="-189" width="128" height="90"/>
+        <element name="ServiceID" positionX="-369" positionY="131" width="128" height="58"/>
     </elements>
 </model>

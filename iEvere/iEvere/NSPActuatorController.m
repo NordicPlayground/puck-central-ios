@@ -1,6 +1,7 @@
 
 #import "NSPActuatorController.h"
 #import "NSPHTTPActuator.h"
+#import "NSPIRActuator.h"
 #import "NSPActuator.h"
 
 @implementation NSPActuatorController
@@ -8,7 +9,8 @@
 + (NSDictionary *)actuators
 {
     return @{
-             [NSPHTTPActuator index]:[NSPHTTPActuator class]
+             [NSPHTTPActuator index]:[NSPHTTPActuator class],
+             [NSPIRActuator index]: [NSPIRActuator class]
              };
 }
 

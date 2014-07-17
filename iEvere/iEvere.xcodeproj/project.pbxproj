@@ -13,6 +13,8 @@
 		879CAF591962E4AA00DF8492 /* NSPRuleTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 879CAF581962E4AA00DF8492 /* NSPRuleTableViewCell.m */; };
 		87A384CF196545D9003D2CFB /* NSPConfigureActionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 879CAF5B1962F56D00DF8492 /* NSPConfigureActionViewController.m */; };
 		CC01978B195AF2800032A0E1 /* Puck.m in Sources */ = {isa = PBXBuildFile; fileRef = CC01978A195AF27F0032A0E1 /* Puck.m */; };
+		CC20790119750AEB00205FB0 /* ServiceUUID.m in Sources */ = {isa = PBXBuildFile; fileRef = CC20790019750AEB00205FB0 /* ServiceUUID.m */; };
+		CC2079051975142B00205FB0 /* NSPServiceUUIDController.m in Sources */ = {isa = PBXBuildFile; fileRef = CC2079041975142B00205FB0 /* NSPServiceUUIDController.m */; };
 		CC20B18B1959A41B0084E3AB /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC20B18A1959A41B0084E3AB /* Foundation.framework */; };
 		CC20B18D1959A41B0084E3AB /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC20B18C1959A41B0084E3AB /* CoreGraphics.framework */; };
 		CC20B18F1959A41B0084E3AB /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC20B18E1959A41B0084E3AB /* UIKit.framework */; };
@@ -35,6 +37,9 @@
 		CC3795761961522300E8A0C8 /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = CC3795751961522300E8A0C8 /* Constants.m */; };
 		CC3AAAC0195AB29600DCA6C0 /* NSPSelectPuckViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CC3AAABE195AB29600DCA6C0 /* NSPSelectPuckViewController.m */; };
 		CC3AAAC1195AB29600DCA6C0 /* NSPSelectPuckViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CC3AAABF195AB29600DCA6C0 /* NSPSelectPuckViewController.xib */; };
+		CC888AB41966CE3A00248026 /* NSPBluetoothManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CC888AB11966CE3A00248026 /* NSPBluetoothManager.m */; };
+		CC888AB51966CE3A00248026 /* NSPIRActuator.m in Sources */ = {isa = PBXBuildFile; fileRef = CC888AB31966CE3A00248026 /* NSPIRActuator.m */; };
+		CCADFDC019742C9D00D85696 /* NSPUUIDUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = CCADFDBF19742C9D00D85696 /* NSPUUIDUtils.m */; };
 		CCFBDA3D19617D54001B26B8 /* NSPAddTriggerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CCFBDA3B19617D54001B26B8 /* NSPAddTriggerViewController.m */; };
 		CCFBDA3E19617D54001B26B8 /* NSPAddTriggerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CCFBDA3C19617D54001B26B8 /* NSPAddTriggerViewController.xib */; };
 		CCFBDA42196183D3001B26B8 /* NSPSelectActuatorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CCFBDA40196183D3001B26B8 /* NSPSelectActuatorViewController.m */; };
@@ -82,6 +87,10 @@
 		B48E46EBAE6040238F4620E9 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		CC019789195AF27F0032A0E1 /* Puck.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Puck.h; sourceTree = "<group>"; };
 		CC01978A195AF27F0032A0E1 /* Puck.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Puck.m; sourceTree = "<group>"; };
+		CC2078FF19750AEB00205FB0 /* ServiceUUID.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ServiceUUID.h; sourceTree = "<group>"; };
+		CC20790019750AEB00205FB0 /* ServiceUUID.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ServiceUUID.m; sourceTree = "<group>"; };
+		CC2079031975142B00205FB0 /* NSPServiceUUIDController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSPServiceUUIDController.h; sourceTree = "<group>"; };
+		CC2079041975142B00205FB0 /* NSPServiceUUIDController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSPServiceUUIDController.m; sourceTree = "<group>"; };
 		CC20B1871959A41B0084E3AB /* iEvere.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iEvere.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CC20B18A1959A41B0084E3AB /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		CC20B18C1959A41B0084E3AB /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -103,7 +112,6 @@
 		CC20B1C21959AAF70084E3AB /* NSPInitialViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSPInitialViewController.h; sourceTree = "<group>"; };
 		CC20B1C31959AAF70084E3AB /* NSPInitialViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSPInitialViewController.m; sourceTree = "<group>"; };
 		CC20B1C41959AAF70084E3AB /* NSPInitialViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NSPInitialViewController.xib; sourceTree = "<group>"; };
-		CC37956D195D85C300E8A0C8 /* NSPLocationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSPLocationManager.h; sourceTree = "<group>"; };
 		CC37956E195D85C300E8A0C8 /* NSPLocationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSPLocationManager.m; sourceTree = "<group>"; };
 		CC379570195D8FEF00E8A0C8 /* NSPPuckController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSPPuckController.h; sourceTree = "<group>"; };
 		CC379571195D8FEF00E8A0C8 /* NSPPuckController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSPPuckController.m; sourceTree = "<group>"; };
@@ -112,6 +120,13 @@
 		CC3AAABD195AB29600DCA6C0 /* NSPSelectPuckViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSPSelectPuckViewController.h; sourceTree = "<group>"; };
 		CC3AAABE195AB29600DCA6C0 /* NSPSelectPuckViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSPSelectPuckViewController.m; sourceTree = "<group>"; };
 		CC3AAABF195AB29600DCA6C0 /* NSPSelectPuckViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NSPSelectPuckViewController.xib; sourceTree = "<group>"; };
+		CC888AB01966CE3A00248026 /* NSPBluetoothManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSPBluetoothManager.h; sourceTree = "<group>"; };
+		CC888AB11966CE3A00248026 /* NSPBluetoothManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSPBluetoothManager.m; sourceTree = "<group>"; };
+		CC888AB21966CE3A00248026 /* NSPIRActuator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSPIRActuator.h; sourceTree = "<group>"; };
+		CC888AB31966CE3A00248026 /* NSPIRActuator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSPIRActuator.m; sourceTree = "<group>"; };
+		CC888AB71966DDA500248026 /* NSPLocationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSPLocationManager.h; sourceTree = "<group>"; };
+		CCADFDBE19742C9D00D85696 /* NSPUUIDUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSPUUIDUtils.h; sourceTree = "<group>"; };
+		CCADFDBF19742C9D00D85696 /* NSPUUIDUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSPUUIDUtils.m; sourceTree = "<group>"; };
 		CCFBDA3A19617D54001B26B8 /* NSPAddTriggerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSPAddTriggerViewController.h; sourceTree = "<group>"; };
 		CCFBDA3B19617D54001B26B8 /* NSPAddTriggerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSPAddTriggerViewController.m; sourceTree = "<group>"; };
 		CCFBDA3C19617D54001B26B8 /* NSPAddTriggerViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NSPAddTriggerViewController.xib; sourceTree = "<group>"; };
@@ -200,6 +215,17 @@
 			name = Puck;
 			sourceTree = "<group>";
 		};
+		CC2079021975131100205FB0 /* ServiceUUID */ = {
+			isa = PBXGroup;
+			children = (
+				CC2079031975142B00205FB0 /* NSPServiceUUIDController.h */,
+				CC2079041975142B00205FB0 /* NSPServiceUUIDController.m */,
+				CC2078FF19750AEB00205FB0 /* ServiceUUID.h */,
+				CC20790019750AEB00205FB0 /* ServiceUUID.m */,
+			);
+			name = ServiceUUID;
+			sourceTree = "<group>";
+		};
 		CC20B17E1959A41B0084E3AB = {
 			isa = PBXGroup;
 			children = (
@@ -250,11 +276,14 @@
 				CC20B1C41959AAF70084E3AB /* NSPInitialViewController.xib */,
 				879CAF561962D5A700DF8492 /* Add Rule UI */,
 				874907351964310100ED254D /* Edit Rule UI */,
+				CC888AB61966CE4100248026 /* Bluetooth */,
 				CC37956C195D85AE00E8A0C8 /* Location */,
 				CC019788195AE5EB0032A0E1 /* Puck */,
 				CCFBDA4F19619543001B26B8 /* Rule */,
 				CCFBDA561961A043001B26B8 /* Action */,
 				CCFBDA4419618502001B26B8 /* Actuators */,
+				CC2079021975131100205FB0 /* ServiceUUID */,
+				CCADFDBD19742C6300D85696 /* Utils */,
 			);
 			path = iEvere;
 			sourceTree = "<group>";
@@ -291,10 +320,28 @@
 		CC37956C195D85AE00E8A0C8 /* Location */ = {
 			isa = PBXGroup;
 			children = (
-				CC37956D195D85C300E8A0C8 /* NSPLocationManager.h */,
+				CC888AB71966DDA500248026 /* NSPLocationManager.h */,
 				CC37956E195D85C300E8A0C8 /* NSPLocationManager.m */,
 			);
 			name = Location;
+			sourceTree = "<group>";
+		};
+		CC888AB61966CE4100248026 /* Bluetooth */ = {
+			isa = PBXGroup;
+			children = (
+				CC888AB01966CE3A00248026 /* NSPBluetoothManager.h */,
+				CC888AB11966CE3A00248026 /* NSPBluetoothManager.m */,
+			);
+			name = Bluetooth;
+			sourceTree = "<group>";
+		};
+		CCADFDBD19742C6300D85696 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				CCADFDBE19742C9D00D85696 /* NSPUUIDUtils.h */,
+				CCADFDBF19742C9D00D85696 /* NSPUUIDUtils.m */,
+			);
+			name = Utils;
 			sourceTree = "<group>";
 		};
 		CCFBDA4419618502001B26B8 /* Actuators */ = {
@@ -305,6 +352,8 @@
 				CCFBDA4A19618A22001B26B8 /* NSPActuatorController.m */,
 				CCFBDA4619618561001B26B8 /* NSPHTTPActuator.h */,
 				CCFBDA4719618561001B26B8 /* NSPHTTPActuator.m */,
+				CC888AB21966CE3A00248026 /* NSPIRActuator.h */,
+				CC888AB31966CE3A00248026 /* NSPIRActuator.m */,
 			);
 			name = Actuators;
 			sourceTree = "<group>";
@@ -384,7 +433,7 @@
 				ORGANIZATIONNAME = "Nordic Semiconductor";
 				TargetAttributes = {
 					CC20B1861959A41B0084E3AB = {
-						DevelopmentTeam = YLJ647697R;
+						DevelopmentTeam = 5SRR4YDD2S;
 					};
 					CC20B1A61959A41B0084E3AB = {
 						TestTargetID = CC20B1861959A41B0084E3AB;
@@ -475,12 +524,15 @@
 				87A384CF196545D9003D2CFB /* NSPConfigureActionViewController.m in Sources */,
 				CCFBDA4819618561001B26B8 /* NSPHTTPActuator.m in Sources */,
 				CCFBDA55196196D6001B26B8 /* Action.m in Sources */,
+				CC888AB51966CE3A00248026 /* NSPIRActuator.m in Sources */,
 				CC3795761961522300E8A0C8 /* Constants.m in Sources */,
 				879CAF591962E4AA00DF8492 /* NSPRuleTableViewCell.m in Sources */,
 				CCFBDA42196183D3001B26B8 /* NSPSelectActuatorViewController.m in Sources */,
 				CCFBDA4B19618A22001B26B8 /* NSPActuatorController.m in Sources */,
+				CC20790119750AEB00205FB0 /* ServiceUUID.m in Sources */,
 				CC20B19D1959A41B0084E3AB /* NSPAppDelegate.m in Sources */,
 				CC20B1991959A41B0084E3AB /* main.m in Sources */,
+				CC888AB41966CE3A00248026 /* NSPBluetoothManager.m in Sources */,
 				CCFBDA3D19617D54001B26B8 /* NSPAddTriggerViewController.m in Sources */,
 				CC37956F195D85C300E8A0C8 /* NSPLocationManager.m in Sources */,
 				CC20B1C51959AAF70084E3AB /* NSPInitialViewController.m in Sources */,
@@ -491,7 +543,9 @@
 				CCFBDA4E196194F3001B26B8 /* Rule.m in Sources */,
 				CCFBDA521961955E001B26B8 /* NSPRuleController.m in Sources */,
 				874907391964311D00ED254D /* NSPEditRuleViewController.m in Sources */,
+				CCADFDC019742C9D00D85696 /* NSPUUIDUtils.m in Sources */,
 				CCFBDA591961A058001B26B8 /* NSPActionController.m in Sources */,
+				CC2079051975142B00205FB0 /* NSPServiceUUIDController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

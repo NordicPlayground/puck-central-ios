@@ -3,6 +3,7 @@
 #import "NSPInitialViewController.h"
 #import "NSPPuckController.h"
 #import "NSPActionController.h"
+#import "NSPServiceUUIDController.h"
 #import "NSPRuleController.h"
 #import "NSPLocationManager.h"
 #import "Puck.h"
@@ -45,6 +46,9 @@
     NSPRuleController *ruleController = [NSPRuleController sharedController];
     ruleController.managedObjectContext = context;
     
+    NSPServiceUUIDController *serviceController = [NSPServiceUUIDController sharedController];
+    serviceController.managedObjectContext = context;
+
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:initialViewController];
     self.window.rootViewController = navController;
     

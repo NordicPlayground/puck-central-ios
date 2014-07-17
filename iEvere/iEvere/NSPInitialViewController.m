@@ -3,20 +3,22 @@
 #import "Puck.h"
 #import "NSPPuckController.h"
 #import "NSPLocationManager.h"
+#import "NSPBluetoothManager.h"
 #import "NSPSelectPuckViewController.h"
 #import "NSPRuleController.h"
 #import "Rule.h"
 #import "NSPRuleTableViewCell.h"
 #import "NSPEditRuleViewController.h"
+#import "NSPServiceUUIDController.h"
 
 
 @interface NSPInitialViewController () <UIActionSheetDelegate>
 
 @property (nonatomic, strong) UITextField *textField;
-@property (nonatomic, strong) CLBeacon *tempBeacon;
-@property (nonatomic, strong) NSPLocationManager *locationManager;
-
+@property (nonatomic, strong) Puck *tempPuck;
 @property (nonatomic, strong) NSMutableArray *pucks;
+@property (nonatomic, strong) NSPLocationManager *locationManager;
+@property (nonatomic, strong) NSPBluetoothManager *bluetoothManager;
 
 @property (nonatomic, assign) NSUInteger currentSelectedPuckIndex;
 
@@ -70,6 +72,7 @@
                                                object:nil];
     
     self.locationManager = [NSPLocationManager sharedManager];
+    self.bluetoothManager = [NSPBluetoothManager sharedManager];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -101,8 +104,16 @@
 
 - (void)foundBeacon:(NSNotification *)notification
 {
-    self.tempBeacon = notification.userInfo[@"beacon"];
-    NSString *message = [NSString stringWithFormat:@"Add %04X to your beacons", self.tempBeacon.minor.intValue];
+    CLBeacon *tempBeacon = notification.userInfo[@"beacon"];
+    Puck *puck = [[NSPPuckController sharedController] insertPuck:nil
+                                                withProximityUUID:tempBeacon.proximityUUID
+                                                       identifier:nil
+                                                            major:tempBeacon.major
+                                                            minor:tempBeacon.minor];
+    self.tempPuck = puck;
+    [self.bluetoothManager findPeripheralFromBeacon:self.tempPuck];
+    NSLog(@"userinfo: %@", notification.userInfo);
+    NSString *message = [NSString stringWithFormat:@"Add %04X to your beacons", self.tempPuck.minor.intValue];
     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Found new beacon"
                                                         message:message
                                                        delegate:self
@@ -119,13 +130,13 @@
 {
     if (buttonIndex != 0) {
         NSString *name = [[alertView textFieldAtIndex:0] text];
-        Puck *puck = [[NSPPuckController sharedController] insertPuck:name
-                                                    withProximityUUID:self.tempBeacon.proximityUUID
-                                                                major:self.tempBeacon.major
-                                                                minor:self.tempBeacon.minor];
-        [self.pucks addObject:puck];
+        self.tempPuck.name = name;
+        [self.pucks addObject:self.tempPuck];
         [self.tableView reloadData];
+    } else {
+        [[[NSPPuckController sharedController] managedObjectContext] deleteObject:self.tempPuck];
     }
+    [[NSPBluetoothManager sharedManager] stopSearchingForPeripherals];
     [[NSPLocationManager sharedManager] startLookingForBeacons];
 }
 
