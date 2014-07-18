@@ -83,13 +83,13 @@
     [[NSPBluetoothWriteTransaction alloc] initWithPuck:puck
                                            serviceUUID:serviceUUID
                                     andCompletionBlock:^(CBPeripheral *peripheral, NSArray *characteristics) {
-                                        NSLog(@"Did call block from bluetoothwritetransaction");
-                                        for(CBCharacteristic *characteristic in characteristics){
-                                                          [peripheral writeValue:data
-                                                               forCharacteristic:characteristic
-                                                                            type:CBCharacteristicWriteWithoutResponse];
-                                        }
-                                    }];
+                                                            NSLog(@"Did call block from bluetoothwritetransaction");
+                                                            for(CBCharacteristic *characteristic in characteristics) {
+                                                              [peripheral writeValue:data
+                                                                   forCharacteristic:characteristic
+                                                                                type:CBCharacteristicWriteWithoutResponse];
+                                                            }
+                                                        }];
 
     [[NSPBluetoothManager sharedManager] addToTransactionQueue:writeTransaction];
 }

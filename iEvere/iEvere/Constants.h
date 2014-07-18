@@ -2,8 +2,6 @@
 @import Foundation;
 @import CoreBluetooth;
 
-@class Puck;
-
 typedef enum {
     NSPTriggerEnterZone = 0,
     NSPTriggerLeaveZone = 1
