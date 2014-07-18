@@ -49,7 +49,7 @@
     
     NSPActionController *actionController = [NSPActionController sharedController];
     
-    Action *action = [actionController insertAction:actuatorId withOptions:[self formValues]];
+    Action *action = [actionController insertAction:actuatorId withOptions:self.httpParameters];
     
     NSPRuleController *ruleController = [NSPRuleController sharedController];
     [ruleController conditionalInsertRule:self.rule];

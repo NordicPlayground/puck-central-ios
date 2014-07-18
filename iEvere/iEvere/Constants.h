@@ -7,7 +7,7 @@ typedef enum {
     NSPTriggerLeaveZone = 1
 } NSPTrigger;
 
-typedef void(^NSPBluetoothWriteTransactionBlock)(CBPeripheral*, NSArray*);
+typedef void(^NSPBluetoothWriteTransactionBlock)(CBPeripheral*, NSDictionary*);
 
 extern NSString * const NSPDidFindNewBeacon;
 extern NSString * const NSPDidEnterZone;

@@ -178,6 +178,8 @@ didDiscoverServices:(NSError *)error
 {
     if (error) {
         NSLog(@"Error discovering services for %@", [error localizedDescription]);
+        self.activeTransaction = nil;
+        [self driveQueue];
         return;
     }
 
@@ -219,7 +221,11 @@ didDiscoverCharacteristicsForService:(CBService *)service
 
     if(writing) {
         NSPBluetoothWriteTransaction *writeTransaction = (NSPBluetoothWriteTransaction*)self.activeTransaction;
-        writeTransaction.complete(peripheral, service.characteristics);
+        NSMutableDictionary *characteristics = [[NSMutableDictionary alloc] init];
+        for (CBCharacteristic *characteristic in service.characteristics) {
+            characteristics[characteristic.UUID] = characteristic;
+        }
+        writeTransaction.complete(peripheral, characteristics);
         self.activeTransaction = nil;
         [self.centralManager cancelPeripheralConnection:self.peripheral];
         [self driveQueue];

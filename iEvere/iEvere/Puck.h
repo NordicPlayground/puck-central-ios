@@ -3,9 +3,11 @@
 @import CoreData;
 @import CoreLocation;
 
+#import <XLForm/XLForm.h>
+
 @class ServiceUUID;
 
-@interface Puck : NSManagedObject
+@interface Puck : NSManagedObject <XLFormOptionObject>
 
 @property (nonatomic, retain) NSNumber *major;
 @property (nonatomic, retain) NSNumber *minor;

@@ -41,4 +41,14 @@
     return nil;
 }
 
+- (NSString *)formDisplayText
+{
+    return self.name;
+}
+
+- (id)formValue
+{
+    return self.minor;
+}
+
 @end

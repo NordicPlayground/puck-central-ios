@@ -139,6 +139,10 @@
     } else {
         [[[NSPPuckController sharedController] managedObjectContext] deleteObject:self.tempPuck];
     }
+    NSError *error;
+    if (![[[NSPPuckController sharedController] managedObjectContext] save:&error]) {
+        NSLog(@"Error saving changes: %@", error);
+    }
     [[NSPBluetoothManager sharedManager] stopSearchingForPeripherals];
     [[NSPLocationManager sharedManager] startLookingForBeacons];
 }
