@@ -10,6 +10,7 @@
 
 @property (nonatomic, strong) NSUUID *cubeServiceUUID;
 @property (nonatomic, strong) NSUUID *cubeDirectionCharacteristicUUID;
+// TODO: Get callback on disconnections or errors and remove peripherals from this dictionary
 @property (nonatomic, strong) NSMutableDictionary *connectedCubes;
 
 @end
@@ -51,35 +52,12 @@
     NSUInteger value = 0;
     [characteristic.value getBytes:&value length:1];
 
-    switch (value) {
-        case NSPCubeDirectionUP:
-            NSLog(@"UP from puck: %@", puck);
-            break;
-
-        case NSPCubeDirectionDOWN:
-            NSLog(@"DOWN from puck: %@", puck);
-            break;
-
-        case NSPCubeDirectionBACK:
-            NSLog(@"BACK from puck: %@", puck);
-            break;
-
-        case NSPCubeDirectionFRONT:
-            NSLog(@"FRONT from puck: %@", puck);
-            break;
-
-        case NSPCubeDirectionLEFT:
-            NSLog(@"LEFT from puck: %@", puck);
-            break;
-
-        case NSPCubeDirectionRIGHT:
-            NSLog(@"RIGHT from puck: %@", puck);
-            break;
-
-        default:
-            NSLog(@"Unknown value: %ld for cube puck: %@", (unsigned long)value, puck);
-            break;
-    }
+    [[NSNotificationCenter defaultCenter] postNotificationName:NSPTriggerCubeChangedDirection
+                                                        object:self
+                                                      userInfo:@{
+                                                                 @"puck": puck,
+                                                                 @"direction": [NSNumber numberWithUnsignedInteger:value]
+                                                                 }];
 }
 
 - (void)checkAndConnectToCubePuck:(Puck *)puck

@@ -31,6 +31,11 @@
                                                  selector:@selector(leaveZone:)
                                                      name:NSPDidLeaveZone
                                                    object:nil];
+
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(cubeChangedDirection:)
+                                                     name:NSPTriggerCubeChangedDirection
+                                                   object:nil];
     }
     return self;
 }
@@ -71,6 +76,39 @@
 {
     Puck *puck = notification.userInfo[@"puck"];
     [self executeTrigger:NSPTriggerLeaveZone withPuck:puck];
+}
+
+- (void)cubeChangedDirection:(NSNotification *)notification
+{
+    Puck *puck = notification.userInfo[@"puck"];
+    NSNumber *direction = notification.userInfo[@"direction"];
+
+    switch ([direction integerValue]) {
+        case NSPCubeDirectionUP:
+            [self executeTrigger:NSPTriggerCubeDirectionUP withPuck:puck];
+            break;
+        case NSPCubeDirectionDOWN:
+            [self executeTrigger:NSPTriggerCubeDirectionDOWN withPuck:puck];
+            break;
+        case NSPCubeDirectionBACK:
+            [self executeTrigger:NSPTriggerCubeDirectionBACK withPuck:puck];
+            break;
+        case NSPCubeDirectionFRONT:
+            [self executeTrigger:NSPTriggerCubeDirectionFRONT withPuck:puck];
+            break;
+        case NSPCubeDirectionLEFT:
+            [self executeTrigger:NSPTriggerCubeDirectionLEFT withPuck:puck];
+            break;
+        case NSPCubeDirectionRIGHT:
+            [self executeTrigger:NSPTriggerCubeDirectionRIGHT withPuck:puck];
+            break;
+
+        default:
+            NSLog(@"Unknown value: %@ for cube puck: %@", direction, puck);
+            return;
+
+            break;
+    }
 }
 
 - (void)executeTrigger:(NSPTrigger)trigger withPuck:(Puck *)puck

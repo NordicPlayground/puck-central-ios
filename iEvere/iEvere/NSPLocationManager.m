@@ -3,6 +3,7 @@
 
 #import "NSPLocationManager.h"
 #import "Puck.h"
+#import "NSPCubeManager.h"
 
 static const int THROTTLE = 3;
 
@@ -107,6 +108,11 @@ static const int THROTTLE = 3;
     }
     
     Puck *locationPuck = [Puck puckForBeacon:beacon];
+
+    if(locationPuck != nil) {
+        [[NSPCubeManager sharedManager] checkAndConnectToCubePuck:locationPuck];
+    }
+
     if (locationPuck == nil) {
         if (beacon.proximity == CLProximityImmediate) {
             [[NSNotificationCenter defaultCenter] postNotificationName:NSPDidFindNewBeacon

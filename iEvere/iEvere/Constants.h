@@ -2,10 +2,19 @@
 @import Foundation;
 @import CoreBluetooth;
 
-typedef enum {
-    NSPTriggerEnterZone = 0,
-    NSPTriggerLeaveZone = 1
-} NSPTrigger;
+typedef NS_ENUM(NSUInteger, NSPTrigger) {
+    NSPTriggerEnterZone,
+    NSPTriggerLeaveZone,
+
+    NSPTriggerCubeDirectionUP,
+    NSPTriggerCubeDirectionDOWN,
+    NSPTriggerCubeDirectionLEFT,
+    NSPTriggerCubeDirectionRIGHT,
+    NSPTriggerCubeDirectionFRONT,
+    NSPTriggerCubeDirectionBACK,
+
+    NSPTriggerNumberOfTriggers
+};
 
 typedef NS_ENUM(NSUInteger, NSPCubeDirection) {
     NSPCubeDirectionUP,
@@ -24,6 +33,7 @@ extern NSString * const NSPDidEnterZone;
 extern NSString * const NSPDidLeaveZone;
 
 extern NSString * const NSPCubeChangedDirection;
+extern NSString * const NSPTriggerCubeChangedDirection;
 
 extern NSString * const NSPCubeServiceUUIDString;
 extern NSString * const NSPIRServiceUUIDString;
