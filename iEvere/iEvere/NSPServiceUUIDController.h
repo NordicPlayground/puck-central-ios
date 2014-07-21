@@ -12,6 +12,5 @@
 + (NSPServiceUUIDController *)sharedController;
 - (ServiceUUID *)addOrGetServiceID:(NSString *)uuid;
 - (NSFetchRequest *)fetchRequest;
-- (void)populateUUIDs;
 
 @end
