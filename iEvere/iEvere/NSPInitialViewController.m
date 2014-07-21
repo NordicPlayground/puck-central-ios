@@ -11,6 +11,7 @@
 #import "NSPEditRuleViewController.h"
 #import "NSPServiceUUIDController.h"
 #import "NSPBluetoothScanTransaction.h"
+#import "NSPCubeManager.h"
 
 
 @interface NSPInitialViewController () <UIActionSheetDelegate>
@@ -143,7 +144,7 @@
     if (![[[NSPPuckController sharedController] managedObjectContext] save:&error]) {
         NSLog(@"Error saving changes: %@", error);
     }
-    [[NSPBluetoothManager sharedManager] stopSearchingForPeripherals];
+    [[NSPCubeManager sharedManager] checkAndConnectToCubePuck:self.tempPuck];
     [[NSPLocationManager sharedManager] startLookingForBeacons];
 }
 

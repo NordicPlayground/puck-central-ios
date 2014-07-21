@@ -8,7 +8,6 @@
 
 + (NSPBluetoothManager *)sharedManager;
 
-- (void)stopSearchingForPeripherals;
 - (void)addToTransactionQueue:(id)object;
 
 @end

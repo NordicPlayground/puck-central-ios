@@ -12,3 +12,6 @@ typedef void(^NSPBluetoothWriteTransactionBlock)(CBPeripheral*, NSDictionary*);
 extern NSString * const NSPDidFindNewBeacon;
 extern NSString * const NSPDidEnterZone;
 extern NSString * const NSPDidLeaveZone;
+
+extern NSString * const NSPCubeServiceUUIDString;
+extern NSString * const NSPIRServiceUUIDString;

@@ -4,10 +4,12 @@
 #import "NSPServiceUUIDController.h"
 #import "NSPPuckController.h"
 #import "Puck.h"
+#import "Constants.h"
 #import "NSPUUIDUtils.h"
 #import "NSPTransaction.h"
 #import "NSPBluetoothWriteTransaction.h"
 #import "NSPBluetoothScanTransaction.h"
+#import "NSPBluetoothSubscribeTransaction.h"
 
 @interface NSPBluetoothManager ()
 
@@ -46,18 +48,11 @@
     return self;
 }
 
-- (void)stopSearchingForPeripherals
-{
-    [self.centralManager stopScan];
-}
-
 - (void)addToTransactionQueue:(id)object
 {
     [self.transactionQueue addObject:object];
 
-    NSLog(@"Adding transaction to queue");
     if(self.activeTransaction == nil) {
-        NSLog(@"Driving queue");
         [self driveQueue];
     }
 }
@@ -69,12 +64,12 @@
         return;
     } else if (self.transactionQueue.count == 0) {
         NSLog(@"No more transactions for now");
+        [self.centralManager stopScan];
         return;
     }
     NSPTransaction *nextTransaction = [self.transactionQueue objectAtIndex:0];
     [self.transactionQueue removeObjectAtIndex:0];
     self.activeTransaction = nextTransaction;
-    NSLog(@"Drove queue ahead");
     [self findPeripheralFromBeacon];
 }
 
@@ -96,7 +91,6 @@ didWriteValueForCharacteristic:(CBCharacteristic *)characteristic
         NSLog(@"Error writing characteristic value %@",
               [error localizedDescription]);
     }
-    NSLog(@"Did write value to characteristic: %@", characteristic);
 }
 
 - (void)centralManagerDidUpdateState:(CBCentralManager *)central
@@ -130,6 +124,7 @@ didWriteValueForCharacteristic:(CBCharacteristic *)characteristic
      advertisementData:(NSDictionary *)advertisementData
                   RSSI:(NSNumber *)RSSI
 {
+    NSLog(@"Did discover peripheral");
     if (self.activeTransaction.puck == nil) {
         return;
     }
@@ -137,7 +132,7 @@ didWriteValueForCharacteristic:(CBCharacteristic *)characteristic
     NSData *data = advertisementData[CBAdvertisementDataManufacturerDataKey];
     if (data != nil) {
         if ([data length] != 25) {
-            NSLog(@"Advertisement data payload too small");
+            NSLog(@"Error: Advertisement data payload too small");
             return;
         }
 
@@ -166,10 +161,10 @@ didWriteValueForCharacteristic:(CBCharacteristic *)characteristic
 - (void)centralManager:(CBCentralManager *)central
   didConnectPeripheral:(CBPeripheral *)peripheral
 {
-    NSLog(@"Did successfully connect to peripheral %@", peripheral);
     peripheral.delegate = self;
     [self.peripheral discoverServices:@[
-                                        [CBUUID UUIDWithNSUUID:[NSPUUIDUtils stringToUUID:@"bftj ir         "]]
+                                        [CBUUID UUIDWithNSUUID:[NSPUUIDUtils stringToUUID:NSPCubeServiceUUIDString]],
+                                        [CBUUID UUIDWithNSUUID:[NSPUUIDUtils stringToUUID:NSPIRServiceUUIDString]]
                                         ]];
 }
 
@@ -183,9 +178,9 @@ didDiscoverServices:(NSError *)error
         return;
     }
 
-    NSLog(@"Did find services for peripheral");
     BOOL scanning = [self.activeTransaction isKindOfClass:[NSPBluetoothScanTransaction class]];
     BOOL writing = [self.activeTransaction isKindOfClass:[NSPBluetoothWriteTransaction class]];
+    BOOL subscribing = [self.activeTransaction isKindOfClass:[NSPBluetoothSubscribeTransaction class]];
 
     NSMutableArray *services = [[NSMutableArray alloc] init];
 
@@ -193,15 +188,14 @@ didDiscoverServices:(NSError *)error
         if(scanning) {
             ServiceUUID *serviceUUID = [[NSPServiceUUIDController sharedController] addOrGetServiceID:[service.UUID UUIDString]];
             [services addObject:serviceUUID];
-        } else if (writing) {
-            NSLog(@"Am writing");
+        } else if (writing || subscribing) {
             [self.peripheral discoverCharacteristics:nil forService:service];
         }
     }
 
     if(scanning) {
         [self addServiceIDsToPuck:services];
-        self.activeTransaction = nil;
+        [self setActiveTransaction:nil];
         [self.centralManager cancelPeripheralConnection:self.peripheral];
         [self driveQueue];
     }
@@ -216,8 +210,8 @@ didDiscoverCharacteristicsForService:(CBService *)service
         return;
     }
 
-    NSLog(@"Did discover characteristics");
     BOOL writing = [self.activeTransaction isKindOfClass:[NSPBluetoothWriteTransaction class]];
+    BOOL subscribing = [self.activeTransaction isKindOfClass:[NSPBluetoothSubscribeTransaction class]];
 
     if(writing) {
         NSPBluetoothWriteTransaction *writeTransaction = (NSPBluetoothWriteTransaction*)self.activeTransaction;
@@ -229,7 +223,38 @@ didDiscoverCharacteristicsForService:(CBService *)service
         self.activeTransaction = nil;
         [self.centralManager cancelPeripheralConnection:self.peripheral];
         [self driveQueue];
+    } else if (subscribing){
+        NSPBluetoothSubscribeTransaction *subscribeTransaction = (NSPBluetoothSubscribeTransaction*)self.activeTransaction;
+        for(CBCharacteristic *characteristic in service.characteristics) {
+            if([characteristic.UUID isEqual:[CBUUID UUIDWithNSUUID:subscribeTransaction.characteristicUUID]]) {
+                [peripheral setNotifyValue:YES
+                         forCharacteristic:characteristic];
+            }
+        }
     }
+}
+
+- (void)peripheral:(CBPeripheral *)peripheral
+didUpdateValueForCharacteristic:(CBCharacteristic *)characteristic
+             error:(NSError *)error
+{
+    if(error) {
+        NSLog(@"Error updating value for characteristic: %@ for peripheral: %@", characteristic, peripheral);
+        return;
+    }
+    
+    NSLog(@"Value updated: %@", characteristic.value);
+}
+
+- (void)peripheral:(CBPeripheral *)peripheral
+didUpdateNotificationStateForCharacteristic:(CBCharacteristic *)characteristic
+             error:(NSError *)error
+{
+    if(error) {
+        NSLog(@"Error changing notification state: %@", error);
+        return;
+    }
+    NSLog(@"Did subscribe to characteristic: %@", characteristic);
 }
 
 - (void)centralManager:(CBCentralManager *)central
@@ -237,6 +262,16 @@ didFailToConnectPeripheral:(CBPeripheral *)peripheral
                  error:(NSError *)error
 {
     NSLog(@"Did fail to connect to peripheral %@", peripheral);
+}
+
+- (void)centralManager:(CBCentralManager *)central
+didDisconnectPeripheral:(CBPeripheral *)peripheral
+                 error:(NSError *)error
+{
+    if(error) {
+        NSLog(@"Error disconnecting from peripheral: %@ with error: %@", peripheral, error);
+        return;
+    }
 }
 
 - (BOOL)compareManufacturerSpecificData:(NSData *)data
