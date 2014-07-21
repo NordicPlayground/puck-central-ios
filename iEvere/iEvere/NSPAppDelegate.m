@@ -6,6 +6,8 @@
 #import "NSPServiceUUIDController.h"
 #import "NSPRuleController.h"
 #import "NSPLocationManager.h"
+#import "NSPBluetoothManager.h"
+#import "NSPCubeManager.h"
 #import "Puck.h"
 
 @import CoreLocation;
@@ -48,6 +50,10 @@
     
     NSPServiceUUIDController *serviceController = [NSPServiceUUIDController sharedController];
     serviceController.managedObjectContext = context;
+
+    // Initialize managers
+    [NSPBluetoothManager sharedManager];
+    [NSPCubeManager sharedManager];
 
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:initialViewController];
     self.window.rootViewController = navController;

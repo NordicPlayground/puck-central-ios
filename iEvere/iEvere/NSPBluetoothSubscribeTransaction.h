@@ -5,7 +5,8 @@
 @interface NSPBluetoothSubscribeTransaction : NSPTransaction
 
 @property (nonatomic, strong) NSUUID *characteristicUUID;
+@property (nonatomic, copy) NSPBluetoothSubscribeTransactionBlock complete;
 
-- (id)initWithPuck:(Puck *)puck andCharacteristicUUID:(NSUUID *)characteristicUUID;
+- (id)initWithPuck:(Puck *)puck characteristicUUID:(NSUUID *)characteristicUUID andCompletionBlock:(NSPBluetoothSubscribeTransactionBlock)complete;
 
 @end

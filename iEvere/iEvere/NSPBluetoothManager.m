@@ -229,6 +229,7 @@ didDiscoverCharacteristicsForService:(CBService *)service
             if([characteristic.UUID isEqual:[CBUUID UUIDWithNSUUID:subscribeTransaction.characteristicUUID]]) {
                 [peripheral setNotifyValue:YES
                          forCharacteristic:characteristic];
+                subscribeTransaction.complete(peripheral);
             }
         }
     }
@@ -243,7 +244,12 @@ didUpdateValueForCharacteristic:(CBCharacteristic *)characteristic
         return;
     }
     
-    NSLog(@"Value updated: %@", characteristic.value);
+    [[NSNotificationCenter defaultCenter] postNotificationName:NSPCubeChangedDirection
+                                                        object:self
+                                                      userInfo:@{
+                                                                 @"peripheral": peripheral,
+                                                                 @"characteristic": characteristic
+                                                                 }];
 }
 
 - (void)peripheral:(CBPeripheral *)peripheral

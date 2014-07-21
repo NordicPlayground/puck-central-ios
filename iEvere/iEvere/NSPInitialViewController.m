@@ -20,7 +20,6 @@
 @property (nonatomic, strong) Puck *tempPuck;
 @property (nonatomic, strong) NSMutableArray *pucks;
 @property (nonatomic, strong) NSPLocationManager *locationManager;
-@property (nonatomic, strong) NSPBluetoothManager *bluetoothManager;
 
 @property (nonatomic, assign) NSUInteger currentSelectedPuckIndex;
 
@@ -60,6 +59,10 @@
     
     self.pucks = fetchResults;
     
+    for(Puck *puck in self.pucks) {
+        [[NSPCubeManager sharedManager] checkAndConnectToCubePuck:puck];
+    }
+
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(foundBeacon:)
                                                  name:NSPDidFindNewBeacon
@@ -74,7 +77,6 @@
                                                object:nil];
     
     self.locationManager = [NSPLocationManager sharedManager];
-    self.bluetoothManager = [NSPBluetoothManager sharedManager];
 }
 
 - (void)viewDidAppear:(BOOL)animated
