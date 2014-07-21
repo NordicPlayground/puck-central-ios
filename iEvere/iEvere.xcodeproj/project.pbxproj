@@ -13,6 +13,7 @@
 		879CAF591962E4AA00DF8492 /* NSPRuleTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 879CAF581962E4AA00DF8492 /* NSPRuleTableViewCell.m */; };
 		87A384CF196545D9003D2CFB /* NSPConfigureActionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 879CAF5B1962F56D00DF8492 /* NSPConfigureActionViewController.m */; };
 		87FB58B619782B970079AF07 /* NSPIRCode.m in Sources */ = {isa = PBXBuildFile; fileRef = 87FB58B519782B970079AF07 /* NSPIRCode.m */; };
+		87FB58B91979530C0079AF07 /* NSPMusicActuator.m in Sources */ = {isa = PBXBuildFile; fileRef = 87FB58B81979530C0079AF07 /* NSPMusicActuator.m */; };
 		CC01978B195AF2800032A0E1 /* Puck.m in Sources */ = {isa = PBXBuildFile; fileRef = CC01978A195AF27F0032A0E1 /* Puck.m */; };
 		CC20790119750AEB00205FB0 /* ServiceUUID.m in Sources */ = {isa = PBXBuildFile; fileRef = CC20790019750AEB00205FB0 /* ServiceUUID.m */; };
 		CC2079051975142B00205FB0 /* NSPServiceUUIDController.m in Sources */ = {isa = PBXBuildFile; fileRef = CC2079041975142B00205FB0 /* NSPServiceUUIDController.m */; };
@@ -90,6 +91,8 @@
 		879CAF5B1962F56D00DF8492 /* NSPConfigureActionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSPConfigureActionViewController.m; sourceTree = "<group>"; };
 		87FB58B419782B970079AF07 /* NSPIRCode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSPIRCode.h; sourceTree = "<group>"; };
 		87FB58B519782B970079AF07 /* NSPIRCode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSPIRCode.m; sourceTree = "<group>"; };
+		87FB58B71979530C0079AF07 /* NSPMusicActuator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSPMusicActuator.h; sourceTree = "<group>"; };
+		87FB58B81979530C0079AF07 /* NSPMusicActuator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSPMusicActuator.m; sourceTree = "<group>"; };
 		B48E46EBAE6040238F4620E9 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		CC019789195AF27F0032A0E1 /* Puck.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Puck.h; sourceTree = "<group>"; };
 		CC01978A195AF27F0032A0E1 /* Puck.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Puck.m; sourceTree = "<group>"; };
@@ -382,6 +385,8 @@
 				CC888AB31966CE3A00248026 /* NSPIRActuator.m */,
 				87FB58B419782B970079AF07 /* NSPIRCode.h */,
 				87FB58B519782B970079AF07 /* NSPIRCode.m */,
+				87FB58B71979530C0079AF07 /* NSPMusicActuator.h */,
+				87FB58B81979530C0079AF07 /* NSPMusicActuator.m */,
 			);
 			name = Actuators;
 			sourceTree = "<group>";
@@ -569,6 +574,7 @@
 				CC3AAAC0195AB29600DCA6C0 /* NSPSelectPuckViewController.m in Sources */,
 				CC01978B195AF2800032A0E1 /* Puck.m in Sources */,
 				CC20B1A01959A41B0084E3AB /* iEvere.xcdatamodeld in Sources */,
+				87FB58B91979530C0079AF07 /* NSPMusicActuator.m in Sources */,
 				CC379572195D8FEF00E8A0C8 /* NSPPuckController.m in Sources */,
 				CCFBDA4E196194F3001B26B8 /* Rule.m in Sources */,
 				CCFBDA521961955E001B26B8 /* NSPRuleController.m in Sources */,
