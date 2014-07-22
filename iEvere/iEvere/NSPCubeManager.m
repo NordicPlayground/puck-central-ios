@@ -10,7 +10,6 @@
 
 @property (nonatomic, strong) NSUUID *cubeServiceUUID;
 @property (nonatomic, strong) NSUUID *cubeDirectionCharacteristicUUID;
-// TODO: Get callback on disconnections or errors and remove peripherals from this dictionary
 @property (nonatomic, strong) NSMutableDictionary *connectedCubes;
 
 @end
@@ -40,6 +39,11 @@
                                                  selector:@selector(cubeChangedDirection:)
                                                      name:NSPCubeChangedDirection
                                                    object:nil];
+
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(checkAndDeleteCubeOnDisconnect:)
+                                                     name:NSPDidDisconnectFromPeripheral
+                                                   object:nil];
     }
     return self;
 }
@@ -58,6 +62,15 @@
                                                                  @"puck": puck,
                                                                  @"direction": [NSNumber numberWithUnsignedInteger:value]
                                                                  }];
+}
+
+- (void)checkAndDeleteCubeOnDisconnect:(NSNotification *)notification
+{
+    CBPeripheral *peripheral = notification.userInfo[@"peripheral"];
+
+    if([self.connectedCubes objectForKey:peripheral]) {
+        [self.connectedCubes removeObjectForKey:peripheral];
+    }
 }
 
 - (void)checkAndConnectToCubePuck:(Puck *)puck

@@ -268,6 +268,7 @@ didFailToConnectPeripheral:(CBPeripheral *)peripheral
                  error:(NSError *)error
 {
     NSLog(@"Did fail to connect to peripheral %@", peripheral);
+    [self notifyAboutDisconnectFromPeripheral:peripheral];
 }
 
 - (void)centralManager:(CBCentralManager *)central
@@ -276,8 +277,19 @@ didDisconnectPeripheral:(CBPeripheral *)peripheral
 {
     if(error) {
         NSLog(@"Error disconnecting from peripheral: %@ with error: %@", peripheral, error);
+        [self notifyAboutDisconnectFromPeripheral:peripheral];
         return;
     }
+    [self notifyAboutDisconnectFromPeripheral:peripheral];
+}
+
+- (void)notifyAboutDisconnectFromPeripheral:(CBPeripheral *)peripheral
+{
+    [[NSNotificationCenter defaultCenter] postNotificationName:NSPDidDisconnectFromPeripheral
+                                                        object:self
+                                                      userInfo:@{
+                                                                 @"peripheral": peripheral
+                                                                 }];
 }
 
 - (BOOL)compareManufacturerSpecificData:(NSData *)data
