@@ -1,6 +1,7 @@
 
 #import "Puck.h"
 #import "NSPPuckController.h"
+#import "NSPBluetoothManager.h"
 
 @class Rule;
 @class ServiceUUID;
@@ -11,6 +12,7 @@
 @dynamic minor;
 @dynamic name;
 @dynamic proximityUUID;
+@dynamic identifier;
 @dynamic rules;
 @dynamic serviceIDs;
 
@@ -49,6 +51,11 @@
 - (id)formValue
 {
     return self.minor;
+}
+
+- (NSUUID *)UUID
+{
+    return [[NSUUID alloc] initWithUUIDString:self.identifier];
 }
 
 @end

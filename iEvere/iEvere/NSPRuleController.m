@@ -124,7 +124,8 @@
     NSArray *rules = [self.managedObjectContext executeFetchRequest:request error:&error];
     if (rules == nil) {
         NSLog(@"Error: %@", error);
-    } else {
+    } else if (rules.count > 0) {
+        NSLog(@"Execute new trigger! %ld, %@", trigger, puck.name);
         for (Rule *rule in rules) {
             for (Action *action in rule.actions) {
                 [NSPActuatorController actuate:action.actuatorId withOptions:[action decodedOptions]];

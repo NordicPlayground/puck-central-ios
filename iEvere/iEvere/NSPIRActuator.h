@@ -1,6 +1,7 @@
 
 #import "NSPActuator.h"
+#import "NSPPuckActuator.h"
 
-@interface NSPIRActuator : NSObject <NSPActuator>
+@interface NSPIRActuator : NSPPuckActuator <NSPActuator>
 
 @end

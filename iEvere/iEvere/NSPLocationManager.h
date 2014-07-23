@@ -14,4 +14,7 @@
 - (void)startLookingForBeacons;
 - (void)updateLocation:(NSArray *)beacons;
 
+- (void)startUsingPuck:(Puck *)puck;
+- (void)stopUsingPuck:(Puck *)puck;
+
 @end

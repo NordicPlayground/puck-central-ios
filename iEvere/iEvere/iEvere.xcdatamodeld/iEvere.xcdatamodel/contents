@@ -6,6 +6,7 @@
         <relationship name="rule" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Rule" inverseName="actions" inverseEntity="Rule" syncable="YES"/>
     </entity>
     <entity name="Puck" representedClassName="Puck" syncable="YES">
+        <attribute name="identifier" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="major" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="minor" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
@@ -24,7 +25,7 @@
     </entity>
     <elements>
         <element name="Action" positionX="52" positionY="-27" width="128" height="90"/>
-        <element name="Puck" positionX="-308" positionY="-70" width="128" height="133"/>
+        <element name="Puck" positionX="-308" positionY="-70" width="128" height="150"/>
         <element name="Rule" positionX="-144" positionY="-189" width="128" height="90"/>
         <element name="ServiceID" positionX="-369" positionY="131" width="128" height="75"/>
     </elements>

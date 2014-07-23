@@ -25,8 +25,7 @@ typedef NS_ENUM(NSUInteger, NSPCubeDirection) {
     NSPCubeDirectionBACK
 };
 
-typedef void(^NSPBluetoothWriteTransactionBlock)(CBPeripheral*, NSDictionary*);
-typedef void(^NSPBluetoothSubscribeTransactionBlock)(CBPeripheral*);
+typedef void(^NSPCompleteOperation)();
 
 extern NSString * const NSPDidFindNewBeacon;
 extern NSString * const NSPDidEnterZone;

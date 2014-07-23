@@ -2,7 +2,7 @@
 #import "NSPCubeManager.h"
 #import "NSPUUIDUtils.h"
 #import "NSPBluetoothManager.h"
-#import "NSPBluetoothSubscribeTransaction.h"
+#import "NSPGattSubscribeOperation.h"
 #import "ServiceUUID.h"
 #import "Puck.h"
 
@@ -10,7 +10,7 @@
 
 @property (nonatomic, strong) NSUUID *cubeServiceUUID;
 @property (nonatomic, strong) NSUUID *cubeDirectionCharacteristicUUID;
-@property (nonatomic, strong) NSMutableDictionary *connectedCubes;
+@property (nonatomic, strong) NSMutableArray *subscribedCubes;
 
 @end
 
@@ -33,15 +33,14 @@
     if (self = [super init]) {
         self.cubeServiceUUID = [NSPUUIDUtils stringToUUID:NSPCubeServiceUUIDString];
         self.cubeDirectionCharacteristicUUID = [NSPUUIDUtils stringToUUID:@"bftj cube dirctn"];
-        self.connectedCubes = [[NSMutableDictionary alloc] init];
+        self.subscribedCubes = [[NSMutableArray alloc] init];
 
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(cubeChangedDirection:)
                                                      name:NSPCubeChangedDirection
                                                    object:nil];
-
         [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(checkAndDeleteCubeOnDisconnect:)
+                                                 selector:@selector(cubeDisconnected:)
                                                      name:NSPDidDisconnectFromPeripheral
                                                    object:nil];
     }
@@ -50,7 +49,6 @@
 
 - (void)cubeChangedDirection:(NSNotification *)notification
 {
-    Puck *puck = [self.connectedCubes objectForKey:notification.userInfo[@"peripheral"]];
     CBCharacteristic *characteristic = notification.userInfo[@"characteristic"];
 
     NSUInteger value = 0;
@@ -59,32 +57,36 @@
     [[NSNotificationCenter defaultCenter] postNotificationName:NSPTriggerCubeChangedDirection
                                                         object:self
                                                       userInfo:@{
-                                                                 @"puck": puck,
+                                                                 @"puck": notification.userInfo[@"puck"],
                                                                  @"direction": [NSNumber numberWithUnsignedInteger:value]
                                                                  }];
 }
 
-- (void)checkAndDeleteCubeOnDisconnect:(NSNotification *)notification
-{
-    CBPeripheral *peripheral = notification.userInfo[@"peripheral"];
-
-    if([self.connectedCubes objectForKey:peripheral]) {
-        [self.connectedCubes removeObjectForKey:peripheral];
-    }
-}
-
 - (void)checkAndConnectToCubePuck:(Puck *)puck
 {
+    if ([self.subscribedCubes containsObject:puck]) {
+        return;
+    }
     for(ServiceUUID *service in puck.serviceIDs) {
         NSUUID *uuid = [[NSUUID alloc] initWithUUIDString:service.uuid];
         if([uuid isEqual:self.cubeServiceUUID]) {
-            NSPBluetoothSubscribeTransaction *subscribeTransaction =
-             [[NSPBluetoothSubscribeTransaction alloc] initWithPuck:puck
-                                                 characteristicUUID:self.cubeDirectionCharacteristicUUID
-                                                 andCompletionBlock:^(CBPeripheral *peripheral) {
-                                                     [self.connectedCubes setObject:puck forKey:peripheral];
-                                                 }];
-            [[NSPBluetoothManager sharedManager] addToTransactionQueue:subscribeTransaction];
+            NSPGattSubscribeOperation *subscribeOperation =
+             [[NSPGattSubscribeOperation alloc] initWithPuck:puck
+                                                 serviceUUID:self.cubeServiceUUID
+                                          characteristicUUID:self.cubeDirectionCharacteristicUUID];
+            [[NSPBluetoothManager sharedManager] queueOperation:subscribeOperation];
+            [self.subscribedCubes addObject:puck];
+        }
+    }
+}
+
+- (void)cubeDisconnected:(NSNotification *)notification
+{
+    CBPeripheral *peripheral = notification.userInfo[@"peripheral"];
+    for (Puck *puck in self.subscribedCubes) {
+        if ([[puck UUID] isEqual:peripheral.identifier]) {
+            NSLog(@"Puck disconnected! %@", puck.name);
+            [self.subscribedCubes removeObject:puck];
         }
     }
 }

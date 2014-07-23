@@ -3,9 +3,11 @@
 #import "NSPBluetoothManager.h"
 #import "NSPPuckController.h"
 #import "NSPUUIDUtils.h"
-#import "NSPBluetoothWriteTransaction.h"
+#import "NSPGattWriteOperation.h"
+#import "NSPGattWaitForDisconnectOperation.h"
 #import "NSPIRCode.h"
 #import "NSPServiceUUIDController.h"
+#import "NSPLocationManager.h"
 
 @implementation NSPIRActuator
 
@@ -70,87 +72,54 @@
     return [NSString stringWithFormat:@"SEND IR CODE %@ to %@", options[@"irCode"], options[@"device"]];
 }
 
-- (void)actuate:(NSDictionary *)options
+- (void)actuateOnPuck:(Puck *)puck withOptions:(NSDictionary *)options
 {
-    if(![options[@"device"] isEqualToString:@"Apple"]) {
-        NSLog(@"Error, device not Apple!");
-        return;
-    }
-    Puck *puck = nil;
-
-    NSError *error;
-    NSFetchRequest *req = [[NSPPuckController sharedController] fetchRequest];
-    req.predicate = [NSPredicate predicateWithFormat:@"minor == %@", options[@"minor"]];
-    req.fetchLimit = 1;
-    NSArray *result = [[[NSPPuckController sharedController] managedObjectContext] executeFetchRequest:req error:&error];
-    if(result == nil) {
-        NSLog(@"Error fetching puck for IR actuator");
-    } else if (result.count > 0) {
-         puck = result[0];
-    }
+    [[NSPLocationManager sharedManager] startUsingPuck:puck];
 
     [self writeToPuck:puck
-         withService:[NSPUUIDUtils stringToUUID:@"bftj ir         "]
-             andOptions:options];
-
+          withService:[NSPUUIDUtils stringToUUID:@"bftj ir         "]
+           andOptions:options];
+    
+    [[NSPLocationManager sharedManager] stopUsingPuck:puck];
 }
 
 - (void)writeToPuck:(Puck *)puck withService:(NSUUID *)serviceUUID andOptions:(NSDictionary *)options
 {
-    void (^transactionBlock)(CBPeripheral *, NSDictionary *) = ^(CBPeripheral *peripheral, NSDictionary *characteristics) {
-        
-        NSArray *header, *one, *zero;
-        NSInteger pre, ptrail;
-        
-        if ([options[@"device"] isEqual:@"Apple"]) {
-            header = @[@9000, @4500];
-            one = @[@560, @1690];
-            zero = @[@560, @560];
-            pre = CFSwapInt16(0x77E1);
-            ptrail = CFSwapInt16(560);
-        }
-        
-        NSInteger code = CFSwapInt16([options[@"irCode"] intValue]);
-        
-        NSData *headerData = [self dataWithArray:header];
-        NSData *oneData = [self dataWithArray:one];
-        NSData *zeroData = [self dataWithArray:zero];
-        NSData *preData = [NSData dataWithBytes:&pre length:2];
-        NSData *ptrailData = [NSData dataWithBytes:&ptrail length:2];
-        NSData *codeData = [NSData dataWithBytes:&code length:2];
+    NSArray *header, *one, *zero;
+    NSInteger pre, ptrail;
     
-        CBUUID *headerUUID  = [CBUUID UUIDWithNSUUID:[NSPUUIDUtils stringToUUID:@"bftj ir header  "]];
-        CBUUID *oneUUID     = [CBUUID UUIDWithNSUUID:[NSPUUIDUtils stringToUUID:@"bftj ir one     "]];
-        CBUUID *zeroUUID    = [CBUUID UUIDWithNSUUID:[NSPUUIDUtils stringToUUID:@"bftj ir zero    "]];
-        CBUUID *ptrailUUID  = [CBUUID UUIDWithNSUUID:[NSPUUIDUtils stringToUUID:@"bftj ir ptrail  "]];
-        CBUUID *predataUUID = [CBUUID UUIDWithNSUUID:[NSPUUIDUtils stringToUUID:@"bftj ir predata "]];
-        CBUUID *codeUUID    = [CBUUID UUIDWithNSUUID:[NSPUUIDUtils stringToUUID:@"bftj ir code    "]];
-        
-        [peripheral writeValue:headerData
-             forCharacteristic:characteristics[headerUUID]
-                          type:CBCharacteristicWriteWithoutResponse];
-        [peripheral writeValue:oneData
-             forCharacteristic:characteristics[oneUUID]
-                          type:CBCharacteristicWriteWithoutResponse];
-        [peripheral writeValue:zeroData
-             forCharacteristic:characteristics[zeroUUID]
-                          type:CBCharacteristicWriteWithoutResponse];
-        [peripheral writeValue:ptrailData
-             forCharacteristic:characteristics[ptrailUUID]
-                          type:CBCharacteristicWriteWithoutResponse];
-        [peripheral writeValue:preData
-             forCharacteristic:characteristics[predataUUID]
-                          type:CBCharacteristicWriteWithoutResponse];
-        [peripheral writeValue:codeData
-             forCharacteristic:characteristics[codeUUID]
-                          type:CBCharacteristicWriteWithoutResponse];
-    };
+    if ([options[@"device"] isEqual:@"Apple"]) {
+        header = @[@9000, @4500];
+        one = @[@560, @1690];
+        zero = @[@560, @560];
+        pre = CFSwapInt16(0x77E1);
+        ptrail = CFSwapInt16(560);
+    }
     
-    NSPBluetoothWriteTransaction *writeTransaction = [[NSPBluetoothWriteTransaction alloc] initWithPuck:puck
-                                                                                            serviceUUID:serviceUUID
-                                                                                     andCompletionBlock:transactionBlock];
+    NSInteger code = CFSwapInt16([options[@"irCode"] intValue]);
+    
+    NSData *headerData = [self dataWithArray:header];
+    NSData *oneData = [self dataWithArray:one];
+    NSData *zeroData = [self dataWithArray:zero];
+    NSData *preData = [NSData dataWithBytes:&pre length:2];
+    NSData *ptrailData = [NSData dataWithBytes:&ptrail length:2];
+    NSData *codeData = [NSData dataWithBytes:&code length:2];
 
-    [[NSPBluetoothManager sharedManager] addToTransactionQueue:writeTransaction];
+    NSUUID *headerUUID  = [NSPUUIDUtils stringToUUID:@"bftj ir header  "];
+    NSUUID *oneUUID     = [NSPUUIDUtils stringToUUID:@"bftj ir one     "];
+    NSUUID *zeroUUID    = [NSPUUIDUtils stringToUUID:@"bftj ir zero    "];
+    NSUUID *ptrailUUID  = [NSPUUIDUtils stringToUUID:@"bftj ir ptrail  "];
+    NSUUID *predataUUID = [NSPUUIDUtils stringToUUID:@"bftj ir predata "];
+    NSUUID *codeUUID    = [NSPUUIDUtils stringToUUID:@"bftj ir code    "];
+    
+    [self writeValue:headerData forService:serviceUUID characteristic:headerUUID onPuck:puck];
+    [self writeValue:oneData forService:serviceUUID characteristic:oneUUID onPuck:puck];
+    [self writeValue:zeroData forService:serviceUUID characteristic:zeroUUID onPuck:puck];
+    [self writeValue:ptrailData forService:serviceUUID characteristic:ptrailUUID onPuck:puck];
+    [self writeValue:preData forService:serviceUUID characteristic:predataUUID onPuck:puck];
+    [self writeValue:codeData forService:serviceUUID characteristic:codeUUID onPuck:puck];
+    
+    [self waitForDisconnect:puck];
 }
 
 - (NSData *)dataWithArray:(NSArray *)array

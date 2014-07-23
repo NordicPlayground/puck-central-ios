@@ -6,18 +6,19 @@
 #import "Puck.h"
 #import "Constants.h"
 #import "NSPUUIDUtils.h"
-#import "NSPTransaction.h"
-#import "NSPBluetoothWriteTransaction.h"
-#import "NSPBluetoothScanTransaction.h"
-#import "NSPBluetoothSubscribeTransaction.h"
+#import "NSPGattOperation.h"
+#import "NSPGattWriteOperation.h"
+#import "NSPGattDiscoverOperation.h"
+#import "NSPGattSubscribeOperation.h"
 
 @interface NSPBluetoothManager ()
 
 @property (nonatomic, strong) CBCentralManager *centralManager;
 @property (nonatomic, assign) bool isCoreBluetoothReady;
-@property (nonatomic, strong) CBPeripheral *peripheral;
-@property (nonatomic, strong) NSMutableArray *transactionQueue;
-@property (nonatomic, strong) NSPTransaction *activeTransaction;
+@property (nonatomic, strong) NSMutableSet *activePeripherals;
+@property (nonatomic, strong) NSMutableArray *operationQueue;
+@property (nonatomic, strong) id<NSPGattOperation> activeOperation;
+@property (nonatomic, strong) NSMutableArray *subscribedOperations;
 
 @end
 
@@ -42,56 +43,97 @@
         self.centralManager = [[CBCentralManager alloc] initWithDelegate:self
                                                                    queue:centralQueue
                                                                  options:nil];
-        self.activeTransaction = nil;
-        self.transactionQueue = [[NSMutableArray alloc] init];
+        self.activeOperation = nil;
+        self.operationQueue = [[NSMutableArray alloc] init];
+        self.subscribedOperations = [[NSMutableArray alloc] init];
+        self.activePeripherals = [[NSMutableSet alloc] init];
     }
     return self;
 }
 
-- (void)addToTransactionQueue:(id)object
+- (void)queueOperation:(id<NSPGattOperation>)gattOperation
 {
-    [self.transactionQueue addObject:object];
+    [self.operationQueue addObject:gattOperation];
+    
+    [gattOperation addedToQueue:^() {
+        NSLog(@"Did complete the operation");
+        self.activeOperation = nil;
+        [self driveQueue];
+    }];
 
-    if(self.activeTransaction == nil) {
+    if (self.activeOperation == nil) {
         [self driveQueue];
     }
 }
 
+- (void)subscribeOperation:(id<NSPGattOperation>)gattOperation
+{
+    [self.subscribedOperations addObject:gattOperation];
+}
+
+- (void)unsubscribeOperation:(id<NSPGattOperation>)gattOperation
+{
+    [self.subscribedOperations removeObject:gattOperation];
+}
+
 - (void)driveQueue
 {
-    if(self.activeTransaction != nil) {
-        NSLog(@"Error: tried to drive queue before transaction was complete!");
+    if (self.activeOperation != nil) {
+        NSLog(@"Error: tried to drive queue before operation was complete!");
         return;
-    } else if (self.transactionQueue.count == 0) {
-        NSLog(@"No more transactions for now");
+    } else if (self.operationQueue.count == 0) {
+        NSLog(@"No more operations for now");
         [self.centralManager stopScan];
         return;
     }
-    NSPTransaction *nextTransaction = [self.transactionQueue objectAtIndex:0];
-    [self.transactionQueue removeObjectAtIndex:0];
-    self.activeTransaction = nextTransaction;
+    id<NSPGattOperation> nextOperation = [self.operationQueue objectAtIndex:0];
+    [self.operationQueue removeObjectAtIndex:0];
+    self.activeOperation = nextOperation;
     [self findPeripheralFromBeacon];
 }
 
 - (void)findPeripheralFromBeacon
 {
     if (self.isCoreBluetoothReady) {
-        [_centralManager scanForPeripheralsWithServices:nil
-                                                options:nil];
+        NSArray *peripherals = [_centralManager retrievePeripheralsWithIdentifiers:@[
+                                                                                     [self.activeOperation.puck UUID]
+                                                                                     ]];
+        if (peripherals.count > 0) {
+            [self didFindPeripheral:peripherals[0]];
+        } else {
+            if ([self.activeOperation respondsToSelector:@selector(serviceUUID)]) {
+                peripherals = [_centralManager retrieveConnectedPeripheralsWithServices:@[
+                                                                                          [CBUUID UUIDWithNSUUID:self.activeOperation.serviceUUID]
+                                                                                          ]];
+            }
+            if (peripherals.count > 0) {
+                for (CBPeripheral *peripheral in peripherals) {
+                    if ([peripheral.identifier isEqual:[self.activeOperation.puck UUID]]) {
+                        [self didFindPeripheral:peripheral];
+                    }
+                }
+            } else {
+                [_centralManager scanForPeripheralsWithServices:nil
+                                                        options:nil];
+            }
+        }
     } else {
         NSLog(@"Error, Core Bluetooth BLE harware not powered on and ready");
     }
 }
 
-- (void)peripheral:(CBPeripheral *)peripheral
-didWriteValueForCharacteristic:(CBCharacteristic *)characteristic
-             error:(NSError *)error
+- (void)didFindPeripheral:(CBPeripheral *)peripheral
 {
-    if (error) {
-        NSLog(@"Error writing characteristic value %@",
-              [error localizedDescription]);
+    [self.activePeripherals addObject:peripheral];
+    if ([self.activeOperation respondsToSelector:@selector(didFindPeripheral:withCentralManager:)]) {
+        [self.activeOperation didFindPeripheral:peripheral
+                             withCentralManager:self.centralManager];
+    } else {
+        [_centralManager connectPeripheral:peripheral options:nil];
     }
 }
+
+#pragma mark CBCentralManagerDelegate
 
 - (void)centralManagerDidUpdateState:(CBCentralManager *)central
 {
@@ -124,8 +166,7 @@ didWriteValueForCharacteristic:(CBCharacteristic *)characteristic
      advertisementData:(NSDictionary *)advertisementData
                   RSSI:(NSNumber *)RSSI
 {
-    NSLog(@"Did discover peripheral");
-    if (self.activeTransaction.puck == nil) {
+    if (self.activeOperation.puck == nil) {
         return;
     }
 
@@ -138,23 +179,11 @@ didWriteValueForCharacteristic:(CBCharacteristic *)characteristic
 
         BOOL isSamePuck = [self compareManufacturerSpecificData:data];
 
-        if(isSamePuck) {
-           [self.centralManager stopScan];
-            self.peripheral = peripheral;
+        if (isSamePuck) {
+            [self.centralManager stopScan];
 
-           [self.centralManager connectPeripheral:self.peripheral
-                                          options:nil];
+            [self didFindPeripheral:peripheral];
         }
-    }
-}
-
-- (void)addServiceIDsToPuck:(NSArray *)services
-{
-    NSSet *servicesSet = [NSSet setWithArray:services];
-    [self.activeTransaction.puck addServiceIDs:servicesSet];
-    NSError *error;
-    if (![[[NSPPuckController sharedController] managedObjectContext] save:&error]) {
-        NSLog(@"Error saving context after adding serviceIDs: %@", error);
     }
 }
 
@@ -162,42 +191,70 @@ didWriteValueForCharacteristic:(CBCharacteristic *)characteristic
   didConnectPeripheral:(CBPeripheral *)peripheral
 {
     peripheral.delegate = self;
-    [self.peripheral discoverServices:@[
-                                        [CBUUID UUIDWithNSUUID:[NSPUUIDUtils stringToUUID:NSPCubeServiceUUIDString]],
-                                        [CBUUID UUIDWithNSUUID:[NSPUUIDUtils stringToUUID:NSPIRServiceUUIDString]]
-                                        ]];
+    
+    if ([self.activeOperation respondsToSelector:@selector(didConnect:)]) {
+        [self.activeOperation didConnect:peripheral];
+    }
 }
+
+- (void)centralManager:(CBCentralManager *)central
+didFailToConnectPeripheral:(CBPeripheral *)peripheral
+                 error:(NSError *)error
+{
+    NSLog(@"Did fail to connect to peripheral %@", peripheral);
+    [self.activePeripherals removeObject:peripheral];
+    self.activeOperation = nil;
+    [self driveQueue];
+}
+
+- (void)centralManager:(CBCentralManager *)central
+didDisconnectPeripheral:(CBPeripheral *)peripheral
+                 error:(NSError *)error
+{
+    NSLog(@"Disconnect from peripheral %@", peripheral.identifier);
+    if (error) {
+        NSLog(@"Error: %@", error.localizedDescription);
+    }
+    
+    if ([self.activeOperation respondsToSelector:@selector(didDisconnect:)]) {
+        if ([peripheral.identifier isEqual:[self.activeOperation.puck UUID]]) {
+            [self.activeOperation didDisconnect:peripheral];
+        }
+    }
+    for (id<NSPGattOperation> gattOperation in self.subscribedOperations) {
+        if ([gattOperation respondsToSelector:@selector(didDisconnect:)]) {
+            if ([peripheral.identifier isEqual:[gattOperation.puck UUID]]) {
+                [gattOperation didDisconnect:peripheral];
+                [self unsubscribeOperation:gattOperation];
+            }
+        }
+    }
+}
+
+#pragma mark CBPeripheralDelegate
 
 - (void)peripheral:(CBPeripheral *)peripheral
 didDiscoverServices:(NSError *)error
 {
     if (error) {
-        NSLog(@"Error discovering services for %@", [error localizedDescription]);
-        self.activeTransaction = nil;
+        NSLog(@"Error discovering services for %@. Aborting operation.", [error localizedDescription]);
+        self.activeOperation = nil;
         [self driveQueue];
         return;
     }
 
-    BOOL scanning = [self.activeTransaction isKindOfClass:[NSPBluetoothScanTransaction class]];
-    BOOL writing = [self.activeTransaction isKindOfClass:[NSPBluetoothWriteTransaction class]];
-    BOOL subscribing = [self.activeTransaction isKindOfClass:[NSPBluetoothSubscribeTransaction class]];
-
-    NSMutableArray *services = [[NSMutableArray alloc] init];
-
-    for (CBService *service in peripheral.services) {
-        if(scanning) {
-            ServiceUUID *serviceUUID = [[NSPServiceUUIDController sharedController] addOrGetServiceID:[service.UUID UUIDString]];
-            [services addObject:serviceUUID];
-        } else if (writing || subscribing) {
-            [self.peripheral discoverCharacteristics:nil forService:service];
+    if ([self.activeOperation respondsToSelector:@selector(didDiscoverServices:forPeripheral:)]) {
+        [self.activeOperation didDiscoverServices:peripheral.services
+                                    forPeripheral:peripheral];
+    } else if ([self.activeOperation respondsToSelector:@selector(didDiscoverService:forPeripheral:)]) {
+        if (![self.activeOperation respondsToSelector:@selector(serviceUUID)]) {
+            [NSException raise:@"Missing property serviceUUID" format:@"This needs to be set when implementing didDiscoverService"];
         }
-    }
-
-    if(scanning) {
-        [self addServiceIDsToPuck:services];
-        [self setActiveTransaction:nil];
-        [self.centralManager cancelPeripheralConnection:self.peripheral];
-        [self driveQueue];
+        for (CBService *service in peripheral.services) {
+            if ([service.UUID isEqual:[CBUUID UUIDWithNSUUID:[self.activeOperation serviceUUID]]]) {
+                [self.activeOperation didDiscoverService:service forPeripheral:peripheral];
+            }
+        }
     }
 }
 
@@ -210,28 +267,29 @@ didDiscoverCharacteristicsForService:(CBService *)service
         return;
     }
 
-    BOOL writing = [self.activeTransaction isKindOfClass:[NSPBluetoothWriteTransaction class]];
-    BOOL subscribing = [self.activeTransaction isKindOfClass:[NSPBluetoothSubscribeTransaction class]];
-
-    if(writing) {
-        NSPBluetoothWriteTransaction *writeTransaction = (NSPBluetoothWriteTransaction*)self.activeTransaction;
-        NSMutableDictionary *characteristics = [[NSMutableDictionary alloc] init];
-        for (CBCharacteristic *characteristic in service.characteristics) {
-            characteristics[characteristic.UUID] = characteristic;
+    if ([self.activeOperation respondsToSelector:@selector(didDiscoverCharacteristic:forPeripheral:)]) {
+        if (![self.activeOperation respondsToSelector:@selector(characteristicUUID)]) {
+            [NSException raise:@"Missing property characteristicUUID" format:@"This needs to be set when implementing didDiscoverCharacteristic"];
+            return;
         }
-        writeTransaction.complete(peripheral, characteristics);
-        self.activeTransaction = nil;
-        [self.centralManager cancelPeripheralConnection:self.peripheral];
-        [self driveQueue];
-    } else if (subscribing){
-        NSPBluetoothSubscribeTransaction *subscribeTransaction = (NSPBluetoothSubscribeTransaction*)self.activeTransaction;
-        for(CBCharacteristic *characteristic in service.characteristics) {
-            if([characteristic.UUID isEqual:[CBUUID UUIDWithNSUUID:subscribeTransaction.characteristicUUID]]) {
-                [peripheral setNotifyValue:YES
-                         forCharacteristic:characteristic];
-                subscribeTransaction.complete(peripheral);
+        for (CBCharacteristic *characteristic in service.characteristics) {
+            if ([characteristic.UUID isEqual:[CBUUID UUIDWithNSUUID:[self.activeOperation characteristicUUID]]]) {
+                [self.activeOperation didDiscoverCharacteristic:characteristic forPeripheral:peripheral];
             }
         }
+    }
+}
+
+- (void)peripheral:(CBPeripheral *)peripheral
+didWriteValueForCharacteristic:(CBCharacteristic *)characteristic
+             error:(NSError *)error
+{
+    if (error) {
+        NSLog(@"Error writing characteristic value %@", [error localizedDescription]);
+        return;
+    }
+    if ([self.activeOperation respondsToSelector:@selector(didWriteValueForCharacteristic:)]) {
+        [self.activeOperation didWriteValueForCharacteristic:characteristic];
     }
 }
 
@@ -239,57 +297,30 @@ didDiscoverCharacteristicsForService:(CBService *)service
 didUpdateValueForCharacteristic:(CBCharacteristic *)characteristic
              error:(NSError *)error
 {
-    if(error) {
+    if (error) {
         NSLog(@"Error updating value for characteristic: %@ for peripheral: %@", characteristic, peripheral);
         return;
     }
     
-    [[NSNotificationCenter defaultCenter] postNotificationName:NSPCubeChangedDirection
-                                                        object:self
-                                                      userInfo:@{
-                                                                 @"peripheral": peripheral,
-                                                                 @"characteristic": characteristic
-                                                                 }];
+    for (id<NSPGattOperation> operation in self.subscribedOperations) {
+        [operation didUpdateValueForCharacteristic:characteristic];
+    }
 }
 
 - (void)peripheral:(CBPeripheral *)peripheral
 didUpdateNotificationStateForCharacteristic:(CBCharacteristic *)characteristic
              error:(NSError *)error
 {
-    if(error) {
+    if (error) {
         NSLog(@"Error changing notification state: %@", error);
         return;
     }
-    NSLog(@"Did subscribe to characteristic: %@", characteristic);
-}
-
-- (void)centralManager:(CBCentralManager *)central
-didFailToConnectPeripheral:(CBPeripheral *)peripheral
-                 error:(NSError *)error
-{
-    NSLog(@"Did fail to connect to peripheral %@", peripheral);
-    [self notifyAboutDisconnectFromPeripheral:peripheral];
-}
-
-- (void)centralManager:(CBCentralManager *)central
-didDisconnectPeripheral:(CBPeripheral *)peripheral
-                 error:(NSError *)error
-{
-    if(error) {
-        NSLog(@"Error disconnecting from peripheral: %@ with error: %@", peripheral, error);
-        [self notifyAboutDisconnectFromPeripheral:peripheral];
-        return;
+    NSLog(@"Did subscribe to characteristic: %@", characteristic.UUID.UUIDString);
+    
+    [self subscribeOperation:self.activeOperation];
+    if ([self.activeOperation respondsToSelector:@selector(didSubscribeToCharacteristic:)]) {
+        [self.activeOperation didSubscribeToCharacteristic:characteristic];
     }
-    [self notifyAboutDisconnectFromPeripheral:peripheral];
-}
-
-- (void)notifyAboutDisconnectFromPeripheral:(CBPeripheral *)peripheral
-{
-    [[NSNotificationCenter defaultCenter] postNotificationName:NSPDidDisconnectFromPeripheral
-                                                        object:self
-                                                      userInfo:@{
-                                                                 @"peripheral": peripheral
-                                                                 }];
 }
 
 - (BOOL)compareManufacturerSpecificData:(NSData *)data
@@ -329,9 +360,9 @@ didDisconnectPeripheral:(CBPeripheral *)peripheral
     major = (major >> 8) | (major << 8);
     minor = (minor >> 8) | (minor << 8);
 
-    return [self.activeTransaction.puck.proximityUUID isEqual:[proximityUUID UUIDString]] &&
-        [self.activeTransaction.puck.major intValue] == major &&
-        [self.activeTransaction.puck.minor intValue] == minor;
+    return [self.activeOperation.puck.proximityUUID isEqual:[proximityUUID UUIDString]] &&
+        [self.activeOperation.puck.major intValue] == major &&
+        [self.activeOperation.puck.minor intValue] == minor;
 }
 
 @end
