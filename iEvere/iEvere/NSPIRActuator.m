@@ -8,6 +8,7 @@
 #import "NSPIRCode.h"
 #import "NSPServiceUUIDController.h"
 #import "NSPLocationManager.h"
+#import "NSPPuckSelector.h"
 
 @implementation NSPIRActuator
 
@@ -47,22 +48,11 @@
                                   ];
     [section addFormRow:irCodeRow];
 
-    XLFormRowDescriptor *minorNumRow = [XLFormRowDescriptor formRowDescriptorWithTag:@"minor"
-                                                                             rowType:XLFormRowDescriptorTypeSelectorPush
-                                                                               title:@"Puck"];
-    minorNumRow.required = YES;
-    NSFetchRequest *fetchRequest = [[NSPServiceUUIDController sharedController] fetchRequest];
-    CBUUID *irServiceUUID = [CBUUID UUIDWithNSUUID:[NSPUUIDUtils stringToUUID:@"bftj ir         "]];
-    [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"uuid == %@", irServiceUUID.UUIDString]];
-    NSError *error;
-    NSArray *service = [[[NSPServiceUUIDController sharedController] managedObjectContext] executeFetchRequest:fetchRequest
-                                                                                                       error:&error];
-    if (service != nil && service.count > 0) {
-        minorNumRow.selectorOptions = [[service[0] pucks] allObjects];
-    } else {
-        NSLog(@"Error: %@", error);
-    }
-    [section addFormRow:minorNumRow];
+    XLFormRowDescriptor *puckRow = [NSPPuckSelector formRowDescriptorWithTag:@"minor"
+                                                                 serviceUUID:[NSPUUIDUtils stringToUUID:NSPIRServiceUUIDString]
+                                                                       title:@"Puck"];
+    puckRow.required = YES;
+    [section addFormRow:puckRow];
 
     return form;
 }

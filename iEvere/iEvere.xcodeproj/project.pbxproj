@@ -11,6 +11,7 @@
 		874907391964311D00ED254D /* NSPEditRuleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 874907371964311D00ED254D /* NSPEditRuleViewController.m */; };
 		8749073A1964311D00ED254D /* NSPEditRuleViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 874907381964311D00ED254D /* NSPEditRuleViewController.xib */; };
 		8796809D198102FC008E41BB /* NSPGattDisconnectOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 8796809C198102FC008E41BB /* NSPGattDisconnectOperation.m */; };
+		876E0D6F19810BD900E014DC /* NSPPuckSelector.m in Sources */ = {isa = PBXBuildFile; fileRef = 876E0D6E19810BD900E014DC /* NSPPuckSelector.m */; };
 		879CAF591962E4AA00DF8492 /* NSPRuleTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 879CAF581962E4AA00DF8492 /* NSPRuleTableViewCell.m */; };
 		87A384CF196545D9003D2CFB /* NSPConfigureActionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 879CAF5B1962F56D00DF8492 /* NSPConfigureActionViewController.m */; };
 		87CBE39D197EB1B700CEB373 /* NSPGattWaitForDisconnectOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 87CBE39C197EB1B700CEB373 /* NSPGattWaitForDisconnectOperation.m */; };
@@ -93,6 +94,8 @@
 		874907381964311D00ED254D /* NSPEditRuleViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NSPEditRuleViewController.xib; sourceTree = "<group>"; };
 		8796809B198102FC008E41BB /* NSPGattDisconnectOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSPGattDisconnectOperation.h; sourceTree = "<group>"; };
 		8796809C198102FC008E41BB /* NSPGattDisconnectOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSPGattDisconnectOperation.m; sourceTree = "<group>"; };
+		876E0D6D19810BD900E014DC /* NSPPuckSelector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSPPuckSelector.h; sourceTree = "<group>"; };
+		876E0D6E19810BD900E014DC /* NSPPuckSelector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSPPuckSelector.m; sourceTree = "<group>"; };
 		879CAF571962E4AA00DF8492 /* NSPRuleTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSPRuleTableViewCell.h; sourceTree = "<group>"; };
 		879CAF581962E4AA00DF8492 /* NSPRuleTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSPRuleTableViewCell.m; sourceTree = "<group>"; };
 		879CAF5A1962F56D00DF8492 /* NSPConfigureActionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSPConfigureActionViewController.h; sourceTree = "<group>"; };
@@ -255,6 +258,8 @@
 				CC379571195D8FEF00E8A0C8 /* NSPPuckController.m */,
 				CC019789195AF27F0032A0E1 /* Puck.h */,
 				CC01978A195AF27F0032A0E1 /* Puck.m */,
+				876E0D6D19810BD900E014DC /* NSPPuckSelector.h */,
+				876E0D6E19810BD900E014DC /* NSPPuckSelector.m */,
 			);
 			name = Puck;
 			sourceTree = "<group>";
@@ -618,6 +623,7 @@
 				CC20B19D1959A41B0084E3AB /* NSPAppDelegate.m in Sources */,
 				87FB58C0197D20FC0079AF07 /* lz.c in Sources */,
 				87FB58B619782B970079AF07 /* NSPIRCode.m in Sources */,
+				876E0D6F19810BD900E014DC /* NSPPuckSelector.m in Sources */,
 				CC20B1991959A41B0084E3AB /* main.m in Sources */,
 				CC888AB41966CE3A00248026 /* NSPBluetoothManager.m in Sources */,
 				CCFBDA3D19617D54001B26B8 /* NSPAddTriggerViewController.m in Sources */,
