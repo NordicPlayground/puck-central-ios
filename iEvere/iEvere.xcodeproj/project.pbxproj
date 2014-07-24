@@ -17,6 +17,8 @@
 		87CBE3A0197F97FC00CEB373 /* NSPPuckActuator.m in Sources */ = {isa = PBXBuildFile; fileRef = 87CBE39F197F97FC00CEB373 /* NSPPuckActuator.m */; };
 		87FB58B619782B970079AF07 /* NSPIRCode.m in Sources */ = {isa = PBXBuildFile; fileRef = 87FB58B519782B970079AF07 /* NSPIRCode.m */; };
 		87FB58B91979530C0079AF07 /* NSPMusicActuator.m in Sources */ = {isa = PBXBuildFile; fileRef = 87FB58B81979530C0079AF07 /* NSPMusicActuator.m */; };
+		87FB58BC197D09F10079AF07 /* NSPDisplayActuator.m in Sources */ = {isa = PBXBuildFile; fileRef = 87FB58BB197D09F10079AF07 /* NSPDisplayActuator.m */; };
+		87FB58C0197D20FC0079AF07 /* lz.c in Sources */ = {isa = PBXBuildFile; fileRef = 87FB58BF197D20FC0079AF07 /* lz.c */; };
 		CC01978B195AF2800032A0E1 /* Puck.m in Sources */ = {isa = PBXBuildFile; fileRef = CC01978A195AF27F0032A0E1 /* Puck.m */; };
 		CC20790119750AEB00205FB0 /* ServiceUUID.m in Sources */ = {isa = PBXBuildFile; fileRef = CC20790019750AEB00205FB0 /* ServiceUUID.m */; };
 		CC2079051975142B00205FB0 /* NSPServiceUUIDController.m in Sources */ = {isa = PBXBuildFile; fileRef = CC2079041975142B00205FB0 /* NSPServiceUUIDController.m */; };
@@ -103,6 +105,10 @@
 		87FB58B519782B970079AF07 /* NSPIRCode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSPIRCode.m; sourceTree = "<group>"; };
 		87FB58B71979530C0079AF07 /* NSPMusicActuator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSPMusicActuator.h; sourceTree = "<group>"; };
 		87FB58B81979530C0079AF07 /* NSPMusicActuator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSPMusicActuator.m; sourceTree = "<group>"; };
+		87FB58BA197D09F10079AF07 /* NSPDisplayActuator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSPDisplayActuator.h; sourceTree = "<group>"; };
+		87FB58BB197D09F10079AF07 /* NSPDisplayActuator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSPDisplayActuator.m; sourceTree = "<group>"; };
+		87FB58BE197D20FC0079AF07 /* lz.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = lz.h; sourceTree = "<group>"; };
+		87FB58BF197D20FC0079AF07 /* lz.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = lz.c; sourceTree = "<group>"; };
 		B48E46EBAE6040238F4620E9 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		CC019789195AF27F0032A0E1 /* Puck.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Puck.h; sourceTree = "<group>"; };
 		CC01978A195AF27F0032A0E1 /* Puck.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Puck.m; sourceTree = "<group>"; };
@@ -232,6 +238,16 @@
 			name = "Add Rule UI";
 			sourceTree = "<group>";
 		};
+		87FB58BD197D20E70079AF07 /* Libs */ = {
+			isa = PBXGroup;
+			children = (
+				87FB58BE197D20FC0079AF07 /* lz.h */,
+				87FB58BF197D20FC0079AF07 /* lz.c */,
+			);
+			name = Libs;
+			path = ..;
+			sourceTree = "<group>";
+		};
 		CC019788195AE5EB0032A0E1 /* Puck */ = {
 			isa = PBXGroup;
 			children = (
@@ -314,6 +330,7 @@
 				CCFBDA4419618502001B26B8 /* Actuators */,
 				CC2079021975131100205FB0 /* ServiceUUID */,
 				CCADFDBD19742C6300D85696 /* Utils */,
+				87FB58BD197D20E70079AF07 /* Libs */,
 			);
 			path = iEvere;
 			sourceTree = "<group>";
@@ -417,6 +434,8 @@
 				87FB58B519782B970079AF07 /* NSPIRCode.m */,
 				87FB58B71979530C0079AF07 /* NSPMusicActuator.h */,
 				87FB58B81979530C0079AF07 /* NSPMusicActuator.m */,
+				87FB58BA197D09F10079AF07 /* NSPDisplayActuator.h */,
+				87FB58BB197D09F10079AF07 /* NSPDisplayActuator.m */,
 			);
 			name = Actuators;
 			sourceTree = "<group>";
@@ -597,6 +616,7 @@
 				CC20790119750AEB00205FB0 /* ServiceUUID.m in Sources */,
 				CC22A28C197D05E400334D92 /* NSPGattSubscribeOperation.m in Sources */,
 				CC20B19D1959A41B0084E3AB /* NSPAppDelegate.m in Sources */,
+				87FB58C0197D20FC0079AF07 /* lz.c in Sources */,
 				87FB58B619782B970079AF07 /* NSPIRCode.m in Sources */,
 				CC20B1991959A41B0084E3AB /* main.m in Sources */,
 				CC888AB41966CE3A00248026 /* NSPBluetoothManager.m in Sources */,
@@ -615,6 +635,7 @@
 				CCFBDA521961955E001B26B8 /* NSPRuleController.m in Sources */,
 				874907391964311D00ED254D /* NSPEditRuleViewController.m in Sources */,
 				CCADFDC019742C9D00D85696 /* NSPUUIDUtils.m in Sources */,
+				87FB58BC197D09F10079AF07 /* NSPDisplayActuator.m in Sources */,
 				CCFBDA591961A058001B26B8 /* NSPActionController.m in Sources */,
 				CCCC23311977C9D00002F246 /* NSPGattDiscoverOperation.m in Sources */,
 				CC2079051975142B00205FB0 /* NSPServiceUUIDController.m in Sources */,

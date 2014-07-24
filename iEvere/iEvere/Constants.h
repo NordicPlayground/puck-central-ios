@@ -38,3 +38,4 @@ extern NSString * const NSPTriggerCubeChangedDirection;
 
 extern NSString * const NSPCubeServiceUUIDString;
 extern NSString * const NSPIRServiceUUIDString;
+extern NSString * const NSPDisplayServiceUUIDString;

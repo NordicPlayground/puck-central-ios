@@ -3,6 +3,7 @@
 #import "NSPHTTPActuator.h"
 #import "NSPIRActuator.h"
 #import "NSPMusicActuator.h"
+#import "NSPDisplayActuator.h"
 #import "NSPActuator.h"
 #import "NSPPuckController.h"
 
@@ -13,7 +14,8 @@
     return @{
              [NSPHTTPActuator index]:[NSPHTTPActuator class],
              [NSPIRActuator index]: [NSPIRActuator class],
-             [NSPMusicActuator index]:[NSPMusicActuator class]
+             [NSPMusicActuator index]:[NSPMusicActuator class],
+             [NSPDisplayActuator index]:[NSPDisplayActuator class]
              };
 }
 

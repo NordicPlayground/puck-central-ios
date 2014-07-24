@@ -9,3 +9,4 @@ NSString * const NSPTriggerCubeChangedDirection = @"NSPTriggerCubeChangedDirecti
 
 NSString * const NSPCubeServiceUUIDString = @"bftj cube       ";
 NSString * const NSPIRServiceUUIDString = @"bftj ir         ";
+NSString * const NSPDisplayServiceUUIDString = @"bftj display    ";
