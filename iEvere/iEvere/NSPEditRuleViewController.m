@@ -69,6 +69,8 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"cell"];
     }
     
+    cell.textLabel.font = [UIFont systemFontOfSize:12.f];
+    
     Action *action = [[self.rule.actions allObjects] objectAtIndex:indexPath.row];
     Class actuatorClass = [[NSPActuatorController actuators] objectForKey:action.actuatorId];
     if ([actuatorClass conformsToProtocol:@protocol(NSPActuator)]) {

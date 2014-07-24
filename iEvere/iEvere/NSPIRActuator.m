@@ -89,7 +89,11 @@
 
 - (NSString *)stringForOptions:(NSDictionary *)options
 {
-    return [NSString stringWithFormat:@"SEND IR CODE %@ to %@", options[@"irCode"], options[@"device"]];
+    Puck *puck = [Puck puckWithMinorNumber:options[@"minor"]];
+    return [NSString stringWithFormat:@"Send %@ code %X to %@",
+            options[@"device"],
+            [options[@"irCode"] intValue],
+            puck.name];
 }
 
 - (void)actuateOnPuck:(Puck *)puck withOptions:(NSDictionary *)options

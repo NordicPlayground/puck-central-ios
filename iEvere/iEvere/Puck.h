@@ -21,6 +21,7 @@
 - (void)addServiceIDsObject:(ServiceUUID *)object;
 
 + (instancetype)puckForBeacon:(CLBeacon *)beacon;
++ (instancetype)puckWithMinorNumber:(NSNumber *)minor;
 
 - (NSUUID *)UUID;
 

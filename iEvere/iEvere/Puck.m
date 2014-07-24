@@ -28,10 +28,15 @@
 
 + (instancetype)puckForBeacon:(CLBeacon *)beacon
 {
+    return [self puckWithMinorNumber:beacon.minor];
+}
+
++ (instancetype)puckWithMinorNumber:(NSNumber *)minor
+{
     NSPPuckController *puckController = [NSPPuckController sharedController];
     NSFetchRequest *request = [puckController fetchRequest];
     
-    request.predicate = [NSPredicate predicateWithFormat:@"minor == %@", beacon.minor];
+    request.predicate = [NSPredicate predicateWithFormat:@"minor == %@", minor];
     
     NSError *error;
     NSArray *puckResults = [[puckController managedObjectContext] executeFetchRequest:request error:&error];

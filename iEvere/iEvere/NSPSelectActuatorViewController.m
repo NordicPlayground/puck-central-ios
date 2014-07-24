@@ -66,7 +66,7 @@
     }
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     
-    cell.textLabel.text = NSStringFromClass([[self.actuators allValues] objectAtIndex:indexPath.row]);
+    cell.textLabel.text = [[[self.actuators allValues] objectAtIndex:indexPath.row] name];
     
     return cell;
 }
