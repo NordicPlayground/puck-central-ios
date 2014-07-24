@@ -5,10 +5,10 @@
 #import "NSPRuleController.h"
 #import "Rule.h"
 
-@interface NSPConfigureActionViewController ()
+@interface NSPConfigureActionViewController () <XLFormDescriptorDelegate>
 
 @property (nonatomic, strong) Rule *rule;
-@property (nonatomic, strong) Class actuatorClass;
+@property (nonatomic, strong) id<NSPActuator> actuator;
 
 @end
 
@@ -19,9 +19,13 @@
     self = [super init];
     if (self) {
         self.rule = rule;
-        self.actuatorClass = actuatorClass;
+        self.actuator = [[actuatorClass alloc] init];
         
         self.form = [actuatorClass optionsForm];
+        self.form.delegate = self;
+        if ([self.actuator conformsToProtocol:@protocol(NSPConfigureActionFormDelegate)]) {
+            self.delegate = (id<NSPConfigureActionFormDelegate>)self.actuator;
+        }
     }
     return self;
 }
@@ -45,7 +49,7 @@
         return;
     }
 
-    NSNumber *actuatorId = [self.actuatorClass index];
+    NSNumber *actuatorId = [[self.actuator class] index];
     
     NSPActionController *actionController = [NSPActionController sharedController];
     
@@ -61,7 +65,37 @@
     [self.navigationController dismissViewControllerAnimated:YES completion:nil];
 }
 
-#pragma mark NSObject
+#pragma mark - XLFormDescriptorDelegate protocol
+
+- (void)formRowDescriptorValueHasChanged:(XLFormRowDescriptor *)formRow oldValue:(id)oldValue newValue:(id)newValue
+{
+    [super formRowDescriptorValueHasChanged:formRow oldValue:oldValue newValue:newValue];
+    
+    [self.delegate form:self.form didUpdateRow:formRow from:oldValue to:newValue];
+    [self.tableView reloadData];
+}
+
+- (void)formRowHasBeenAdded:(XLFormRowDescriptor *)formRow atIndexPath:(NSIndexPath *)indexPath
+{
+    [super formRowHasBeenAdded:formRow atIndexPath:indexPath];
+}
+
+- (void)formRowHasBeenRemoved:(XLFormRowDescriptor *)formRow atIndexPath:(NSIndexPath *)indexPath
+{
+    [super formRowHasBeenRemoved:formRow atIndexPath:indexPath];
+}
+
+- (void)formSectionHasBeenAdded:(XLFormSectionDescriptor *)formSection atIndex:(NSUInteger)index
+{
+    [super formSectionHasBeenAdded:formSection atIndex:index];
+}
+
+- (void)formSectionHasBeenRemoved:(XLFormSectionDescriptor *)formSection atIndex:(NSUInteger)index
+{
+    [super formSectionHasBeenRemoved:formSection atIndex:index];
+}
+
+#pragma mark - NSObject
 
 - (void)didReceiveMemoryWarning
 {
