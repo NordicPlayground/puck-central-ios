@@ -125,6 +125,7 @@
 - (void)didFindPeripheral:(CBPeripheral *)peripheral
 {
     [self.activePeripherals addObject:peripheral];
+    peripheral.delegate = self;
     if ([self.activeOperation respondsToSelector:@selector(didFindPeripheral:withCentralManager:)]) {
         [self.activeOperation didFindPeripheral:peripheral
                              withCentralManager:self.centralManager];
@@ -190,8 +191,6 @@
 - (void)centralManager:(CBCentralManager *)central
   didConnectPeripheral:(CBPeripheral *)peripheral
 {
-    peripheral.delegate = self;
-    
     if ([self.activeOperation respondsToSelector:@selector(didConnect:)]) {
         [self.activeOperation didConnect:peripheral];
     }
