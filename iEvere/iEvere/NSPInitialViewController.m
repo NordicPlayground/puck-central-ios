@@ -11,7 +11,7 @@
 #import "NSPEditRuleViewController.h"
 #import "NSPServiceUUIDController.h"
 #import "NSPGattDiscoverOperation.h"
-#import "NSPGattWaitForDisconnectOperation.h"
+#import "NSPGattDisconnectOperation.h"
 #import "NSPCubeManager.h"
 
 
@@ -119,7 +119,7 @@
     NSPGattDiscoverOperation *scanOperation = [[NSPGattDiscoverOperation alloc] initWithPuck:self.tempPuck];
     [[NSPBluetoothManager sharedManager] queueOperation:scanOperation];
     
-    [[NSPBluetoothManager sharedManager] queueOperation:[[NSPGattWaitForDisconnectOperation alloc] initWithPuck:self.tempPuck]];
+    [[NSPBluetoothManager sharedManager] queueOperation:[[NSPGattDisconnectOperation alloc] initWithPuck:self.tempPuck]];
 
     NSLog(@"userinfo: %@", notification.userInfo);
     NSString *message = [NSString stringWithFormat:@"Add %04X to your beacons", self.tempPuck.minor.intValue];

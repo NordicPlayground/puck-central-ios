@@ -10,6 +10,7 @@
 		5FF0F57227374219ACD267BA /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B48E46EBAE6040238F4620E9 /* libPods.a */; };
 		874907391964311D00ED254D /* NSPEditRuleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 874907371964311D00ED254D /* NSPEditRuleViewController.m */; };
 		8749073A1964311D00ED254D /* NSPEditRuleViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 874907381964311D00ED254D /* NSPEditRuleViewController.xib */; };
+		8796809D198102FC008E41BB /* NSPGattDisconnectOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 8796809C198102FC008E41BB /* NSPGattDisconnectOperation.m */; };
 		879CAF591962E4AA00DF8492 /* NSPRuleTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 879CAF581962E4AA00DF8492 /* NSPRuleTableViewCell.m */; };
 		87A384CF196545D9003D2CFB /* NSPConfigureActionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 879CAF5B1962F56D00DF8492 /* NSPConfigureActionViewController.m */; };
 		87CBE39D197EB1B700CEB373 /* NSPGattWaitForDisconnectOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 87CBE39C197EB1B700CEB373 /* NSPGattWaitForDisconnectOperation.m */; };
@@ -88,6 +89,8 @@
 		874907361964311D00ED254D /* NSPEditRuleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSPEditRuleViewController.h; sourceTree = "<group>"; };
 		874907371964311D00ED254D /* NSPEditRuleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSPEditRuleViewController.m; sourceTree = "<group>"; };
 		874907381964311D00ED254D /* NSPEditRuleViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NSPEditRuleViewController.xib; sourceTree = "<group>"; };
+		8796809B198102FC008E41BB /* NSPGattDisconnectOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSPGattDisconnectOperation.h; sourceTree = "<group>"; };
+		8796809C198102FC008E41BB /* NSPGattDisconnectOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSPGattDisconnectOperation.m; sourceTree = "<group>"; };
 		879CAF571962E4AA00DF8492 /* NSPRuleTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSPRuleTableViewCell.h; sourceTree = "<group>"; };
 		879CAF581962E4AA00DF8492 /* NSPRuleTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSPRuleTableViewCell.m; sourceTree = "<group>"; };
 		879CAF5A1962F56D00DF8492 /* NSPConfigureActionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSPConfigureActionViewController.h; sourceTree = "<group>"; };
@@ -392,6 +395,8 @@
 				CCCC23331977CA520002F246 /* NSPGattWriteOperation.m */,
 				87CBE39B197EB1B700CEB373 /* NSPGattWaitForDisconnectOperation.h */,
 				87CBE39C197EB1B700CEB373 /* NSPGattWaitForDisconnectOperation.m */,
+				8796809B198102FC008E41BB /* NSPGattDisconnectOperation.h */,
+				8796809C198102FC008E41BB /* NSPGattDisconnectOperation.m */,
 			);
 			name = Operations;
 			sourceTree = "<group>";
@@ -598,6 +603,7 @@
 				CCFBDA3D19617D54001B26B8 /* NSPAddTriggerViewController.m in Sources */,
 				CC37956F195D85C300E8A0C8 /* NSPLocationManager.m in Sources */,
 				CC20B1C51959AAF70084E3AB /* NSPInitialViewController.m in Sources */,
+				8796809D198102FC008E41BB /* NSPGattDisconnectOperation.m in Sources */,
 				CC3AAAC0195AB29600DCA6C0 /* NSPSelectPuckViewController.m in Sources */,
 				CC01978B195AF2800032A0E1 /* Puck.m in Sources */,
 				87CBE39D197EB1B700CEB373 /* NSPGattWaitForDisconnectOperation.m in Sources */,
