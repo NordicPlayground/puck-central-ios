@@ -1,22 +1,21 @@
 
 #import "NSPBluetoothManager.h"
-#import "NSPUUIDUtils.h"
-#import "NSPServiceUUIDController.h"
-#import "NSPPuckController.h"
 #import "Puck.h"
-#import "Constants.h"
-#import "NSPUUIDUtils.h"
+#import "NSPGattTransaction.h"
 #import "NSPGattOperation.h"
-#import "NSPGattWriteOperation.h"
-#import "NSPGattDiscoverOperation.h"
-#import "NSPGattSubscribeOperation.h"
+#import "NSPLocationManager.h"
+
+#define TIMEOUT_IN_SECONDS 9
 
 @interface NSPBluetoothManager ()
 
 @property (nonatomic, strong) CBCentralManager *centralManager;
 @property (nonatomic, assign) bool isCoreBluetoothReady;
+@property (nonatomic, strong) dispatch_queue_t centralQueue;
 @property (nonatomic, strong) NSMutableSet *activePeripherals;
-@property (nonatomic, strong) NSMutableArray *operationQueue;
+
+@property (nonatomic, strong) NSMutableArray *transactionQueue;
+@property (nonatomic, strong) NSPGattTransaction *activeTransaction;
 @property (nonatomic, strong) id<NSPGattOperation> activeOperation;
 @property (nonatomic, strong) NSMutableArray *subscribedOperations;
 
@@ -39,30 +38,72 @@
 - (id)init
 {
     if (self = [super init]) {
-        dispatch_queue_t centralQueue = dispatch_queue_create("com.nordicsemi.ievere.centralqueue", DISPATCH_QUEUE_SERIAL);
+        self.centralQueue = dispatch_queue_create("com.nordicsemi.ievere.centralqueue", DISPATCH_QUEUE_SERIAL);
         self.centralManager = [[CBCentralManager alloc] initWithDelegate:self
-                                                                   queue:centralQueue
+                                                                   queue:self.centralQueue
                                                                  options:nil];
+        self.activeTransaction = nil;
         self.activeOperation = nil;
-        self.operationQueue = [[NSMutableArray alloc] init];
+        self.transactionQueue = [[NSMutableArray alloc] init];
         self.subscribedOperations = [[NSMutableArray alloc] init];
         self.activePeripherals = [[NSMutableSet alloc] init];
     }
     return self;
 }
 
-- (void)queueOperation:(id<NSPGattOperation>)gattOperation
+- (void)queueTransaction:(NSPGattTransaction *)gattTransaction
 {
-    [self.operationQueue addObject:gattOperation];
+    NSLog(@"queue transaction %@", gattTransaction);
+    [self.transactionQueue addObject:gattTransaction];
     
-    [gattOperation addedToQueue:^() {
-        NSLog(@"Did complete the operation");
-        self.activeOperation = nil;
-        [self driveQueue];
-    }];
+    for (id<NSPGattOperation> gattOperation in gattTransaction.operationQueue) {
+        [gattOperation addedToQueue:^() {
+            NSLog(@"Did complete the operation");
+            [self nextOperation];
+        }];
+    }
 
-    if (self.activeOperation == nil) {
-        [self driveQueue];
+    if (self.activeTransaction == nil) {
+        [self nextTransaction];
+    }
+}
+
+- (void)setActiveOperation:(id<NSPGattOperation>)activeOperation
+{
+    if (_activeOperation != nil) {
+        [[NSPLocationManager sharedManager] stopUsingPuck:_activeOperation.puck];
+    }
+    
+    _activeOperation = activeOperation;
+    
+    if (activeOperation != nil) {
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(TIMEOUT_IN_SECONDS * NSEC_PER_SEC)), self.centralQueue, ^{
+            if ([self.activeOperation isEqual:activeOperation]) {
+                NSLog(@"%@ timed out", [self.activeOperation class]);
+                [self abortTransaction];
+            }
+        });
+        
+        [[NSPLocationManager sharedManager] startUsingPuck:activeOperation.puck];
+        [self findPeripheralFromBeacon];
+    }
+}
+
+- (void)nextOperation
+{
+    if (self.activeTransaction == nil) {
+        [self nextTransaction];
+        return;
+    }
+    
+    id<NSPGattOperation> nextOperation = [self.activeTransaction nextOperation];
+    if (nextOperation == nil) {
+        self.activeOperation = nil;
+        self.activeTransaction = nil;
+        [self nextTransaction];
+        return;
+    } else {
+        self.activeOperation = nextOperation;
     }
 }
 
@@ -76,20 +117,30 @@
     [self.subscribedOperations removeObject:gattOperation];
 }
 
-- (void)driveQueue
+- (void)nextTransaction
 {
-    if (self.activeOperation != nil) {
+    if (self.activeTransaction != nil) {
         NSLog(@"Error: tried to drive queue before operation was complete!");
         return;
-    } else if (self.operationQueue.count == 0) {
-        NSLog(@"No more operations for now");
+    } else if (self.transactionQueue.count == 0) {
+        NSLog(@"No more transactions for now");
         [self.centralManager stopScan];
         return;
     }
-    id<NSPGattOperation> nextOperation = [self.operationQueue objectAtIndex:0];
-    [self.operationQueue removeObjectAtIndex:0];
-    self.activeOperation = nextOperation;
-    [self findPeripheralFromBeacon];
+    self.activeTransaction = self.transactionQueue[0];
+    [self.transactionQueue removeObjectAtIndex:0];
+    self.activeOperation = [self.activeTransaction nextOperation];
+}
+
+- (void)abortTransaction
+{
+    if (self.activeTransaction != nil) {
+        NSLog(@"Aborting transaction %@", [self.activeOperation class]);
+        [_centralManager cancelPeripheralConnection:self.activeTransaction.peripheral];
+        self.activeOperation = nil;
+        self.activeTransaction = nil;
+        [self nextTransaction];
+    }
 }
 
 - (void)findPeripheralFromBeacon
@@ -125,6 +176,7 @@
 - (void)didFindPeripheral:(CBPeripheral *)peripheral
 {
     [self.activePeripherals addObject:peripheral];
+    self.activeTransaction.peripheral = peripheral;
     peripheral.delegate = self;
     if ([self.activeOperation respondsToSelector:@selector(didFindPeripheral:withCentralManager:)]) {
         [self.activeOperation didFindPeripheral:peripheral
@@ -202,17 +254,19 @@ didFailToConnectPeripheral:(CBPeripheral *)peripheral
 {
     NSLog(@"Did fail to connect to peripheral %@", peripheral);
     [self.activePeripherals removeObject:peripheral];
-    self.activeOperation = nil;
-    [self driveQueue];
+    [self abortTransaction];
 }
 
 - (void)centralManager:(CBCentralManager *)central
 didDisconnectPeripheral:(CBPeripheral *)peripheral
                  error:(NSError *)error
 {
-    NSLog(@"Disconnect from peripheral %@", peripheral.identifier);
-    if (error) {
+    NSLog(@"Disconnect from peripheral %@", peripheral.identifier.UUIDString);
+    if (error && error.code != CBErrorPeripheralDisconnected) {
         NSLog(@"Error: %@", error.localizedDescription);
+        if ([self.activeTransaction.peripheral isEqual:peripheral]) {
+            [self abortTransaction];
+        }
     }
     
     if ([self.activeOperation respondsToSelector:@selector(didDisconnect:)]) {
@@ -237,8 +291,7 @@ didDiscoverServices:(NSError *)error
 {
     if (error) {
         NSLog(@"Error discovering services for %@. Aborting operation.", [error localizedDescription]);
-        self.activeOperation = nil;
-        [self driveQueue];
+        [self abortTransaction];
         return;
     }
 
@@ -263,6 +316,7 @@ didDiscoverCharacteristicsForService:(CBService *)service
 {
     if (error) {
         NSLog(@"Error discovering characteristics %@", [error localizedDescription]);
+        [self abortTransaction];
         return;
     }
 
@@ -285,6 +339,7 @@ didWriteValueForCharacteristic:(CBCharacteristic *)characteristic
 {
     if (error) {
         NSLog(@"Error writing characteristic value %@", [error localizedDescription]);
+        [self abortTransaction];
         return;
     }
     if ([self.activeOperation respondsToSelector:@selector(didWriteValueForCharacteristic:)]) {

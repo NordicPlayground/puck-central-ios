@@ -3,6 +3,7 @@
 #import "NSPUUIDUtils.h"
 #import "NSPBluetoothManager.h"
 #import "NSPTriggerManager.h"
+#import "NSPGattTransaction.h"
 #import "NSPGattSubscribeOperation.h"
 #import "ServiceUUID.h"
 #import "Puck.h"
@@ -56,6 +57,10 @@
                                                  selector:@selector(cubeDisconnected:)
                                                      name:NSPDidDisconnectFromPeripheral
                                                    object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(cubeSubscribed:)
+                                                     name:NSPDidSubscribeToCharacteristic
+                                                   object:nil];
     }
     return self;
 }
@@ -87,8 +92,7 @@
              [[NSPGattSubscribeOperation alloc] initWithPuck:puck
                                                  serviceUUID:self.cubeServiceUUID
                                           characteristicUUID:self.cubeDirectionCharacteristicUUID];
-            [[NSPBluetoothManager sharedManager] queueOperation:subscribeOperation];
-            [self.subscribedCubes addObject:puck];
+            [[NSPBluetoothManager sharedManager] queueTransaction:[NSPGattTransaction transactionWithOperation:subscribeOperation]];
         }
     }
 }
@@ -98,15 +102,20 @@
     CBPeripheral *peripheral = notification.userInfo[@"peripheral"];
     for (Puck *puck in self.subscribedCubes) {
         if ([[puck UUID] isEqual:peripheral.identifier]) {
-            NSLog(@"Puck disconnected! %@", puck.name);
             [self.subscribedCubes removeObject:puck];
         }
     }
 }
 
+- (void)cubeSubscribed:(NSNotification *)notification
+{
+    [self.subscribedCubes addObject:notification.userInfo[@"puck"]];
+}
+
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:NSPCubeChangedDirection object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:NSPDidSubscribeToCharacteristic object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:NSPDidDisconnectFromPeripheral object:nil];
 }
 

@@ -1,15 +1,11 @@
 
 #import "NSPIRActuator.h"
 #import "NSPBluetoothManager.h"
-#import "NSPPuckController.h"
 #import "NSPUUIDUtils.h"
-#import "NSPGattWriteOperation.h"
-#import "NSPGattWaitForDisconnectOperation.h"
 #import "NSPIRCode.h"
 #import "NSPRemote.h"
-#import "NSPServiceUUIDController.h"
-#import "NSPLocationManager.h"
 #import "NSPPuckSelector.h"
+#import "Puck.h"
 
 @implementation NSPIRActuator
 
@@ -98,13 +94,9 @@
 
 - (void)actuateOnPuck:(Puck *)puck withOptions:(NSDictionary *)options
 {
-    [[NSPLocationManager sharedManager] startUsingPuck:puck];
-
     [self writeToPuck:puck
           withService:[NSPUUIDUtils stringToUUID:NSPIRServiceUUIDString]
            andOptions:options];
-    
-    [[NSPLocationManager sharedManager] stopUsingPuck:puck];
 }
 
 - (void)writeToPuck:(Puck *)puck withService:(NSUUID *)serviceUUID andOptions:(NSDictionary *)options
@@ -139,6 +131,8 @@
     [self writeValue:codeData forService:serviceUUID characteristic:codeUUID onPuck:puck];
     
     [self waitForDisconnect:puck];
+    
+    [[NSPBluetoothManager sharedManager] queueTransaction:self.transaction];
 }
 
 - (NSData *)dataWithArray:(NSArray *)array

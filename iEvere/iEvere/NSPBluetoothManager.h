@@ -2,13 +2,12 @@
 @import CoreBluetooth;
 @import CoreLocation;
 
-#import "Puck.h"
-#import "NSPGattOperation.h"
+@class NSPGattTransaction;
 
 @interface NSPBluetoothManager : CBCentralManager <CBCentralManagerDelegate, CBPeripheralDelegate>
 
 + (NSPBluetoothManager *)sharedManager;
 
-- (void)queueOperation:(id<NSPGattOperation>)gattOperation;
+- (void)queueTransaction:(NSPGattTransaction *)gattTransaction;
 
 @end

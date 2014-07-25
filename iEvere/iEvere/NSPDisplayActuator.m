@@ -4,11 +4,9 @@
 
 #import "NSPDisplayActuator.h"
 #import "NSPUUIDUtils.h"
-#import "NSPGattWriteOperation.h"
 #import "NSPBluetoothManager.h"
 #import "NSPPuckController.h"
 #import "lz.h"
-#import "NSPLocationManager.h"
 #import "NSPPuckSelector.h"
 
 typedef NS_ENUM(NSUInteger, NSPImageSection) {
@@ -85,8 +83,6 @@ typedef NS_ENUM(NSUInteger, NSPImageSection) {
 
 - (void)actuateOnPuck:(Puck *)puck withOptions:(NSDictionary *)options
 {
-    [[NSPLocationManager sharedManager] startUsingPuck:puck];
-    
     UIImage *image = [self render:options[@"text"]];
     
     NSLog(@"Write image");
@@ -96,6 +92,8 @@ typedef NS_ENUM(NSUInteger, NSPImageSection) {
     [self writeImage:image
              section:NSPImageSectionLower
               toPuck:puck];
+    
+    [[NSPBluetoothManager sharedManager] queueTransaction:self.transaction];
 }
 
 - (void)writeImage:(UIImage *)image section:(NSPImageSection)section toPuck:(Puck *)puck

@@ -1,10 +1,19 @@
 
 #import "NSPPuckActuator.h"
-#import "NSPBluetoothManager.h"
+#import "NSPGattTransaction.h"
 #import "NSPGattWriteOperation.h"
 #import "NSPGattWaitForDisconnectOperation.h"
 
 @implementation NSPPuckActuator
+
+- (id)init
+{
+    self = [super init];
+    if (self) {
+        self.transaction = [[NSPGattTransaction alloc] init];
+    }
+    return self;
+}
 
 - (void)writeValue:(NSData *)value
         forService:(NSUUID *)serviceUUID
@@ -15,13 +24,13 @@
                                                                             serviceUUID:serviceUUID
                                                                          characteristic:characteristicUUID
                                                                                   value:value];
-    [[NSPBluetoothManager sharedManager] queueOperation:writeOperation];
+    [self.transaction addOperation:writeOperation];
 }
 
 - (void)waitForDisconnect:(Puck *)puck
 {
     NSPGattWaitForDisconnectOperation *disconnectOperation = [[NSPGattWaitForDisconnectOperation alloc] initWithPuck:puck];
-    [[NSPBluetoothManager sharedManager] queueOperation:disconnectOperation];
+    [self.transaction addOperation:disconnectOperation];
 }
 
 @end

@@ -13,6 +13,7 @@
 #import "NSPServiceUUIDController.h"
 #import "NSPGattDiscoverOperation.h"
 #import "NSPGattDisconnectOperation.h"
+#import "NSPGattTransaction.h"
 #import "NSPCubeManager.h"
 #import "NSPTriggerManager.h"
 
@@ -118,10 +119,14 @@
                                                             minor:tempBeacon.minor];
     self.tempPuck = puck;
 
-    NSPGattDiscoverOperation *scanOperation = [[NSPGattDiscoverOperation alloc] initWithPuck:self.tempPuck];
-    [[NSPBluetoothManager sharedManager] queueOperation:scanOperation];
     
-    [[NSPBluetoothManager sharedManager] queueOperation:[[NSPGattDisconnectOperation alloc] initWithPuck:self.tempPuck]];
+    NSPGattTransaction *transaction = [[NSPGattTransaction alloc] init];
+    NSPGattDiscoverOperation *scanOperation = [[NSPGattDiscoverOperation alloc] initWithPuck:self.tempPuck];
+    [transaction addOperation:scanOperation];
+
+    [transaction addOperation:[[NSPGattDisconnectOperation alloc] initWithPuck:self.tempPuck]];
+    NSLog(@"start discover transaction %@", transaction);
+    [[NSPBluetoothManager sharedManager] queueTransaction:transaction];
 
     NSLog(@"userinfo: %@", notification.userInfo);
     NSString *message = [NSString stringWithFormat:@"Add %04X to your beacons", self.tempPuck.minor.intValue];
