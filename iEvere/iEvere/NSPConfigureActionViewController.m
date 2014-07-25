@@ -71,8 +71,9 @@
 {
     [super formRowDescriptorValueHasChanged:formRow oldValue:oldValue newValue:newValue];
     
-    [self.delegate form:self.form didUpdateRow:formRow from:oldValue to:newValue];
-    [self.tableView reloadData];
+    if (self.delegate != nil) {
+        [self.delegate form:self didUpdateRow:formRow from:oldValue to:newValue];
+    }
 }
 
 - (void)formRowHasBeenAdded:(XLFormRowDescriptor *)formRow atIndexPath:(NSIndexPath *)indexPath

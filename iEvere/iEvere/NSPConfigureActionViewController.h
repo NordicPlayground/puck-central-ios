@@ -7,7 +7,7 @@
 
 @protocol NSPConfigureActionFormDelegate <NSObject>
 
-- (void)form:(XLFormDescriptor *)form didUpdateRow:(XLFormRowDescriptor *)row from:(id)oldValue to:(id)newValue;
+- (void)form:(XLFormViewController *)formViewController didUpdateRow:(XLFormRowDescriptor *)row from:(id)oldValue to:(id)newValue;
 
 @end
 

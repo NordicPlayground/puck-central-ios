@@ -153,14 +153,22 @@
 
 #pragma mark NSPConfigureActionFormDelegate protocol
 
-- (void)form:(XLFormDescriptor *)form didUpdateRow:(XLFormRowDescriptor *)row from:(id)oldValue to:(id)newValue
+- (void)form:(XLFormViewController *)formViewController
+didUpdateRow:(XLFormRowDescriptor *)row
+        from:(id)oldValue
+          to:(id)newValue
 {
     if ([row.tag isEqualToString:@"device"]) {
-        XLFormRowDescriptor *irCodeRow = [form formRowWithTag:@"irCode"];
-        NSString *remoteName = [newValue formValue];
-        NSDictionary *remotes = [[self class] remotes];
-        irCodeRow.selectorOptions = [remotes[remoteName] codes];
+        XLFormRowDescriptor *irCodeRow = [formViewController.form formRowWithTag:@"irCode"];
+        if (![newValue isEqual:[NSNull null]]) {
+            NSString *remoteName = [newValue formValue];
+            NSDictionary *remotes = [[self class] remotes];
+            irCodeRow.selectorOptions = [remotes[remoteName] codes];
+        } else {
+            irCodeRow.selectorOptions = nil;
+        }
         irCodeRow.value = nil;
+        [formViewController reloadFormRow:irCodeRow];
     }
 }
 
