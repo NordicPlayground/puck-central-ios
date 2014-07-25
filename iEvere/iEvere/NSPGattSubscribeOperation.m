@@ -65,6 +65,12 @@ characteristicUUID:(NSUUID *)characteristicUUID
 - (void)didSubscribeToCharacteristic:(CBCharacteristic *)characteristic
 {
     self.completeOperation();
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:NSPDidSubscribeToCharacteristic
+                                                        object:self
+                                                      userInfo:@{
+                                                                 @"puck": self.puck
+                                                                 }];
 }
 
 @end

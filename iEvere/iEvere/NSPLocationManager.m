@@ -96,6 +96,13 @@ static const int THROTTLE = 3;
     }];
     
     for (CLBeacon *beacon in beacons) {
+        Puck *puck = [Puck puckForBeacon:beacon];
+        if (puck != nil) {
+            [[NSPCubeManager sharedManager] checkAndConnectToCubePuck:puck];
+        }
+    }
+    
+    for (CLBeacon *beacon in beacons) {
         if (beacon.proximity == CLProximityImmediate) {
             [self setLocation:beacon];
             return;
@@ -122,10 +129,6 @@ static const int THROTTLE = 3;
     }
     
     Puck *locationPuck = [Puck puckForBeacon:beacon];
-
-    if (locationPuck != nil) {
-        [[NSPCubeManager sharedManager] checkAndConnectToCubePuck:locationPuck];
-    }
 
     if (locationPuck == nil) {
         if (beacon.proximity == CLProximityImmediate) {

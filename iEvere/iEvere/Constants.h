@@ -21,6 +21,7 @@ extern NSString * const NSPDidEnterZone;
 extern NSString * const NSPDidLeaveZone;
 
 extern NSString * const NSPDidDisconnectFromPeripheral;
+extern NSString * const NSPDidSubscribeToCharacteristic;
 
 extern NSString * const NSPCubeChangedDirection;
 extern NSString * const NSPTriggerCubeChangedDirection;
