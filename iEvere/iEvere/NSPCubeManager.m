@@ -2,9 +2,11 @@
 #import "NSPCubeManager.h"
 #import "NSPUUIDUtils.h"
 #import "NSPBluetoothManager.h"
+#import "NSPTriggerManager.h"
 #import "NSPGattSubscribeOperation.h"
 #import "ServiceUUID.h"
 #import "Puck.h"
+#import "Trigger.h"
 
 @interface NSPCubeManager ()
 
@@ -34,6 +36,17 @@
         self.cubeServiceUUID = [NSPUUIDUtils stringToUUID:NSPCubeServiceUUIDString];
         self.cubeDirectionCharacteristicUUID = [NSPUUIDUtils stringToUUID:@"bftj cube dirctn"];
         self.subscribedCubes = [[NSMutableArray alloc] init];
+
+        [[NSPTriggerManager sharedManager] registerTriggers:@[
+                      [[Trigger alloc] initWithDisplayName:@"Cube turns up" forNotification:NSPCubeChangedDirection],
+                      [[Trigger alloc] initWithDisplayName:@"Cube turns down" forNotification:NSPCubeChangedDirection],
+                      [[Trigger alloc] initWithDisplayName:@"Cube turns left" forNotification:NSPCubeChangedDirection],
+                      [[Trigger alloc] initWithDisplayName:@"Cube turns right" forNotification:NSPCubeChangedDirection],
+                      [[Trigger alloc] initWithDisplayName:@"Cube turns back" forNotification:NSPCubeChangedDirection],
+                      [[Trigger alloc] initWithDisplayName:@"Cube turns front" forNotification:NSPCubeChangedDirection]
+                                                             ]
+                                             forServiceUUID:self.cubeServiceUUID
+                                                 withPrefix:NSPTRIGGER_CUBE];
 
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(cubeChangedDirection:)
@@ -94,6 +107,7 @@
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:NSPCubeChangedDirection object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:NSPDidDisconnectFromPeripheral object:nil];
 }
 
 @end

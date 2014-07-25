@@ -5,6 +5,7 @@
 #import "NSPActionController.h"
 #import "NSPServiceUUIDController.h"
 #import "NSPRuleController.h"
+#import "NSPTriggerManager.h"
 #import "NSPLocationManager.h"
 #import "NSPBluetoothManager.h"
 #import "NSPCubeManager.h"
@@ -54,6 +55,7 @@
     // Initialize managers
     [NSPBluetoothManager sharedManager];
     [NSPCubeManager sharedManager];
+    [NSPTriggerManager sharedManager];
 
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:initialViewController];
     self.window.rootViewController = navController;

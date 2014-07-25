@@ -7,6 +7,7 @@ NSString * const NSPDidDisconnectFromPeripheral = @"NSPDidDisconnectFromPeripher
 NSString * const NSPCubeChangedDirection = @"NSPCubeChangedDirection";
 NSString * const NSPTriggerCubeChangedDirection = @"NSPTriggerCubeChangedDirection";
 
+NSString * const NSPServiceUUIDString = @"bftj            ";
 NSString * const NSPCubeServiceUUIDString = @"bftj cube       ";
 NSString * const NSPIRServiceUUIDString = @"bftj ir         ";
 NSString * const NSPDisplayServiceUUIDString = @"bftj display    ";

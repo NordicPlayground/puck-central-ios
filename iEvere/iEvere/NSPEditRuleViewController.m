@@ -3,8 +3,10 @@
 #import "Rule.h"
 #import "Puck.h"
 #import "Action.h"
+#import "Trigger.h"
 #import "NSPActuatorController.h"
 #import "NSPRuleController.h"
+#import "NSPTriggerManager.h"
 #import "NSPSelectActuatorViewController.h"
 
 @interface NSPEditRuleViewController ()
@@ -22,7 +24,9 @@
     if (self) {
         self.rule = rule;
         self.puck = puck;
-        self.title = [NSString stringWithFormat:@"%@: %@", self.puck.name, [Rule nameForTrigger:self.rule.trigger.intValue]];
+
+        Trigger *trigger = [[NSPTriggerManager sharedManager] triggerForIdentifier:self.rule.trigger];
+        self.title = [NSString stringWithFormat:@"%@: %@", self.puck.name, [trigger displayName]];
     }
     return self;
 }

@@ -14,6 +14,4 @@
 - (void)addActionsObject:(Action *)object;
 - (void)addActions:(NSSet *)objects;
 
-+ (NSString *)nameForTrigger:(NSPTrigger)trigger;
-
 @end

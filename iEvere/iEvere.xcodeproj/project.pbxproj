@@ -48,6 +48,8 @@
 		CC3795761961522300E8A0C8 /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = CC3795751961522300E8A0C8 /* Constants.m */; };
 		CC3AAAC0195AB29600DCA6C0 /* NSPSelectPuckViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CC3AAABE195AB29600DCA6C0 /* NSPSelectPuckViewController.m */; };
 		CC3AAAC1195AB29600DCA6C0 /* NSPSelectPuckViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CC3AAABF195AB29600DCA6C0 /* NSPSelectPuckViewController.xib */; };
+		CC447336197FB07F00009A53 /* NSPTriggerManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CC447335197FB07F00009A53 /* NSPTriggerManager.m */; };
+		CC447339197FB27900009A53 /* Trigger.m in Sources */ = {isa = PBXBuildFile; fileRef = CC447338197FB27900009A53 /* Trigger.m */; };
 		CC888AB41966CE3A00248026 /* NSPBluetoothManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CC888AB11966CE3A00248026 /* NSPBluetoothManager.m */; };
 		CC888AB51966CE3A00248026 /* NSPIRActuator.m in Sources */ = {isa = PBXBuildFile; fileRef = CC888AB31966CE3A00248026 /* NSPIRActuator.m */; };
 		CCADFDC019742C9D00D85696 /* NSPUUIDUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = CCADFDBF19742C9D00D85696 /* NSPUUIDUtils.m */; };
@@ -155,6 +157,10 @@
 		CC3AAABD195AB29600DCA6C0 /* NSPSelectPuckViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSPSelectPuckViewController.h; sourceTree = "<group>"; };
 		CC3AAABE195AB29600DCA6C0 /* NSPSelectPuckViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSPSelectPuckViewController.m; sourceTree = "<group>"; };
 		CC3AAABF195AB29600DCA6C0 /* NSPSelectPuckViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NSPSelectPuckViewController.xib; sourceTree = "<group>"; };
+		CC447334197FB07F00009A53 /* NSPTriggerManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSPTriggerManager.h; sourceTree = "<group>"; };
+		CC447335197FB07F00009A53 /* NSPTriggerManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSPTriggerManager.m; sourceTree = "<group>"; };
+		CC447337197FB27900009A53 /* Trigger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Trigger.h; sourceTree = "<group>"; };
+		CC447338197FB27900009A53 /* Trigger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Trigger.m; sourceTree = "<group>"; };
 		CC888AB01966CE3A00248026 /* NSPBluetoothManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSPBluetoothManager.h; sourceTree = "<group>"; };
 		CC888AB11966CE3A00248026 /* NSPBluetoothManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSPBluetoothManager.m; sourceTree = "<group>"; };
 		CC888AB21966CE3A00248026 /* NSPIRActuator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSPIRActuator.h; sourceTree = "<group>"; };
@@ -333,6 +339,7 @@
 				CC22A28D197D0A4E00334D92 /* Cube */,
 				CC37956C195D85AE00E8A0C8 /* Location */,
 				CC019788195AE5EB0032A0E1 /* Puck */,
+				CC447333197FB06800009A53 /* Trigger */,
 				CCFBDA4F19619543001B26B8 /* Rule */,
 				CCFBDA561961A043001B26B8 /* Action */,
 				CCFBDA4419618502001B26B8 /* Actuators */,
@@ -388,6 +395,17 @@
 				CC37956E195D85C300E8A0C8 /* NSPLocationManager.m */,
 			);
 			name = Location;
+			sourceTree = "<group>";
+		};
+		CC447333197FB06800009A53 /* Trigger */ = {
+			isa = PBXGroup;
+			children = (
+				CC447334197FB07F00009A53 /* NSPTriggerManager.h */,
+				CC447335197FB07F00009A53 /* NSPTriggerManager.m */,
+				CC447337197FB27900009A53 /* Trigger.h */,
+				CC447338197FB27900009A53 /* Trigger.m */,
+			);
+			name = Trigger;
 			sourceTree = "<group>";
 		};
 		CC888AB61966CE4100248026 /* Bluetooth */ = {
@@ -613,6 +631,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CC447339197FB27900009A53 /* Trigger.m in Sources */,
 				87A384CF196545D9003D2CFB /* NSPConfigureActionViewController.m in Sources */,
 				CCFBDA4819618561001B26B8 /* NSPHTTPActuator.m in Sources */,
 				CCFBDA55196196D6001B26B8 /* Action.m in Sources */,
@@ -643,6 +662,7 @@
 				87FB58B91979530C0079AF07 /* NSPMusicActuator.m in Sources */,
 				CC379572195D8FEF00E8A0C8 /* NSPPuckController.m in Sources */,
 				87CBE3A0197F97FC00CEB373 /* NSPPuckActuator.m in Sources */,
+				CC447336197FB07F00009A53 /* NSPTriggerManager.m in Sources */,
 				CCFBDA4E196194F3001B26B8 /* Rule.m in Sources */,
 				CCFBDA521961955E001B26B8 /* NSPRuleController.m in Sources */,
 				874907391964311D00ED254D /* NSPEditRuleViewController.m in Sources */,

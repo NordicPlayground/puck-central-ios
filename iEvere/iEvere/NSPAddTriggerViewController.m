@@ -2,12 +2,15 @@
 #import "NSPAddTriggerViewController.h"
 #import "NSPSelectActuatorViewController.h"
 #import "NSPRuleController.h"
+#import "NSPTriggerManager.h"
 #import "Puck.h"
 #import "Rule.h"
+#import "Trigger.h"
 
 @interface NSPAddTriggerViewController ()
 
 @property (nonatomic, strong) Rule *rule;
+@property (nonatomic, strong) NSArray *triggers;
 
 @end
 
@@ -20,6 +23,8 @@
         self.rule = rule;
         
         self.title = [NSString stringWithFormat:@"Add trigger for %@", rule.puck.name];
+        self.triggers = [[NSPTriggerManager sharedManager] triggersForPuck:rule.puck];
+        NSLog(@"Did initialize triggers: %@", self.triggers);
     }
     return self;
 }
@@ -38,7 +43,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return NSPTriggerNumberOfTriggers;
+    return [self.triggers count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -49,14 +54,14 @@
     }
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 
-    cell.textLabel.text = [Rule nameForTrigger:(NSPTrigger)indexPath.row];
+    cell.textLabel.text = [(Trigger *)self.triggers[indexPath.row] displayName];
     
     return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    self.rule.trigger = @(indexPath.row);
+    self.rule.trigger =[(Trigger *)self.triggers[indexPath.row] identifier];
     NSPSelectActuatorViewController *selectActuatorViewController = [[NSPSelectActuatorViewController alloc] initWithRule:self.rule];
     
     [tableView deselectRowAtIndexPath:indexPath animated:YES];

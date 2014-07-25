@@ -3,7 +3,9 @@
 #import "Rule.h"
 #import "Action.h"
 #import "Puck.h"
+#import "Trigger.h"
 #import "NSPActuatorController.h"
+#import "NSPTriggerManager.h"
 
 @implementation NSPRuleController
 
@@ -69,13 +71,15 @@
 - (void)enterZone:(NSNotification *)notification
 {
     Puck *puck = notification.userInfo[@"puck"];
-    [self executeTrigger:NSPTriggerEnterZone withPuck:puck];
+    NSArray *triggers = [[NSPTriggerManager sharedManager] triggersForNotification:NSPDidEnterZone];
+    [self executeTrigger:triggers[0] withPuck:puck];
 }
 
 - (void)leaveZone:(NSNotification *)notification
 {
     Puck *puck = notification.userInfo[@"puck"];
-    [self executeTrigger:NSPTriggerLeaveZone withPuck:puck];
+    NSArray *triggers = [[NSPTriggerManager sharedManager] triggersForNotification:NSPDidLeaveZone];
+    [self executeTrigger:triggers[0] withPuck:puck];
 }
 
 - (void)cubeChangedDirection:(NSNotification *)notification
@@ -83,39 +87,16 @@
     Puck *puck = notification.userInfo[@"puck"];
     NSNumber *direction = notification.userInfo[@"direction"];
 
-    switch ([direction integerValue]) {
-        case NSPCubeDirectionUP:
-            [self executeTrigger:NSPTriggerCubeDirectionUP withPuck:puck];
-            break;
-        case NSPCubeDirectionDOWN:
-            [self executeTrigger:NSPTriggerCubeDirectionDOWN withPuck:puck];
-            break;
-        case NSPCubeDirectionBACK:
-            [self executeTrigger:NSPTriggerCubeDirectionBACK withPuck:puck];
-            break;
-        case NSPCubeDirectionFRONT:
-            [self executeTrigger:NSPTriggerCubeDirectionFRONT withPuck:puck];
-            break;
-        case NSPCubeDirectionLEFT:
-            [self executeTrigger:NSPTriggerCubeDirectionLEFT withPuck:puck];
-            break;
-        case NSPCubeDirectionRIGHT:
-            [self executeTrigger:NSPTriggerCubeDirectionRIGHT withPuck:puck];
-            break;
+    NSArray *triggers = [[NSPTriggerManager sharedManager] triggersForNotification:NSPCubeChangedDirection];
 
-        default:
-            NSLog(@"Unknown value: %@ for cube puck: %@", direction, puck);
-            return;
-
-            break;
-    }
+    [self executeTrigger:triggers[[direction intValue]] withPuck:puck];
 }
 
-- (void)executeTrigger:(NSPTrigger)trigger withPuck:(Puck *)puck
+- (void)executeTrigger:(Trigger *)trigger withPuck:(Puck *)puck
 {
     NSFetchRequest *request = [self fetchRequest];
     NSArray *predicates = @[
-                            [NSPredicate predicateWithFormat:@"trigger == %d", trigger],
+                            [NSPredicate predicateWithFormat:@"trigger == %d", [trigger.identifier intValue]],
                             [NSPredicate predicateWithFormat:@"puck == %@", puck]
                             ];
     request.predicate = [NSCompoundPredicate andPredicateWithSubpredicates:predicates];
@@ -125,7 +106,7 @@
     if (rules == nil) {
         NSLog(@"Error: %@", error);
     } else if (rules.count > 0) {
-        NSLog(@"Execute new trigger! %ld, %@", trigger, puck.name);
+        NSLog(@"Execute new trigger! %@, %@", trigger.identifier, puck.name);
         for (Rule *rule in rules) {
             for (Action *action in rule.actions) {
                 [NSPActuatorController actuate:action.actuatorId withOptions:[action decodedOptions]];

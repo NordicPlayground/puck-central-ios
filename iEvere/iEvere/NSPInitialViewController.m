@@ -7,12 +7,14 @@
 #import "NSPSelectPuckViewController.h"
 #import "NSPRuleController.h"
 #import "Rule.h"
+#import "Trigger.h"
 #import "NSPRuleTableViewCell.h"
 #import "NSPEditRuleViewController.h"
 #import "NSPServiceUUIDController.h"
 #import "NSPGattDiscoverOperation.h"
 #import "NSPGattDisconnectOperation.h"
 #import "NSPCubeManager.h"
+#import "NSPTriggerManager.h"
 
 
 @interface NSPInitialViewController () <UIActionSheetDelegate>
@@ -179,7 +181,8 @@
         Puck *puck = self.pucks[indexPath.section];
         Rule *rule = [puck.rules objectAtIndex:indexPath.row];
         
-        cell.triggerLabel.text = [NSString stringWithFormat:@"When: %@", [Rule nameForTrigger:rule.trigger.intValue]];
+        Trigger *trigger = [[NSPTriggerManager sharedManager] triggerForIdentifier:rule.trigger];
+        cell.triggerLabel.text = [NSString stringWithFormat:@"When: %@", [trigger displayName]];
         
         cell.actions = rule.actions.allObjects;
         
