@@ -6,10 +6,10 @@
 #import "NSPUUIDUtils.h"
 #import "NSPGattWriteOperation.h"
 #import "NSPBluetoothManager.h"
-#import "NSPServiceUUIDController.h"
 #import "NSPPuckController.h"
 #import "lz.h"
 #import "NSPLocationManager.h"
+#import "NSPPuckSelector.h"
 
 typedef NS_ENUM(NSUInteger, NSPImageSection) {
     NSPImageSectionUpper,
@@ -69,22 +69,11 @@ typedef NS_ENUM(NSUInteger, NSPImageSection) {
     text.required = YES;
     [section addFormRow:text];
     
-    XLFormRowDescriptor *minorNumRow = [XLFormRowDescriptor formRowDescriptorWithTag:@"minor"
-                                                                             rowType:XLFormRowDescriptorTypeSelectorPush
-                                                                               title:@"Puck"];
-    minorNumRow.required = YES;
-    NSFetchRequest *fetchRequest = [[NSPServiceUUIDController sharedController] fetchRequest];
-    CBUUID *displayServiceUUID = [CBUUID UUIDWithNSUUID:[NSPUUIDUtils stringToUUID:NSPDisplayServiceUUIDString]];
-    [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"uuid == %@", displayServiceUUID.UUIDString]];
-    NSError *error;
-    NSArray *service = [[[NSPServiceUUIDController sharedController] managedObjectContext] executeFetchRequest:fetchRequest
-                                                                                                       error:&error];
-    if (service != nil && service.count > 0) {
-        minorNumRow.selectorOptions = [[service[0] pucks] allObjects];
-    } else {
-        NSLog(@"Error: %@", error);
-    }
-    [section addFormRow:minorNumRow];
+    XLFormRowDescriptor *puckRow = [[NSPPuckSelector alloc] initWithTag:@"minor"
+                                                            serviceUUID:[NSPUUIDUtils stringToUUID:NSPDisplayServiceUUIDString]
+                                                                  title:@"Puck"];
+    puckRow.required = YES;
+    [section addFormRow:puckRow];
     
     return form;
 }
