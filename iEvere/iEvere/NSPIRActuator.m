@@ -42,10 +42,23 @@
     samsungRemote.codes = @[
                             [[NSPIRCode alloc] initWithDisplayName:@"Power on/off" andHexCode:@0x20DF],
                             ];
+
+    NSPRemote *meetingRoom31ScreenRemote = [[NSPRemote alloc] initWithName:@"Screen at 3-1"];
+    meetingRoom31ScreenRemote.header = @[@4500, @4500];
+    meetingRoom31ScreenRemote.one = @[@560, @1680];
+    meetingRoom31ScreenRemote.zero = @[@560, @560];
+    meetingRoom31ScreenRemote.predata = 0xE0E0;
+    meetingRoom31ScreenRemote.ptrail = 560;
+    meetingRoom31ScreenRemote.codes = @[
+                            [[NSPIRCode alloc] initWithDisplayName:@"Screen up" andHexCode:@0x1111],
+                            [[NSPIRCode alloc] initWithDisplayName:@"Screen middle" andHexCode:@0x1112],
+                            [[NSPIRCode alloc] initWithDisplayName:@"Screen down" andHexCode:@0x1113],
+                            ];
     
     return @{
              appleRemote.name: appleRemote,
-             samsungRemote.name: samsungRemote
+             samsungRemote.name: samsungRemote,
+             meetingRoom31ScreenRemote.name: meetingRoom31ScreenRemote
              };
 }
 
