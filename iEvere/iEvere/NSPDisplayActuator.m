@@ -9,6 +9,7 @@
 #import "NSPGattTransaction.h"
 #import "lz.h"
 #import "NSPPuckSelector.h"
+#import "NSPWeatherService.h"
 
 typedef NS_ENUM(NSUInteger, NSPImageSection) {
     NSPImageSectionUpper,
@@ -61,10 +62,16 @@ typedef NS_ENUM(NSUInteger, NSPImageSection) {
     XLFormSectionDescriptor *section = [XLFormSectionDescriptor formSection];
     [form addFormSection:section];
     
+    XLFormRowDescriptor *type = [XLFormRowDescriptor formRowDescriptorWithTag:@"type"
+                                                                      rowType:XLFormRowDescriptorTypeSelectorPush
+                                                                        title:@"Type"];
+    type.required = YES;
+    type.selectorOptions = @[@"Space", @"Weather", @"Custom text", @"Email"];
+    [section addFormRow:type];
+    
     XLFormRowDescriptor *text = [XLFormRowDescriptor formRowDescriptorWithTag:@"text"
                                                                       rowType:XLFormRowDescriptorTypeTextView
                                                                         title:@"Text"];
-    
     text.required = YES;
     [section addFormRow:text];
     
@@ -79,13 +86,36 @@ typedef NS_ENUM(NSUInteger, NSPImageSection) {
 
 - (NSString *)stringForOptions:(NSDictionary *)options
 {
-    return [NSString stringWithFormat:@"Display %@", options[@"text"]];
+    return [NSString stringWithFormat:@"Display %@: %@", options[@"type"], options[@"text"]];
 }
 
 - (void)actuateOnPuck:(Puck *)puck withOptions:(NSDictionary *)options
 {
-    UIImage *image = [self render:options[@"text"]];
-    
+    if ([options[@"type"] isEqualToString:@"Space"]) {
+        [self writeImage:[self renderImage:[UIImage imageNamed:@"display-space"]
+                              withHeadline:@"Space count"
+                                  andLabel:@"6"]
+                  toPuck:puck];
+    } else if ([options[@"type"] isEqualToString:@"Custom text"]) {
+        [self writeImage:[self render:options[@"text"]] toPuck:puck];
+    } else if ([options[@"type"] isEqualToString:@"Weather"]) {
+        NSPWeatherService *weatherService = [[NSPWeatherService alloc] init];
+        [weatherService currentTemperature:^(NSString *temperature) {
+            [self writeImage:[self renderImage:[UIImage imageNamed:@"display-weather"]
+                                  withHeadline:@"Weather"
+                                      andLabel:temperature]
+                      toPuck:puck];
+        }];
+    } else if ([options[@"type"] isEqualToString:@"Email"]) {
+        [self writeImage:[self renderImage:[UIImage imageNamed:@"display-email"]
+                              withHeadline:@"Unread email"
+                                  andLabel:@"3"]
+                  toPuck:puck];
+    }
+}
+
+- (void)writeImage:(UIImage *)image toPuck:(Puck *)puck
+{
     NSLog(@"Write image");
     self.transaction = [[NSPGattTransaction alloc] initWithTimeout:20];
     [self writeImage:image
@@ -114,9 +144,11 @@ typedef NS_ENUM(NSUInteger, NSPImageSection) {
     
     // Send half the image, and each 8 pixels are grouped in one byte
     int ePaperFormatLength = image.size.width * image.size.height / 2 / 8;
+    NSLog(@"length: %d", ePaperFormatLength);
     
     uint8_t payload[ePaperFormatLength * (257/256) + 1]; // Worst case compression is 0.4% + 1 byte larger than insize
     int payloadLength = LZ_Compress(ePaperFormat, payload, ePaperFormatLength);
+    NSLog(@"payload size: %d", payloadLength);
     
     for (int i=0; i < payloadLength; i += max_bytes_per_write) {
         NSData *value = [NSData dataWithBytes:(payload+i)
@@ -230,6 +262,82 @@ typedef NS_ENUM(NSUInteger, NSPImageSection) {
     UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     return image;
+}
+
+- (UIImage *)renderImage:(UIImage *)background withHeadline:(NSString *)headline andLabel:(NSString *)label
+{
+    UIGraphicsBeginImageContextWithOptions(CGSizeMake(264.0, 176.0), YES, 1.f);
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    
+    CGContextTranslateCTM(context, 0.0, 176.0);
+    CGContextScaleCTM(context, 1.0, -1.0);
+    CGContextSetTextMatrix(context, CGAffineTransformIdentity);
+    
+    CGContextDrawImage(context, CGRectMake(0.0, 0.0, 264.0, 176.0), background.CGImage);
+    
+    NSDictionary *fontAttributes = @{
+                                     (NSString *)kCTFontFamilyNameAttribute: @"Helvetica",
+                                     (NSString *)kCTFontStyleNameAttribute: @"Regular",
+                                     (NSString *)kCTFontSizeAttribute: @42,
+                                     };
+    [self drawText:label
+    withAttributes:fontAttributes
+           atPoint:CGPointMake(77.0, 80.0)
+         withColor:[UIColor whiteColor]
+         inContext:context];
+    
+    fontAttributes = @{
+                       (NSString *)kCTFontFamilyNameAttribute: @"Georgia",
+                       (NSString *)kCTFontStyleNameAttribute: @"Regular",
+                       (NSString *)kCTFontSizeAttribute: @22,
+                       };
+    [self drawText:headline
+    withAttributes:fontAttributes
+           atPoint:CGPointMake(77.0, 140.0)
+         withColor:[UIColor blackColor]
+         inContext:context];
+    
+    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return image;
+}
+
+- (void)drawText:(NSString *)text
+  withAttributes:(NSDictionary *)fontAttributes
+         atPoint:(CGPoint)point
+       withColor:(UIColor *)color
+       inContext:(CGContextRef)context
+{
+    CFStringRef textString = (__bridge CFStringRef)text;
+    CTFontDescriptorRef descriptor = CTFontDescriptorCreateWithAttributes((CFDictionaryRef)fontAttributes);
+    
+    CTFontRef font = CTFontCreateWithFontDescriptor(descriptor, 0.0, NULL);
+    
+    CFRelease(descriptor);
+    
+    CFStringRef keys[] = { kCTFontAttributeName, kCTForegroundColorAttributeName };
+    CFTypeRef values[] = { font, color.CGColor };
+    
+    CFDictionaryRef attributes =
+        CFDictionaryCreate(
+                           kCFAllocatorDefault,
+                           (const void**)&keys,
+                           (const void**)&values,
+                           sizeof(keys) / sizeof(keys[0]),
+                           &kCFTypeDictionaryKeyCallBacks,
+                           &kCFTypeDictionaryValueCallBacks
+                           );
+    CFAttributedStringRef attrString = CFAttributedStringCreate(kCFAllocatorDefault, textString, attributes);
+
+    
+    CFRelease(textString);
+    CFRelease(attributes);
+    
+    CTLineRef line = CTLineCreateWithAttributedString(attrString);
+    CGRect bounds = CTLineGetBoundsWithOptions(line, kCTLineBoundsUseGlyphPathBounds);
+    
+    CGContextSetTextPosition(context, point.x - bounds.size.width / 2, point.y - bounds.size.height / 2);
+    CTLineDraw(line, context);
 }
 
 @end
