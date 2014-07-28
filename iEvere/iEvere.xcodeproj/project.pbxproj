@@ -13,6 +13,7 @@
 		876E0D6F19810BD900E014DC /* NSPPuckSelector.m in Sources */ = {isa = PBXBuildFile; fileRef = 876E0D6E19810BD900E014DC /* NSPPuckSelector.m */; };
 		876E0D7219814CD000E014DC /* NSPGattTransaction.m in Sources */ = {isa = PBXBuildFile; fileRef = 876E0D7119814CD000E014DC /* NSPGattTransaction.m */; };
 		876E0D7519823C5600E014DC /* NSPRemote.m in Sources */ = {isa = PBXBuildFile; fileRef = 876E0D7419823C5600E014DC /* NSPRemote.m */; };
+		876E0D7E1982B2BF00E014DC /* NSPWeatherService.m in Sources */ = {isa = PBXBuildFile; fileRef = 876E0D7D1982B2BF00E014DC /* NSPWeatherService.m */; };
 		8796809D198102FC008E41BB /* NSPGattDisconnectOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 8796809C198102FC008E41BB /* NSPGattDisconnectOperation.m */; };
 		879CAF591962E4AA00DF8492 /* NSPRuleTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 879CAF581962E4AA00DF8492 /* NSPRuleTableViewCell.m */; };
 		87A384CF196545D9003D2CFB /* NSPConfigureActionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 879CAF5B1962F56D00DF8492 /* NSPConfigureActionViewController.m */; };
@@ -102,6 +103,8 @@
 		876E0D7119814CD000E014DC /* NSPGattTransaction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSPGattTransaction.m; sourceTree = "<group>"; };
 		876E0D7319823C5600E014DC /* NSPRemote.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSPRemote.h; sourceTree = "<group>"; };
 		876E0D7419823C5600E014DC /* NSPRemote.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSPRemote.m; sourceTree = "<group>"; };
+		876E0D7C1982B2BF00E014DC /* NSPWeatherService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSPWeatherService.h; sourceTree = "<group>"; };
+		876E0D7D1982B2BF00E014DC /* NSPWeatherService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSPWeatherService.m; sourceTree = "<group>"; };
 		8796809B198102FC008E41BB /* NSPGattDisconnectOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSPGattDisconnectOperation.h; sourceTree = "<group>"; };
 		8796809C198102FC008E41BB /* NSPGattDisconnectOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSPGattDisconnectOperation.m; sourceTree = "<group>"; };
 		879CAF571962E4AA00DF8492 /* NSPRuleTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSPRuleTableViewCell.h; sourceTree = "<group>"; };
@@ -235,6 +238,15 @@
 			name = "Edit Rule UI";
 			sourceTree = "<group>";
 		};
+		876E0D7B1982B2AB00E014DC /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				876E0D7C1982B2BF00E014DC /* NSPWeatherService.h */,
+				876E0D7D1982B2BF00E014DC /* NSPWeatherService.m */,
+			);
+			name = Services;
+			sourceTree = "<group>";
+		};
 		879CAF561962D5A700DF8492 /* Add Rule UI */ = {
 			isa = PBXGroup;
 			children = (
@@ -349,6 +361,7 @@
 				CC2079021975131100205FB0 /* ServiceUUID */,
 				CCADFDBD19742C6300D85696 /* Utils */,
 				87FB58BD197D20E70079AF07 /* Libs */,
+				876E0D7B1982B2AB00E014DC /* Services */,
 			);
 			path = iEvere;
 			sourceTree = "<group>";
@@ -645,6 +658,7 @@
 				879CAF591962E4AA00DF8492 /* NSPRuleTableViewCell.m in Sources */,
 				CCFBDA42196183D3001B26B8 /* NSPSelectActuatorViewController.m in Sources */,
 				CCCC23341977CA520002F246 /* NSPGattWriteOperation.m in Sources */,
+				876E0D7E1982B2BF00E014DC /* NSPWeatherService.m in Sources */,
 				CC22A290197D0A5E00334D92 /* NSPCubeManager.m in Sources */,
 				CCFBDA4B19618A22001B26B8 /* NSPActuatorController.m in Sources */,
 				CC20790119750AEB00205FB0 /* ServiceUUID.m in Sources */,
@@ -761,8 +775,14 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					/usr/include/libxml2,
+				);
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				ONLY_ACTIVE_ARCH = YES;
+				OTHER_LDFLAGS = "-lxml2";
 				SDKROOT = iphoneos7.1;
 			};
 			name = Debug;
@@ -794,7 +814,13 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					/usr/include/libxml2,
+				);
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				OTHER_LDFLAGS = "-lxml2";
 				SDKROOT = iphoneos7.1;
 				VALIDATE_PRODUCT = YES;
 			};
