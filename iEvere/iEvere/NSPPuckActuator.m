@@ -6,15 +6,6 @@
 
 @implementation NSPPuckActuator
 
-- (id)init
-{
-    self = [super init];
-    if (self) {
-        self.transaction = [[NSPGattTransaction alloc] init];
-    }
-    return self;
-}
-
 - (void)writeValue:(NSData *)value
         forService:(NSUUID *)serviceUUID
     characteristic:(NSUUID *)characteristicUUID

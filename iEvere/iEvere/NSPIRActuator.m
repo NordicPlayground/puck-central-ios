@@ -6,6 +6,7 @@
 #import "NSPRemote.h"
 #import "NSPPuckSelector.h"
 #import "Puck.h"
+#import "NSPGattTransaction.h"
 
 @implementation NSPIRActuator
 
@@ -135,6 +136,8 @@
     NSUUID *ptrailUUID  = [NSPUUIDUtils stringToUUID:@"bftj ir ptrail  "];
     NSUUID *predataUUID = [NSPUUIDUtils stringToUUID:@"bftj ir predata "];
     NSUUID *codeUUID    = [NSPUUIDUtils stringToUUID:@"bftj ir code    "];
+    
+    self.transaction = [[NSPGattTransaction alloc] init];
     
     [self writeValue:headerData forService:serviceUUID characteristic:headerUUID onPuck:puck];
     [self writeValue:oneData forService:serviceUUID characteristic:oneUUID onPuck:puck];

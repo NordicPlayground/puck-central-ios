@@ -5,8 +5,6 @@
 #import "NSPGattOperation.h"
 #import "NSPLocationManager.h"
 
-#define TIMEOUT_IN_SECONDS 9
-
 @interface NSPBluetoothManager ()
 
 @property (nonatomic, strong) CBCentralManager *centralManager;
@@ -77,7 +75,7 @@
     _activeOperation = activeOperation;
     
     if (activeOperation != nil) {
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(TIMEOUT_IN_SECONDS * NSEC_PER_SEC)), self.centralQueue, ^{
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(self.activeTransaction.timeout * NSEC_PER_SEC)), self.centralQueue, ^{
             if ([self.activeOperation isEqual:activeOperation]) {
                 NSLog(@"%@ timed out", [self.activeOperation class]);
                 [self abortTransaction];

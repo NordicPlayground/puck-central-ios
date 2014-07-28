@@ -6,6 +6,7 @@
 #import "NSPUUIDUtils.h"
 #import "NSPBluetoothManager.h"
 #import "NSPPuckController.h"
+#import "NSPGattTransaction.h"
 #import "lz.h"
 #import "NSPPuckSelector.h"
 
@@ -86,6 +87,7 @@ typedef NS_ENUM(NSUInteger, NSPImageSection) {
     UIImage *image = [self render:options[@"text"]];
     
     NSLog(@"Write image");
+    self.transaction = [[NSPGattTransaction alloc] initWithTimeout:20];
     [self writeImage:image
              section:NSPImageSectionUpper
               toPuck:puck];
