@@ -355,7 +355,15 @@ didUpdateValueForCharacteristic:(CBCharacteristic *)characteristic
     }
     
     for (id<NSPGattOperation> operation in self.subscribedOperations) {
-        [operation didUpdateValueForCharacteristic:characteristic];
+        if ([operation respondsToSelector:@selector(didUpdateValueForCharacteristic:)]) {
+            if (![operation respondsToSelector:@selector(characteristicUUID)]) {
+                [NSException raise:@"Missing property characteristicUUID" format:@"This needs to be set when implementing didUpdateValueForCharacteristic"];
+                continue;
+            }
+            if ([peripheral.identifier isEqual:[operation.puck UUID]]) {
+                [operation didUpdateValueForCharacteristic:characteristic];
+            }
+        }
     }
 }
 
