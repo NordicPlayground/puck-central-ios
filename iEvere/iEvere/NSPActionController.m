@@ -37,14 +37,14 @@
     if (jsonData) {
         action.options = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
     } else {
-        NSLog(@"Error: %@", error);
+        DDLogError(error.localizedDescription);
     }
     
     if (![self.managedObjectContext save:&error]) {
-        NSLog(@"Error: %@", error);
+        DDLogError(error.localizedDescription);
     }
     
-    NSLog(@"Inserted");
+    DDLogDebug(@"Inserted action");
     
     return action;
 }

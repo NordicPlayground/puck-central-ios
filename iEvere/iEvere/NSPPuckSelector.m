@@ -17,7 +17,7 @@
         if (service != nil && service.count > 0) {
             self.selectorOptions = [[service[0] pucks] allObjects];
         } else {
-            NSLog(@"Error fetching pucks for service: %@", error);
+            DDLogError(@"Error fetching pucks for service: %@", error);
         }
     }
     return self;

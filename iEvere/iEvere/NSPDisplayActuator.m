@@ -116,7 +116,7 @@ typedef NS_ENUM(NSUInteger, NSPImageSection) {
 
 - (void)writeImage:(UIImage *)image toPuck:(Puck *)puck
 {
-    NSLog(@"Write image");
+    DDLogInfo(@"Write image");
     self.transaction = [[NSPGattTransaction alloc] initWithTimeout:20];
     [self writeImage:image
              section:NSPImageSectionUpper
@@ -144,11 +144,11 @@ typedef NS_ENUM(NSUInteger, NSPImageSection) {
     
     // Send half the image, and each 8 pixels are grouped in one byte
     int ePaperFormatLength = image.size.width * image.size.height / 2 / 8;
-    NSLog(@"length: %d", ePaperFormatLength);
+    DDLogDebug(@"length: %d", ePaperFormatLength);
     
     uint8_t payload[ePaperFormatLength * (257/256) + 1]; // Worst case compression is 0.4% + 1 byte larger than insize
     int payloadLength = LZ_Compress(ePaperFormat, payload, ePaperFormatLength);
-    NSLog(@"payload size: %d", payloadLength);
+    DDLogDebug(@"payload size: %d", payloadLength);
     
     for (int i=0; i < payloadLength; i += max_bytes_per_write) {
         NSData *value = [NSData dataWithBytes:(payload+i)

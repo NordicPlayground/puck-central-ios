@@ -59,10 +59,10 @@
     NSUInteger count = [self.managedObjectContext countForFetchRequest:request error:&error];
     if (count == NSNotFound) {
         if (error) {
-            NSLog(@"Error: %@", error);
+            DDLogError(error.localizedDescription);
         } else {
             if (![self.managedObjectContext save:&error]) {
-                NSLog(@"Error: %@", error);
+                DDLogError(error.localizedDescription);
             }
         }
     }
@@ -104,9 +104,9 @@
     NSError *error;
     NSArray *rules = [self.managedObjectContext executeFetchRequest:request error:&error];
     if (rules == nil) {
-        NSLog(@"Error: %@", error);
+        DDLogError(error.localizedDescription);
     } else if (rules.count > 0) {
-        NSLog(@"Execute new trigger! %@, %@", trigger.identifier, puck.name);
+        DDLogInfo(@"Execute new trigger! %@, %@", trigger.identifier, puck.name);
         for (Rule *rule in rules) {
             for (Action *action in rule.actions) {
                 [NSPActuatorController actuate:action.actuatorId withOptions:[action decodedOptions]];

@@ -44,7 +44,7 @@
 {
     NSArray *errors = [self formValidationErrors];
     if (errors.count > 0) {
-        NSLog(@"Errors");
+        DDLogDebug(@"Errors in form");
         [self showFormValidationError:[errors firstObject]];
         return;
     }

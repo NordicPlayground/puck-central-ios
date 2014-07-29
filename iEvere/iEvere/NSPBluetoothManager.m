@@ -51,12 +51,12 @@
 
 - (void)queueTransaction:(NSPGattTransaction *)gattTransaction
 {
-    NSLog(@"queue transaction %@", gattTransaction);
+    DDLogInfo(@"queue transaction %@", gattTransaction);
     [self.transactionQueue addObject:gattTransaction];
     
     for (id<NSPGattOperation> gattOperation in gattTransaction.operationQueue) {
         [gattOperation addedToQueue:^() {
-            NSLog(@"Did complete the operation");
+            DDLogInfo(@"Did complete the operation");
             [self nextOperation];
         }];
     }
@@ -77,7 +77,7 @@
     if (activeOperation != nil) {
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(self.activeTransaction.timeout * NSEC_PER_SEC)), self.centralQueue, ^{
             if ([self.activeOperation isEqual:activeOperation]) {
-                NSLog(@"%@ timed out", [self.activeOperation class]);
+                DDLogDebug(@"%@ timed out", [self.activeOperation class]);
                 [self abortTransaction];
             }
         });
@@ -118,10 +118,10 @@
 - (void)nextTransaction
 {
     if (self.activeTransaction != nil) {
-        NSLog(@"Error: tried to drive queue before operation was complete!");
+        DDLogWarn(@"Tried to drive queue before operation was complete!");
         return;
     } else if (self.transactionQueue.count == 0) {
-        NSLog(@"No more transactions for now");
+        DDLogDebug(@"No more transactions for now");
         [self.centralManager stopScan];
         return;
     }
@@ -133,7 +133,7 @@
 - (void)abortTransaction
 {
     if (self.activeTransaction != nil) {
-        NSLog(@"Aborting transaction %@", [self.activeOperation class]);
+        DDLogInfo(@"Aborting transaction %@", [self.activeOperation class]);
         [_centralManager cancelPeripheralConnection:self.activeTransaction.peripheral];
         if ([self.activeOperation respondsToSelector:@selector(didAbortOperation)]) {
             [self.activeOperation didAbortOperation];
@@ -170,7 +170,7 @@
             }
         }
     } else {
-        NSLog(@"Error, Core Bluetooth BLE harware not powered on and ready");
+        DDLogError(@"Core Bluetooth BLE harware not powered on and ready");
     }
 }
 
@@ -194,23 +194,23 @@
     self.isCoreBluetoothReady = NO;
     switch (central.state) {
         case CBCentralManagerStatePoweredOn:
-            NSLog(@"CoreBluetooth BLE hardware is powered on and ready");
+            DDLogDebug(@"CoreBluetooth BLE hardware is powered on and ready");
             self.isCoreBluetoothReady = YES;
             break;
         case CBCentralManagerStatePoweredOff:
-            NSLog(@"CoreBluetooth BLE hardware is powered off");
+            DDLogDebug(@"CoreBluetooth BLE hardware is powered off");
             break;
         case CBCentralManagerStateResetting:
-            NSLog(@"CoreBluetooth BLE hardware is resetting");
+            DDLogDebug(@"CoreBluetooth BLE hardware is resetting");
             break;
         case CBCentralManagerStateUnsupported:
-            NSLog(@"CoreBluetooth BLE hardware is unsupported");
+            DDLogDebug(@"CoreBluetooth BLE hardware is unsupported");
             break;
         case CBCentralManagerStateUnauthorized:
-            NSLog(@"CoreBluetooth BLE hardware is unauthorized");
+            DDLogDebug(@"CoreBluetooth BLE hardware is unauthorized");
             break;
         case CBCentralManagerStateUnknown:
-            NSLog(@"CoreBluetooth BLE hardware is in an unknown state");
+            DDLogDebug(@"CoreBluetooth BLE hardware is in an unknown state");
             break;
     }
 }
@@ -227,7 +227,7 @@
     NSData *data = advertisementData[CBAdvertisementDataManufacturerDataKey];
     if (data != nil) {
         if ([data length] != 25) {
-            NSLog(@"Error: Advertisement data payload too small");
+            DDLogError(@"Advertisement data payload too small");
             return;
         }
 
@@ -253,7 +253,7 @@
 didFailToConnectPeripheral:(CBPeripheral *)peripheral
                  error:(NSError *)error
 {
-    NSLog(@"Did fail to connect to peripheral %@", peripheral);
+    DDLogError(@"Did fail to connect to peripheral %@ (%@)", peripheral, error.localizedDescription);
     [self.activePeripherals removeObject:peripheral];
     [self abortTransaction];
 }
@@ -262,9 +262,9 @@ didFailToConnectPeripheral:(CBPeripheral *)peripheral
 didDisconnectPeripheral:(CBPeripheral *)peripheral
                  error:(NSError *)error
 {
-    NSLog(@"Disconnect from peripheral %@", peripheral.identifier.UUIDString);
+    DDLogInfo(@"Disconnect from peripheral %@", peripheral.identifier.UUIDString);
     if (error && error.code != CBErrorPeripheralDisconnected) {
-        NSLog(@"Error: %@", error.localizedDescription);
+        DDLogError(error.localizedDescription);
         if ([self.activeTransaction.peripheral isEqual:peripheral]) {
             [self abortTransaction];
         }
@@ -295,7 +295,7 @@ didDisconnectPeripheral:(CBPeripheral *)peripheral
 didDiscoverServices:(NSError *)error
 {
     if (error) {
-        NSLog(@"Error discovering services for %@. Aborting operation.", [error localizedDescription]);
+        DDLogError(error.localizedDescription);
         [self abortTransaction];
         return;
     }
@@ -320,7 +320,7 @@ didDiscoverCharacteristicsForService:(CBService *)service
              error:(NSError *)error
 {
     if (error) {
-        NSLog(@"Error discovering characteristics %@", [error localizedDescription]);
+        DDLogError(@"Error discovering characteristics %@", error.localizedDescription);
         [self abortTransaction];
         return;
     }
@@ -343,7 +343,7 @@ didWriteValueForCharacteristic:(CBCharacteristic *)characteristic
              error:(NSError *)error
 {
     if (error) {
-        NSLog(@"Error writing characteristic value %@", [error localizedDescription]);
+        DDLogError(@"Error writing characteristic value %@", [error localizedDescription]);
         [self abortTransaction];
         return;
     }
@@ -357,7 +357,7 @@ didUpdateValueForCharacteristic:(CBCharacteristic *)characteristic
              error:(NSError *)error
 {
     if (error) {
-        NSLog(@"Error updating value for characteristic: %@ for peripheral: %@", characteristic, peripheral);
+        DDLogError(@"Error updating value for characteristic: %@ for peripheral: %@", characteristic, peripheral);
         return;
     }
     
@@ -379,10 +379,10 @@ didUpdateNotificationStateForCharacteristic:(CBCharacteristic *)characteristic
              error:(NSError *)error
 {
     if (error) {
-        NSLog(@"Error changing notification state: %@", error);
+        DDLogError(@"Error changing notification state: %@", error);
         return;
     }
-    NSLog(@"Did subscribe to characteristic: %@", characteristic.UUID.UUIDString);
+    DDLogInfo(@"Did subscribe to characteristic: %@", characteristic.UUID.UUIDString);
     
     [self subscribeOperation:self.activeOperation];
     if ([self.activeOperation respondsToSelector:@selector(didSubscribeToCharacteristic:)]) {
@@ -409,7 +409,7 @@ didUpdateNotificationStateForCharacteristic:(CBCharacteristic *)characteristic
     [data getBytes:&dataType range:dataTypeRange];
 
     if (dataType != 0x02 || dataLength != 0x15) {
-        NSLog(@"Wrong start to payload, expected: 0xXXXX0215 got: 0xXXXX%x%x", dataType, dataLength);
+        DDLogError(@"Wrong start to payload, expected: 0xXXXX0215 got: 0xXXXX%x%x", dataType, dataLength);
         return NO;
     }
 

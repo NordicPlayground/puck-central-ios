@@ -41,7 +41,7 @@
     NSError *error;
     NSArray *puckResults = [[puckController managedObjectContext] executeFetchRequest:request error:&error];
     if (puckResults == nil) {
-        NSLog(@"Fetch error: %@", error);
+        DDLogError(error.localizedDescription);
     } else if (puckResults.count > 0) {
         return puckResults[0];
     }

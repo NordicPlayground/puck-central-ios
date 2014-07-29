@@ -39,7 +39,7 @@
     NSError *error;
     NSMutableArray *mutableFetchResults = [[[[NSPPuckController sharedController] managedObjectContext] executeFetchRequest:request error:&error] mutableCopy];
     if (mutableFetchResults == nil) {
-        NSLog(@"Error");
+        DDLogError(@"Error fetching pucks %@", error.localizedDescription);
     }
     
     self.pucks = mutableFetchResults;

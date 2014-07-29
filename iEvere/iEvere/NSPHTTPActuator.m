@@ -35,7 +35,7 @@
 - (void)actuate:(NSDictionary *)options
 {
     NSURL *URL = [NSURL URLWithString:options[@"url"]];
-    NSLog(@"Post data %@ to %@", options[@"data"], URL);
+    DDLogDebug(@"Post data %@ to %@", options[@"data"], URL);
     [self postData:options[@"data"] toURL:URL];
 }
 

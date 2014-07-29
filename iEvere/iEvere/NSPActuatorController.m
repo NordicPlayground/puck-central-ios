@@ -32,8 +32,8 @@
         req.predicate = [NSPredicate predicateWithFormat:@"minor == %@", options[@"minor"]];
         req.fetchLimit = 1;
         NSArray *result = [[[NSPPuckController sharedController] managedObjectContext] executeFetchRequest:req error:&error];
-        if (result == nil) {
-            NSLog(@"Error fetching puck for IR actuator");
+        if (error) {
+            DDLogError(error.localizedDescription);
         } else if (result.count > 0) {
             puck = result[0];
             [actuator actuateOnPuck:puck withOptions:options];

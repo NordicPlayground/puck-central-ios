@@ -24,7 +24,7 @@
         
         self.title = [NSString stringWithFormat:@"Add trigger for %@", rule.puck.name];
         self.triggers = [[NSPTriggerManager sharedManager] triggersForPuck:rule.puck];
-        NSLog(@"Did initialize triggers: %@", self.triggers);
+        DDLogDebug(@"Did initialize triggers: %@", self.triggers);
     }
     return self;
 }

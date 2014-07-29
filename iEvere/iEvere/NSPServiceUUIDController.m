@@ -29,7 +29,7 @@
     req.fetchLimit = 1;
     NSArray *result = [self.managedObjectContext executeFetchRequest:req error:&error];
     if(result == nil) {
-        NSLog(@"Error fetching UUIDs");
+        DDLogError(@"Error fetching UUIDs %@", error.localizedDescription);
     } else if (result.count > 0) {
         return result[0];
     }
@@ -38,7 +38,7 @@
     sUUID.uuid = uuid;
 
     if (![self.managedObjectContext save:&error]) {
-        NSLog(@"Error: %@", error);
+        DDLogError(error.localizedDescription);
     }
 
     return sUUID;

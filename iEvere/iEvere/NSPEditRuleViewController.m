@@ -103,7 +103,7 @@
         
         NSError *error;
         if (![ruleController.managedObjectContext save:&error]) {
-            NSLog(@"Could not delete");
+            DDLogError(@"Could not delete %@", error.localizedDescription);
         }
     }
 }

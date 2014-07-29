@@ -58,7 +58,7 @@
     NSError *error;
     NSMutableArray *fetchResults = [[[[NSPPuckController sharedController] managedObjectContext] executeFetchRequest:request error:&error] mutableCopy];
     if (fetchResults == nil) {
-        NSLog(@"Error %@", error);
+        DDLogError(error.localizedDescription);
     }
     
     self.pucks = fetchResults;
@@ -125,10 +125,9 @@
     [transaction addOperation:scanOperation];
 
     [transaction addOperation:[[NSPGattDisconnectOperation alloc] initWithPuck:self.tempPuck]];
-    NSLog(@"start discover transaction %@", transaction);
+    DDLogDebug(@"start discover transaction %@", transaction);
     [[NSPBluetoothManager sharedManager] queueTransaction:transaction];
 
-    NSLog(@"userinfo: %@", notification.userInfo);
     NSString *message = [NSString stringWithFormat:@"Add %04X to your beacons", self.tempPuck.minor.intValue];
     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Found new beacon"
                                                         message:message
@@ -154,7 +153,7 @@
     }
     NSError *error;
     if (![[[NSPPuckController sharedController] managedObjectContext] save:&error]) {
-        NSLog(@"Error saving changes: %@", error);
+        DDLogError(@"Error saving changes: %@", error);
     }
     [[NSPCubeManager sharedManager] checkAndConnectToCubePuck:self.tempPuck];
     [[NSPLocationManager sharedManager] startLookingForBeacons];
@@ -244,7 +243,7 @@
         
         NSError *error;
         if (![self.managedObjectContext save:&error]) {
-            NSLog(@"Could not delete");
+            DDLogError(@"Could not delete %@", error.localizedDescription);
         }
     }
 }
@@ -288,7 +287,7 @@
         
         NSError *error;
         if (![self.managedObjectContext save:&error]) {
-            NSLog(@"Error: %@", error);
+            DDLogError(error.localizedDescription);
         }
     }
 }

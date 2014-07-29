@@ -180,23 +180,23 @@ static const int THROTTLE = 3;
 
 - (void)locationManager:(CLLocationManager *)manager didStartMonitoringForRegion:(CLRegion *)region
 {
-    NSLog(@"Did start monitoring region");
+    DDLogInfo(@"Did start monitoring region");
 }
 
 - (void)locationManager:(CLLocationManager *)manager monitoringDidFailForRegion:(CLRegion *)region withError:(NSError *)error
 {
-    NSLog(@"Monitoring failed");
+    DDLogError(@"Monitoring failed %@", error.localizedDescription);
 }
 
 - (void)locationManager:(CLLocationManager *)manager didEnterRegion:(CLRegion *)region
 {
-    NSLog(@"Did enter region");
+    DDLogDebug(@"Did enter region");
     [self.locationManager startRangingBeaconsInRegion:self.beaconRegion];
 }
 
 - (void)locationManager:(CLLocationManager *)manager didExitRegion:(CLRegion *)region
 {
-    NSLog(@"Did leave region");
+    DDLogDebug(@"Did leave region");
     [self.locationManager stopRangingBeaconsInRegion:self.beaconRegion];
 }
 
@@ -209,17 +209,17 @@ static const int THROTTLE = 3;
 
 - (void)locationManager:(CLLocationManager *)manager rangingBeaconsDidFailForRegion:(CLBeaconRegion *)region withError:(NSError *)error
 {
-    NSLog(@"Ranging did fail");
+    DDLogError(@"Ranging did fail %@", error.localizedDescription);
 }
 
 - (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error
 {
-    NSLog(@"Failed with error: %@", error);
+    DDLogError(@"Failed with error: %@", error);
 }
 
 - (void)locationManagerDidPauseLocationUpdates:(CLLocationManager *)manager
 {
-    NSLog(@"Did pause");
+    DDLogDebug(@"Did pause");
 }
 
 - (void)locationManager:(CLLocationManager *)manager

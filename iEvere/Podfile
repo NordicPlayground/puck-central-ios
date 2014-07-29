@@ -2,3 +2,4 @@ platform :ios, "7.0"
 
 pod 'XLForm', '~> 2.0'
 pod 'KissXML', '~> 5.0'
+pod 'CocoaLumberjack', '~> 1.9'

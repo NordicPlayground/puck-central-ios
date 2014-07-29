@@ -28,7 +28,7 @@
     self.puck.identifier = peripheral.identifier.UUIDString;
     NSError *error;
     if (![[[NSPPuckController sharedController] managedObjectContext] save:&error]) {
-        NSLog(@"Error: %@", error);
+        DDLogError(error.localizedDescription);
     }
     [centralManager connectPeripheral:peripheral options:nil];
 }
@@ -56,7 +56,7 @@
     [self.puck addServiceIDs:servicesSet];
     NSError *error;
     if (![[[NSPPuckController sharedController] managedObjectContext] save:&error]) {
-        NSLog(@"Error saving context after adding serviceIDs: %@", error);
+        DDLogError(@"Error saving context after adding serviceIDs: %@", error);
     }
 }
 

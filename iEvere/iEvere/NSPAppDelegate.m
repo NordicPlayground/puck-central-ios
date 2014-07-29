@@ -1,15 +1,26 @@
 
 #import "NSPAppDelegate.h"
-#import "NSPInitialViewController.h"
+
+// Logging
+#import <DDASLLogger.h>
+#import <DDTTYLogger.h>
+#import "NSPLogFormatter.h"
+
+// Model controllers
 #import "NSPPuckController.h"
 #import "NSPActionController.h"
 #import "NSPServiceUUIDController.h"
 #import "NSPRuleController.h"
+
+// Managers
 #import "NSPTriggerManager.h"
 #import "NSPLocationManager.h"
 #import "NSPBluetoothManager.h"
 #import "NSPCubeManager.h"
-#import "Puck.h"
+
+// View controllers
+#import "NSPInitialViewController.h"
+
 
 @import CoreLocation;
 
@@ -37,7 +48,7 @@
     
     NSManagedObjectContext *context = [self managedObjectContext];
     if (!context) {
-        NSLog(@"Could not initialize object context");
+        DDLogError(@"Could not initialize object context");
     }
     initialViewController.managedObjectContext = context;
     self.puckController = [NSPPuckController sharedController];
@@ -56,7 +67,13 @@
     [NSPBluetoothManager sharedManager];
     [NSPCubeManager sharedManager];
     [NSPTriggerManager sharedManager];
-
+    
+    [DDLog addLogger:[DDASLLogger sharedInstance]];
+    [DDLog addLogger:[DDTTYLogger sharedInstance]];
+    
+    [[DDTTYLogger sharedInstance] setColorsEnabled:YES];
+    [[DDTTYLogger sharedInstance] setLogFormatter:[[NSPLogFormatter alloc] init]];
+    
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:initialViewController];
     self.window.rootViewController = navController;
     
@@ -100,7 +117,7 @@
         if ([managedObjectContext hasChanges] && ![managedObjectContext save:&error]) {
              // Replace this implementation with code to handle the error appropriately.
              // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development. 
-            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+            DDLogError(@"Unresolved error %@, %@", error, [error userInfo]);
             abort();
         } 
     }
@@ -172,7 +189,7 @@
          Lightweight migration will only work for a limited set of schema changes; consult "Core Data Model Versioning and Data Migration Programming Guide" for details.
          
          */
-        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+        DDLogError(@"Unresolved error %@, %@", error, [error userInfo]);
         abort();
     }    
     

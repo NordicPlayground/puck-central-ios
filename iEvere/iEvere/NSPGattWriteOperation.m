@@ -40,7 +40,7 @@
 
 - (void)didDiscoverCharacteristic:characteristic forPeripheral:(CBPeripheral *)peripheral
 {
-    NSLog(@"Writing value %@", self.value);
+    DDLogVerbose(@"Writing value %@", self.value);
     [peripheral writeValue:self.value
          forCharacteristic:characteristic
                       type:CBCharacteristicWriteWithResponse];

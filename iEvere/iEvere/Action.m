@@ -15,7 +15,7 @@
     NSError *error;
     NSDictionary *parsedOptions = [NSJSONSerialization JSONObjectWithData:jsonData options:kNilOptions error:&error];
     if (error) {
-        NSLog(@"Error: %@", error);
+        DDLogError(error.localizedDescription);
     }
     return parsedOptions;
 }
