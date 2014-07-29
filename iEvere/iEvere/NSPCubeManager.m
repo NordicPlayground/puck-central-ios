@@ -55,11 +55,7 @@
                                                    object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(cubeDisconnected:)
-                                                     name:NSPDidDisconnectFromPeripheral
-                                                   object:nil];
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(cubeSubscribed:)
-                                                     name:NSPDidSubscribeToCharacteristic
+                                                     name:NSPDidDisconnectFromPuck
                                                    object:nil];
     }
     return self;
@@ -88,6 +84,7 @@
     for(ServiceUUID *service in puck.serviceIDs) {
         NSUUID *uuid = [[NSUUID alloc] initWithUUIDString:service.uuid];
         if([uuid isEqual:self.cubeServiceUUID]) {
+            [self.subscribedCubes addObject:puck];
             NSPGattSubscribeOperation *subscribeOperation =
              [[NSPGattSubscribeOperation alloc] initWithPuck:puck
                                                  serviceUUID:self.cubeServiceUUID
@@ -99,24 +96,14 @@
 
 - (void)cubeDisconnected:(NSNotification *)notification
 {
-    CBPeripheral *peripheral = notification.userInfo[@"peripheral"];
-    for (Puck *puck in self.subscribedCubes) {
-        if ([[puck UUID] isEqual:peripheral.identifier]) {
-            [self.subscribedCubes removeObject:puck];
-        }
-    }
-}
-
-- (void)cubeSubscribed:(NSNotification *)notification
-{
-    [self.subscribedCubes addObject:notification.userInfo[@"puck"]];
+    Puck *disconnectedPuck = notification.userInfo[@"puck"];
+    [self.subscribedCubes removeObject:disconnectedPuck];
 }
 
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:NSPCubeChangedDirection object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:NSPDidSubscribeToCharacteristic object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:NSPDidDisconnectFromPeripheral object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:NSPDidDisconnectFromPuck object:nil];
 }
 
 @end

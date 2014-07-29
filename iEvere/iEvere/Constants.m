@@ -2,7 +2,7 @@ NSString * const NSPDidFindNewBeacon = @"NSPDidFindNewBeacon";
 NSString * const NSPDidEnterZone = @"NSPDidEnterZone";
 NSString * const NSPDidLeaveZone = @"NSPDidLeaveZone";
 
-NSString * const NSPDidDisconnectFromPeripheral = @"NSPDidDisconnectFromPeripheral";
+NSString * const NSPDidDisconnectFromPuck = @"NSPDidDisconnectFromPuck";
 NSString * const NSPDidSubscribeToCharacteristic = @"NSPDidSubscribeToCharacteristic";
 
 NSString * const NSPCubeChangedDirection = @"NSPCubeChangedDirection";

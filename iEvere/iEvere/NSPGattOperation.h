@@ -27,4 +27,6 @@
 - (void)didUpdateValueForCharacteristic:(CBCharacteristic *)characteristic;
 - (void)didSubscribeToCharacteristic:(CBCharacteristic *)characteristic;
 
+- (void)didAbortOperation;
+
 @end

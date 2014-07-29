@@ -135,6 +135,9 @@
     if (self.activeTransaction != nil) {
         NSLog(@"Aborting transaction %@", [self.activeOperation class]);
         [_centralManager cancelPeripheralConnection:self.activeTransaction.peripheral];
+        if ([self.activeOperation respondsToSelector:@selector(didAbortOperation)]) {
+            [self.activeOperation didAbortOperation];
+        }
         self.activeOperation = nil;
         self.activeTransaction = nil;
         [self nextTransaction];
@@ -272,13 +275,17 @@ didDisconnectPeripheral:(CBPeripheral *)peripheral
             [self.activeOperation didDisconnect:peripheral];
         }
     }
+    NSMutableArray *toUnsubscribe = [[NSMutableArray alloc] init];
     for (id<NSPGattOperation> gattOperation in self.subscribedOperations) {
         if ([gattOperation respondsToSelector:@selector(didDisconnect:)]) {
             if ([peripheral.identifier isEqual:[gattOperation.puck UUID]]) {
-                [gattOperation didDisconnect:peripheral];
-                [self unsubscribeOperation:gattOperation];
+                [toUnsubscribe addObject:gattOperation];
             }
         }
+    }
+    for (id<NSPGattOperation> gattOperation in toUnsubscribe) {
+        [gattOperation didDisconnect:peripheral];
+        [self unsubscribeOperation:gattOperation];
     }
 }
 

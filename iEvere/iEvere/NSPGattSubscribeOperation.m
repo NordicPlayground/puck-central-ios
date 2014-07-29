@@ -55,22 +55,25 @@ characteristicUUID:(NSUUID *)characteristicUUID
 
 - (void)didDisconnect:(CBPeripheral *)peripheral
 {
-    [[NSNotificationCenter defaultCenter] postNotificationName:NSPDidDisconnectFromPeripheral
+    [[NSNotificationCenter defaultCenter] postNotificationName:NSPDidDisconnectFromPuck
                                                         object:self
                                                       userInfo:@{
-                                                                 @"peripheral": peripheral
+                                                                 @"puck": self.puck
+                                                                 }];
+}
+
+- (void)didAbortOperation
+{
+    [[NSNotificationCenter defaultCenter] postNotificationName:NSPDidDisconnectFromPuck
+                                                        object:self
+                                                      userInfo:@{
+                                                                 @"puck": self.puck
                                                                  }];
 }
 
 - (void)didSubscribeToCharacteristic:(CBCharacteristic *)characteristic
 {
     self.completeOperation();
-    
-    [[NSNotificationCenter defaultCenter] postNotificationName:NSPDidSubscribeToCharacteristic
-                                                        object:self
-                                                      userInfo:@{
-                                                                 @"puck": self.puck
-                                                                 }];
 }
 
 @end
