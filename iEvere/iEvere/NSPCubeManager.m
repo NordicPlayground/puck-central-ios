@@ -43,8 +43,8 @@
                       [[Trigger alloc] initWithDisplayName:@"Cube turns down" forNotification:NSPCubeChangedDirection],
                       [[Trigger alloc] initWithDisplayName:@"Cube turns left" forNotification:NSPCubeChangedDirection],
                       [[Trigger alloc] initWithDisplayName:@"Cube turns right" forNotification:NSPCubeChangedDirection],
+                      [[Trigger alloc] initWithDisplayName:@"Cube turns front" forNotification:NSPCubeChangedDirection],
                       [[Trigger alloc] initWithDisplayName:@"Cube turns back" forNotification:NSPCubeChangedDirection],
-                      [[Trigger alloc] initWithDisplayName:@"Cube turns front" forNotification:NSPCubeChangedDirection]
                                                              ]
                                              forServiceUUID:self.cubeServiceUUID
                                                  withPrefix:NSPTRIGGER_CUBE];
