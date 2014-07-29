@@ -38,6 +38,7 @@
     puck.proximityUUID = [proximityUUID UUIDString];
     puck.major = major;
     puck.minor = minor;
+    puck.connected = NO;
     
     NSError *error;
     if (![self.managedObjectContext save:&error]) {

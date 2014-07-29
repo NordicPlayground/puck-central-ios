@@ -20,7 +20,9 @@ extern NSString * const NSPDidFindNewBeacon;
 extern NSString * const NSPDidEnterZone;
 extern NSString * const NSPDidLeaveZone;
 
+extern NSString * const NSPDidConnectToPuck;
 extern NSString * const NSPDidDisconnectFromPuck;
+
 extern NSString * const NSPDidSubscribeToCharacteristic;
 
 extern NSString * const NSPCubeChangedDirection;

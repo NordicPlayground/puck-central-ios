@@ -15,6 +15,7 @@
 @dynamic identifier;
 @dynamic rules;
 @dynamic serviceIDs;
+@synthesize connected = _connected;
 
 - (void)addServiceIDsObject:(ServiceUUID *)object
 {

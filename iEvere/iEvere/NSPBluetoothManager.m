@@ -49,6 +49,28 @@
     return self;
 }
 
+- (void)didConnectToPuck:(Puck *)puck
+{
+    puck.connected = YES;
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [[NSNotificationCenter defaultCenter] postNotificationName:NSPDidConnectToPuck
+                                                            object:self
+                                                          userInfo:@{
+                                                                     @"puck": puck
+                                                                     }];
+    });
+}
+
+- (void)didDisconnectFromPuck:(Puck *)puck
+{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        puck.connectedState = DISCONNECTED;
+        [[NSNotificationCenter defaultCenter] postNotificationName:NSPUpdateDisplay
+                                                            object:self
+                                                          userInfo:nil];
+    });
+}
+
 - (void)queueTransaction:(NSPGattTransaction *)gattTransaction
 {
     DDLogInfo(@"queue transaction %@", gattTransaction);
@@ -134,6 +156,7 @@
 {
     if (self.activeTransaction != nil) {
         DDLogInfo(@"Aborting transaction %@", [self.activeOperation class]);
+        [self didDisconnectFromPuck:self.activeOperation.puck];
         [_centralManager cancelPeripheralConnection:self.activeTransaction.peripheral];
         if ([self.activeOperation respondsToSelector:@selector(didAbortOperation)]) {
             [self.activeOperation didAbortOperation];
@@ -244,6 +267,7 @@
 - (void)centralManager:(CBCentralManager *)central
   didConnectPeripheral:(CBPeripheral *)peripheral
 {
+    [self didConnectToPuck:self.activeOperation.puck];
     if ([self.activeOperation respondsToSelector:@selector(didConnect:)]) {
         [self.activeOperation didConnect:peripheral];
     }
@@ -267,9 +291,13 @@ didDisconnectPeripheral:(CBPeripheral *)peripheral
         DDLogError(error.localizedDescription);
         if ([self.activeTransaction.peripheral isEqual:peripheral]) {
             [self abortTransaction];
+        } else {
+            [self didDisconnectFromPuck:self.activeOperation.puck];
         }
+    } else {
+        [self didDisconnectFromPuck:self.activeOperation.puck];
     }
-    
+
     if ([self.activeOperation respondsToSelector:@selector(didDisconnect:)]) {
         if ([peripheral.identifier isEqual:[self.activeOperation.puck UUID]]) {
             [self.activeOperation didDisconnect:peripheral];

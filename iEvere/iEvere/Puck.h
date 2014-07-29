@@ -16,6 +16,7 @@
 @property (nonatomic, retain) NSString *identifier;
 @property (nonatomic, retain) NSOrderedSet *rules;
 @property (nonatomic, retain) NSSet *serviceIDs;
+@property (nonatomic, assign) BOOL connected;
 
 - (void)addServiceIDs:(NSSet *)objects;
 - (void)addServiceIDsObject:(ServiceUUID *)object;

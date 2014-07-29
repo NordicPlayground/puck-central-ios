@@ -79,6 +79,14 @@
                                              selector:@selector(didLeaveZone)
                                                  name:NSPDidLeaveZone
                                                object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(updateDisplay)
+                                                 name:NSPDidConnectToPuck
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(updateDisplay)
+                                                 name:NSPDidDisconnectFromPuck
+                                               object:nil];
     
     self.locationManager = [NSPLocationManager sharedManager];
 }
@@ -86,6 +94,20 @@
 - (void)viewDidAppear:(BOOL)animated
 {
     [self.tableView reloadData];
+}
+
+- (void)updateDisplay
+{
+    __block BOOL busy = NO;
+
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+        if (!busy) {
+            busy = YES;
+            [self.tableView reloadRowsAtIndexPaths:[self.tableView indexPathsForVisibleRows] withRowAnimation:UITableViewRowAnimationFade];
+            [self.tableView reloadData];
+            busy = NO;
+        }
+    });
 }
 
 - (void)restartRanging
@@ -160,6 +182,15 @@
 }
 
 #pragma mark UITableViewDelegate + UITableViewDataSource
+
+- (void)tableView:(UITableView *)tableView willDisplayHeaderView:(UIView *)view forSection:(NSInteger)section
+{
+    Puck *puckForSection = [self.pucks objectAtIndex:section];
+    if (puckForSection.connected) {
+        UITableViewHeaderFooterView *header = (UITableViewHeaderFooterView*)view;
+        [header.textLabel setTextColor:[UIColor colorWithRed:15/255.0f green:173/255.0f blue:36/255.0f alpha:1.0f]];
+    }
+}
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
