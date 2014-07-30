@@ -97,7 +97,9 @@
 - (void)cubeDisconnected:(NSNotification *)notification
 {
     Puck *disconnectedPuck = notification.userInfo[@"puck"];
-    [self.subscribedCubes removeObject:disconnectedPuck];
+    if(disconnectedPuck) {
+        [self.subscribedCubes removeObject:disconnectedPuck];
+    }
 }
 
 - (void)dealloc

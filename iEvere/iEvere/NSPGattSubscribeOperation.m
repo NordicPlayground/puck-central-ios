@@ -1,6 +1,5 @@
 
 #import "NSPGattSubscribeOperation.h"
-#import "Puck.h"
 
 @implementation NSPGattSubscribeOperation
 
@@ -56,7 +55,6 @@ characteristicUUID:(NSUUID *)characteristicUUID
 
 - (void)didDisconnect:(CBPeripheral *)peripheral
 {
-    self.puck.connected = NO;
     [[NSNotificationCenter defaultCenter] postNotificationName:NSPDidDisconnectFromPuck
                                                         object:self
                                                       userInfo:@{

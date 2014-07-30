@@ -81,11 +81,7 @@
                                                object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(updateDisplay)
-                                                 name:NSPDidConnectToPuck
-                                               object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(updateDisplay)
-                                                 name:NSPDidDisconnectFromPuck
+                                                 name:NSPUpdateDisplay
                                                object:nil];
     
     self.locationManager = [NSPLocationManager sharedManager];
@@ -186,9 +182,18 @@
 - (void)tableView:(UITableView *)tableView willDisplayHeaderView:(UIView *)view forSection:(NSInteger)section
 {
     Puck *puckForSection = [self.pucks objectAtIndex:section];
-    if (puckForSection.connected) {
-        UITableViewHeaderFooterView *header = (UITableViewHeaderFooterView*)view;
-        [header.textLabel setTextColor:[UIColor colorWithRed:15/255.0f green:173/255.0f blue:36/255.0f alpha:1.0f]];
+    UITableViewHeaderFooterView *header = (UITableViewHeaderFooterView*)view;
+
+    switch (puckForSection.connectedState) {
+        case CONNECTED:
+            [header.textLabel setTextColor:[UIColor colorWithRed:15/255.0f green:173/255.0f blue:36/255.0f alpha:1.0f]];
+            break;
+        case PENDING:
+            [header.textLabel setTextColor:[UIColor colorWithRed:214/255.0f green:205/255.0f blue:2/255.0f alpha:1.0f]];
+            break;
+
+        default:
+            break;
     }
 }
 

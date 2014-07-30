@@ -142,7 +142,7 @@ static const int THROTTLE = 3;
     }
     
     // Don't leave a zone because the puck stopped advertising when you connected to it
-    if (self.closestPuck.connected) {
+    if (self.closestPuck.connectedState == CONNECTED) {
         return;
     }
     

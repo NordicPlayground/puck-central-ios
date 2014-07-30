@@ -49,15 +49,23 @@
     return self;
 }
 
+- (void)connectingToPuck:(Puck *)puck
+{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        puck.connectedState = PENDING;
+        [[NSNotificationCenter defaultCenter] postNotificationName:NSPUpdateDisplay
+                                                            object:self
+                                                          userInfo:nil];
+    });
+}
+
 - (void)didConnectToPuck:(Puck *)puck
 {
-    puck.connected = YES;
     dispatch_async(dispatch_get_main_queue(), ^{
-        [[NSNotificationCenter defaultCenter] postNotificationName:NSPDidConnectToPuck
+        puck.connectedState = CONNECTED;
+        [[NSNotificationCenter defaultCenter] postNotificationName:NSPUpdateDisplay
                                                             object:self
-                                                          userInfo:@{
-                                                                     @"puck": puck
-                                                                     }];
+                                                          userInfo:nil];
     });
 }
 
@@ -91,6 +99,7 @@
 - (void)setActiveOperation:(id<NSPGattOperation>)activeOperation
 {
     _activeOperation = activeOperation;
+    [self connectingToPuck:self.activeOperation.puck];
     
     if (activeOperation != nil) {
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(self.activeTransaction.timeout * NSEC_PER_SEC)), self.centralQueue, ^{
@@ -307,6 +316,7 @@ didDisconnectPeripheral:(CBPeripheral *)peripheral
         }
     }
     for (id<NSPGattOperation> gattOperation in toUnsubscribe) {
+        [self didDisconnectFromPuck:gattOperation.puck];
         [gattOperation didDisconnect:peripheral];
         [self unsubscribeOperation:gattOperation];
     }

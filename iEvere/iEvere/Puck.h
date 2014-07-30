@@ -7,6 +7,12 @@
 
 @class ServiceUUID;
 
+typedef NS_ENUM(NSUInteger, PuckConnectedState) {
+    DISCONNECTED,
+    PENDING,
+    CONNECTED,
+};
+
 @interface Puck : NSManagedObject <XLFormOptionObject>
 
 @property (nonatomic, retain) NSNumber *major;
@@ -16,7 +22,7 @@
 @property (nonatomic, retain) NSString *identifier;
 @property (nonatomic, retain) NSOrderedSet *rules;
 @property (nonatomic, retain) NSSet *serviceIDs;
-@property (nonatomic, assign) BOOL connected;
+@property (nonatomic, assign) PuckConnectedState connectedState;
 
 - (void)addServiceIDs:(NSSet *)objects;
 - (void)addServiceIDsObject:(ServiceUUID *)object;

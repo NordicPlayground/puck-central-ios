@@ -15,7 +15,12 @@
 @dynamic identifier;
 @dynamic rules;
 @dynamic serviceIDs;
-@synthesize connected = _connected;
+@synthesize connectedState = _connectedState;
+
+- (void)awakeFromInsert
+{
+    self.connectedState = DISCONNECTED;
+}
 
 - (void)addServiceIDsObject:(ServiceUUID *)object
 {
