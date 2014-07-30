@@ -25,8 +25,33 @@
 
 - (void)didFindPeripheral:(CBPeripheral *)peripheral withCentralManager:(CBCentralManager *)centralManager
 {
-    self.puck.identifier = peripheral.identifier.UUIDString;
+    NSString *uuidString = peripheral.identifier.UUIDString;
+
     NSError *error;
+    NSFetchRequest *req = [[NSPPuckController sharedController] fetchRequest];
+    req.predicate = [NSPredicate predicateWithFormat:@"identifier == %@", uuidString];
+    req.fetchLimit = 1;
+    NSArray *result = [[[NSPPuckController sharedController] managedObjectContext] executeFetchRequest:req error:&error];
+    if (error) {
+        DDLogError(error.localizedDescription);
+    } else if (result.count > 0) {
+        Puck *puck = result[0];
+        NSString *message = [NSString stringWithFormat:@"You already have this puck and it's named: %@. To avoid unexpected behaviour, please delete %@.", puck.name, puck.name];
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Duplicate puck found!"
+                                                            message:message
+                                                           delegate:nil
+                                                  cancelButtonTitle:@"Ok"
+                                                  otherButtonTitles:nil];
+        alertView.alertViewStyle = UIAlertViewStyleDefault;
+
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if(!alertView.visible) {
+                [alertView show];
+            }
+        });
+    }
+
+    self.puck.identifier = uuidString;
     if (![[[NSPPuckController sharedController] managedObjectContext] save:&error]) {
         DDLogError(error.localizedDescription);
     }
