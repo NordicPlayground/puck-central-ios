@@ -140,19 +140,30 @@ typedef NS_ENUM(NSUInteger, NSPImageSection) {
       characteristic:_CHARACTERISTIC_COMMAND_UUID
               onPuck:puck];
     
-    uint8_t *ePaperFormat = [self imageToEPaperFormat:image section:section];
-    
     // Send half the image, and each 8 pixels are grouped in one byte
     int ePaperFormatLength = image.size.width * image.size.height / 2 / 8;
     DDLogDebug(@"length: %d", ePaperFormatLength);
     
-    uint8_t payload[ePaperFormatLength * (257/256) + 1]; // Worst case compression is 0.4% + 1 byte larger than insize
-    int payloadLength = LZ_Compress(ePaperFormat, payload, ePaperFormatLength);
-    DDLogDebug(@"payload size: %d", payloadLength);
+    uint8_t ePaperFormat[ePaperFormatLength];
+    [self convertImage:image toEPaperFormat:ePaperFormat section:section];
+    
+    uint8_t unpaddedPayload[ePaperFormatLength * (257/256) + 1]; // Worst case compression is 0.4% + 1 byte larger than insize
+    int unpaddedPayloadLength = LZ_Compress(ePaperFormat, unpaddedPayload, ePaperFormatLength);
+    DDLogDebug(@"payload size: %d", unpaddedPayloadLength);
+    
+    int paddingLength = (unpaddedPayloadLength % 20 == 0)
+        ? 0
+        : 20 - unpaddedPayloadLength % 20;
+    int payloadLength = unpaddedPayloadLength + paddingLength;
+    uint8_t payload[payloadLength];
+    [self padPayload:unpaddedPayload
+              output:payload
+              length:unpaddedPayloadLength
+       paddingLength:paddingLength];
     
     for (int i=0; i < payloadLength; i += max_bytes_per_write) {
-        NSData *value = [NSData dataWithBytes:(payload+i)
-                                       length:MIN(max_bytes_per_write, payloadLength - i)];
+        NSData *value = [NSData dataWithBytes:&payload[i]
+                                       length:max_bytes_per_write];
         [self writeValue:value
               forService:_SERVICE_DISPLAY_UUID
           characteristic:_CHARACTERISTIC_DATA_UUID
@@ -167,25 +178,48 @@ typedef NS_ENUM(NSUInteger, NSPImageSection) {
     [self waitForDisconnect:puck];
 }
 
+/*! Pads the image data so it can be divided in even groups of 20 byes
+ * \param unpaddedPayload The input buffer
+ * \param output The output buffer
+ * \param length The unpadded length
+ * \param paddingLength How many bytes to add
+ */
+- (void)padPayload:(uint8_t *)unpaddedPayload
+            output:(uint8_t *)output
+            length:(int)unpaddedPayloadLength
+     paddingLength:(int)paddingLength
+{
+    for (int i = 1; i < unpaddedPayloadLength - 1; i++) {
+        if (unpaddedPayload[i] == unpaddedPayload[0] && unpaddedPayload[i + 1] != 0) {
+            i++;
+            memcpy(&output[0], &unpaddedPayload[0], i);
+            for (int j = 0; j < paddingLength; j++) {
+                output[i + j] = 0x80;
+            }
+            memcpy(&output[i + paddingLength], &unpaddedPayload[i], unpaddedPayloadLength - i);
+            break;
+        }
+    }
+}
+
 /*! Converts a UIImage to the format necessary for transmitting to the display puck
  * \param image The image you want to transmit
+ * \param ePaperFormat The output buffer
  * \param section Which part of the image to convert
- * \return a byte array where each byte represents 8 pixels' on/off value
+ * \return void
  */
-- (uint8_t *)imageToEPaperFormat:(UIImage *)image section:(NSPImageSection)section
+- (void)convertImage:(UIImage *)image toEPaperFormat:(uint8_t *)ePaperFormat section:(NSPImageSection)section
 {
     int byteCounter = 0;
     int halfHeight = image.size.height / 2;
     int startY = (section == NSPImageSectionLower) ? halfHeight : 0;
     
-    int numberOfBytes = image.size.width / 8 * halfHeight;
     CFDataRef pixelData = CGDataProviderCopyData(CGImageGetDataProvider(image.CGImage));
     const uint8_t *data = CFDataGetBytePtr(pixelData);
     
     long bpr = CGImageGetBytesPerRow(image.CGImage);
     long numberOfChannels = CGImageGetBitsPerPixel(image.CGImage) / 8;
     
-    uint8_t *value = malloc(sizeof(uint8_t) * numberOfBytes);
     for (int y = startY; y < startY + halfHeight; y++) {
         for (int x = 0; x < image.size.width / 8; x++) {
             long pixelIndex = (bpr * y) + (x * 8 * numberOfChannels);
@@ -196,11 +230,10 @@ typedef NS_ENUM(NSUInteger, NSPImageSection) {
                     b |= (1 << i);
                 }
             }
-            value[byteCounter++] = b;
+            ePaperFormat[byteCounter++] = b;
         }
     }
     CFRelease(pixelData);
-    return value;
 }
 
 /*! Renders a text string to a UIImage
