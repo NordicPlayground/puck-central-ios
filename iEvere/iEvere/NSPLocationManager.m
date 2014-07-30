@@ -12,7 +12,6 @@ static const int THROTTLE = 3;
 @property (nonatomic, strong) CLLocationManager *locationManager;
 @property (nonatomic, strong) NSDate *lastChanged;
 @property (nonatomic, strong) CLBeaconRegion *beaconRegion;
-@property (nonatomic, strong) NSMutableSet *activePucks;
 
 @end
 
@@ -43,7 +42,6 @@ static const int THROTTLE = 3;
         self.beaconRegion = [[CLBeaconRegion alloc] initWithProximityUUID:beaconUUID
                                                                     major:major
                                                                identifier:@"Puck"];
-        self.activePucks = [[NSMutableSet alloc] init];
         self.beaconRegion.notifyEntryStateOnDisplay = YES;
         [self.locationManager startMonitoringForRegion:self.beaconRegion];
     }
@@ -66,16 +64,6 @@ static const int THROTTLE = 3;
 {
     [self stopLookingForBeacons];
     [self startLookingForBeacons];
-}
-
-- (void)startUsingPuck:(Puck *)puck
-{
-    [self.activePucks addObject:puck];
-}
-
-- (void)stopUsingPuck:(Puck *)puck
-{
-    [self.activePucks removeObject:puck];
 }
 
 #pragma mark Location Management
@@ -154,7 +142,7 @@ static const int THROTTLE = 3;
     }
     
     // Don't leave a zone because the puck stopped advertising when you connected to it
-    if ([self.activePucks containsObject:self.closestPuck]) {
+    if (self.closestPuck.connected) {
         return;
     }
     

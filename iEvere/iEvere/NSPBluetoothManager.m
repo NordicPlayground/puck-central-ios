@@ -90,10 +90,6 @@
 
 - (void)setActiveOperation:(id<NSPGattOperation>)activeOperation
 {
-    if (_activeOperation != nil) {
-        [[NSPLocationManager sharedManager] stopUsingPuck:_activeOperation.puck];
-    }
-    
     _activeOperation = activeOperation;
     
     if (activeOperation != nil) {
@@ -104,7 +100,6 @@
             }
         });
         
-        [[NSPLocationManager sharedManager] startUsingPuck:activeOperation.puck];
         [self findPeripheralFromBeacon];
     }
 }
