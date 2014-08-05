@@ -37,14 +37,14 @@
 		CC20B1971959A41B0084E3AB /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = CC20B1951959A41B0084E3AB /* InfoPlist.strings */; };
 		CC20B1991959A41B0084E3AB /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = CC20B1981959A41B0084E3AB /* main.m */; };
 		CC20B19D1959A41B0084E3AB /* NSPAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = CC20B19C1959A41B0084E3AB /* NSPAppDelegate.m */; };
-		CC20B1A01959A41B0084E3AB /* iEvere.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = CC20B19E1959A41B0084E3AB /* iEvere.xcdatamodeld */; };
+		CC20B1A01959A41B0084E3AB /* PuckCentral.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = CC20B19E1959A41B0084E3AB /* PuckCentral.xcdatamodeld */; };
 		CC20B1A21959A41B0084E3AB /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CC20B1A11959A41B0084E3AB /* Images.xcassets */; };
 		CC20B1A91959A41B0084E3AB /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC20B1A81959A41B0084E3AB /* XCTest.framework */; };
 		CC20B1AA1959A41B0084E3AB /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC20B18A1959A41B0084E3AB /* Foundation.framework */; };
 		CC20B1AB1959A41B0084E3AB /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC20B18E1959A41B0084E3AB /* UIKit.framework */; };
 		CC20B1AC1959A41B0084E3AB /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC20B1901959A41B0084E3AB /* CoreData.framework */; };
 		CC20B1B41959A41B0084E3AB /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = CC20B1B21959A41B0084E3AB /* InfoPlist.strings */; };
-		CC20B1B61959A41B0084E3AB /* iEvereTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CC20B1B51959A41B0084E3AB /* iEvereTests.m */; };
+		CC20B1B61959A41B0084E3AB /* PuckCentralTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CC20B1B51959A41B0084E3AB /* PuckCentralTests.m */; };
 		CC20B1C51959AAF70084E3AB /* NSPInitialViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CC20B1C31959AAF70084E3AB /* NSPInitialViewController.m */; };
 		CC20B1C61959AAF70084E3AB /* NSPInitialViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CC20B1C41959AAF70084E3AB /* NSPInitialViewController.xib */; };
 		CC22A28C197D05E400334D92 /* NSPGattSubscribeOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = CC22A28B197D05E400334D92 /* NSPGattSubscribeOperation.m */; };
@@ -79,21 +79,21 @@
 			containerPortal = CC20B17F1959A41B0084E3AB /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = CC20B1861959A41B0084E3AB;
-			remoteInfo = iEvere;
+			remoteInfo = PuckCentral;
 		};
 		CC888AAC1966A33D00248026 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = CC20B17F1959A41B0084E3AB /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = CC20B1861959A41B0084E3AB;
-			remoteInfo = iEvere;
+			remoteInfo = PuckCentral;
 		};
 		CC888AAE1966A35500248026 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = CC20B17F1959A41B0084E3AB /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = CC20B1861959A41B0084E3AB;
-			remoteInfo = iEvere;
+			remoteInfo = PuckCentral;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -109,13 +109,13 @@
 		876E0D7419823C5600E014DC /* NSPRemote.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSPRemote.m; sourceTree = "<group>"; };
 		876E0D7C1982B2BF00E014DC /* NSPWeatherService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSPWeatherService.h; sourceTree = "<group>"; };
 		876E0D7D1982B2BF00E014DC /* NSPWeatherService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSPWeatherService.m; sourceTree = "<group>"; };
-		876E0D7F1986610000E014DC /* display-email.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "display-email.png"; path = "Images/display-email.png"; sourceTree = "<group>"; };
-		876E0D801986610000E014DC /* display-space.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "display-space.png"; path = "Images/display-space.png"; sourceTree = "<group>"; };
-		876E0D8319866F3700E014DC /* display-weather.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "display-weather.png"; path = "Images/display-weather.png"; sourceTree = "<group>"; };
+		876E0D7F1986610000E014DC /* display-email.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "display-email.png"; sourceTree = "<group>"; };
+		876E0D801986610000E014DC /* display-space.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "display-space.png"; sourceTree = "<group>"; };
+		876E0D8319866F3700E014DC /* display-weather.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "display-weather.png"; sourceTree = "<group>"; };
 		8796809B198102FC008E41BB /* NSPGattDisconnectOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSPGattDisconnectOperation.h; sourceTree = "<group>"; };
 		8796809C198102FC008E41BB /* NSPGattDisconnectOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSPGattDisconnectOperation.m; sourceTree = "<group>"; };
-		879CAF571962E4AA00DF8492 /* NSPRuleTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSPRuleTableViewCell.h; sourceTree = "<group>"; };
-		879CAF581962E4AA00DF8492 /* NSPRuleTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSPRuleTableViewCell.m; sourceTree = "<group>"; };
+		879CAF571962E4AA00DF8492 /* NSPRuleTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NSPRuleTableViewCell.h; path = ../PuckCentral/NSPRuleTableViewCell.h; sourceTree = "<group>"; };
+		879CAF581962E4AA00DF8492 /* NSPRuleTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NSPRuleTableViewCell.m; path = ../PuckCentral/NSPRuleTableViewCell.m; sourceTree = "<group>"; };
 		879CAF5A1962F56D00DF8492 /* NSPConfigureActionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSPConfigureActionViewController.h; sourceTree = "<group>"; };
 		879CAF5B1962F56D00DF8492 /* NSPConfigureActionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSPConfigureActionViewController.m; sourceTree = "<group>"; };
 		87A1A42D1987D28000D7AD39 /* NSPLogFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSPLogFormatter.h; sourceTree = "<group>"; };
@@ -130,8 +130,8 @@
 		87FB58B81979530C0079AF07 /* NSPMusicActuator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSPMusicActuator.m; sourceTree = "<group>"; };
 		87FB58BA197D09F10079AF07 /* NSPDisplayActuator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSPDisplayActuator.h; sourceTree = "<group>"; };
 		87FB58BB197D09F10079AF07 /* NSPDisplayActuator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSPDisplayActuator.m; sourceTree = "<group>"; };
-		87FB58BE197D20FC0079AF07 /* lz.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = lz.h; sourceTree = "<group>"; };
-		87FB58BF197D20FC0079AF07 /* lz.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = lz.c; sourceTree = "<group>"; };
+		87FB58BE197D20FC0079AF07 /* lz.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = lz.h; path = ../lz.h; sourceTree = "<group>"; };
+		87FB58BF197D20FC0079AF07 /* lz.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = lz.c; path = ../lz.c; sourceTree = "<group>"; };
 		B48E46EBAE6040238F4620E9 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		CC019789195AF27F0032A0E1 /* Puck.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Puck.h; sourceTree = "<group>"; };
 		CC01978A195AF27F0032A0E1 /* Puck.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Puck.m; sourceTree = "<group>"; };
@@ -139,27 +139,27 @@
 		CC20790019750AEB00205FB0 /* ServiceUUID.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ServiceUUID.m; sourceTree = "<group>"; };
 		CC2079031975142B00205FB0 /* NSPServiceUUIDController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSPServiceUUIDController.h; sourceTree = "<group>"; };
 		CC2079041975142B00205FB0 /* NSPServiceUUIDController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSPServiceUUIDController.m; sourceTree = "<group>"; };
-		CC20B1871959A41B0084E3AB /* iEvere.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iEvere.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		CC20B1871959A41B0084E3AB /* PuckCentral.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PuckCentral.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CC20B18A1959A41B0084E3AB /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		CC20B18C1959A41B0084E3AB /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		CC20B18E1959A41B0084E3AB /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		CC20B1901959A41B0084E3AB /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
-		CC20B1941959A41B0084E3AB /* iEvere-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "iEvere-Info.plist"; sourceTree = "<group>"; };
+		CC20B1941959A41B0084E3AB /* PuckCentral-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "PuckCentral-Info.plist"; path = "../PuckCentral/PuckCentral-Info.plist"; sourceTree = "<group>"; };
 		CC20B1961959A41B0084E3AB /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		CC20B1981959A41B0084E3AB /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		CC20B19A1959A41B0084E3AB /* iEvere-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "iEvere-Prefix.pch"; sourceTree = "<group>"; };
-		CC20B19B1959A41B0084E3AB /* NSPAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NSPAppDelegate.h; sourceTree = "<group>"; };
-		CC20B19C1959A41B0084E3AB /* NSPAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NSPAppDelegate.m; sourceTree = "<group>"; };
-		CC20B19F1959A41B0084E3AB /* iEvere.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = iEvere.xcdatamodel; sourceTree = "<group>"; };
-		CC20B1A11959A41B0084E3AB /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		CC20B1A71959A41B0084E3AB /* iEvereTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = iEvereTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		CC20B1981959A41B0084E3AB /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = main.m; path = ../PuckCentral/main.m; sourceTree = "<group>"; };
+		CC20B19A1959A41B0084E3AB /* PuckCentral-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "PuckCentral-Prefix.pch"; path = "../PuckCentral/PuckCentral-Prefix.pch"; sourceTree = "<group>"; };
+		CC20B19B1959A41B0084E3AB /* NSPAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = NSPAppDelegate.h; path = ../PuckCentral/NSPAppDelegate.h; sourceTree = "<group>"; };
+		CC20B19C1959A41B0084E3AB /* NSPAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = NSPAppDelegate.m; path = ../PuckCentral/NSPAppDelegate.m; sourceTree = "<group>"; };
+		CC20B19F1959A41B0084E3AB /* PuckCentral.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = PuckCentral.xcdatamodel; sourceTree = "<group>"; };
+		CC20B1A11959A41B0084E3AB /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = ../PuckCentral/Images.xcassets; sourceTree = "<group>"; };
+		CC20B1A71959A41B0084E3AB /* PuckCentralTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PuckCentralTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		CC20B1A81959A41B0084E3AB /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
-		CC20B1B11959A41B0084E3AB /* iEvereTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "iEvereTests-Info.plist"; sourceTree = "<group>"; };
+		CC20B1B11959A41B0084E3AB /* PuckCentralTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "PuckCentralTests-Info.plist"; path = "../PuckCentralTests/PuckCentralTests-Info.plist"; sourceTree = "<group>"; };
 		CC20B1B31959A41B0084E3AB /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		CC20B1B51959A41B0084E3AB /* iEvereTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = iEvereTests.m; sourceTree = "<group>"; };
-		CC20B1C21959AAF70084E3AB /* NSPInitialViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSPInitialViewController.h; sourceTree = "<group>"; };
-		CC20B1C31959AAF70084E3AB /* NSPInitialViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSPInitialViewController.m; sourceTree = "<group>"; };
-		CC20B1C41959AAF70084E3AB /* NSPInitialViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NSPInitialViewController.xib; sourceTree = "<group>"; };
+		CC20B1B51959A41B0084E3AB /* PuckCentralTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = PuckCentralTests.m; path = ../PuckCentralTests/PuckCentralTests.m; sourceTree = "<group>"; };
+		CC20B1C21959AAF70084E3AB /* NSPInitialViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NSPInitialViewController.h; path = ../PuckCentral/NSPInitialViewController.h; sourceTree = "<group>"; };
+		CC20B1C31959AAF70084E3AB /* NSPInitialViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NSPInitialViewController.m; path = ../PuckCentral/NSPInitialViewController.m; sourceTree = "<group>"; };
+		CC20B1C41959AAF70084E3AB /* NSPInitialViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = NSPInitialViewController.xib; path = ../PuckCentral/NSPInitialViewController.xib; sourceTree = "<group>"; };
 		CC22A28A197D05E400334D92 /* NSPGattSubscribeOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSPGattSubscribeOperation.h; sourceTree = "<group>"; };
 		CC22A28B197D05E400334D92 /* NSPGattSubscribeOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSPGattSubscribeOperation.m; sourceTree = "<group>"; };
 		CC22A28E197D0A5E00334D92 /* NSPCubeManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSPCubeManager.h; sourceTree = "<group>"; };
@@ -167,8 +167,8 @@
 		CC37956E195D85C300E8A0C8 /* NSPLocationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSPLocationManager.m; sourceTree = "<group>"; };
 		CC379570195D8FEF00E8A0C8 /* NSPPuckController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSPPuckController.h; sourceTree = "<group>"; };
 		CC379571195D8FEF00E8A0C8 /* NSPPuckController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSPPuckController.m; sourceTree = "<group>"; };
-		CC3795741961522300E8A0C8 /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
-		CC3795751961522300E8A0C8 /* Constants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Constants.m; sourceTree = "<group>"; };
+		CC3795741961522300E8A0C8 /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Constants.h; path = ../PuckCentral/Constants.h; sourceTree = "<group>"; };
+		CC3795751961522300E8A0C8 /* Constants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Constants.m; path = ../PuckCentral/Constants.m; sourceTree = "<group>"; };
 		CC3AAABD195AB29600DCA6C0 /* NSPSelectPuckViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSPSelectPuckViewController.h; sourceTree = "<group>"; };
 		CC3AAABE195AB29600DCA6C0 /* NSPSelectPuckViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSPSelectPuckViewController.m; sourceTree = "<group>"; };
 		CC3AAABF195AB29600DCA6C0 /* NSPSelectPuckViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NSPSelectPuckViewController.xib; sourceTree = "<group>"; };
@@ -247,26 +247,7 @@
 			name = "Edit Rule UI";
 			sourceTree = "<group>";
 		};
-		876E0D7A1982AAB000E014DC /* Images */ = {
-			isa = PBXGroup;
-			children = (
-				876E0D7F1986610000E014DC /* display-email.png */,
-				876E0D801986610000E014DC /* display-space.png */,
-				876E0D8319866F3700E014DC /* display-weather.png */,
-			);
-			name = Images;
-			sourceTree = "<group>";
-		};
-		876E0D7B1982B2AB00E014DC /* Services */ = {
-			isa = PBXGroup;
-			children = (
-				876E0D7C1982B2BF00E014DC /* NSPWeatherService.h */,
-				876E0D7D1982B2BF00E014DC /* NSPWeatherService.m */,
-			);
-			name = Services;
-			sourceTree = "<group>";
-		};
-		879CAF561962D5A700DF8492 /* Add Rule UI */ = {
+		874A541D1991284B00AA0752 /* Add Rule UI */ = {
 			isa = PBXGroup;
 			children = (
 				CC3AAABD195AB29600DCA6C0 /* NSPSelectPuckViewController.h */,
@@ -284,6 +265,25 @@
 			name = "Add Rule UI";
 			sourceTree = "<group>";
 		};
+		876E0D7A1982AAB000E014DC /* Images */ = {
+			isa = PBXGroup;
+			children = (
+				876E0D7F1986610000E014DC /* display-email.png */,
+				876E0D801986610000E014DC /* display-space.png */,
+				876E0D8319866F3700E014DC /* display-weather.png */,
+			);
+			path = Images;
+			sourceTree = "<group>";
+		};
+		876E0D7B1982B2AB00E014DC /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				876E0D7C1982B2BF00E014DC /* NSPWeatherService.h */,
+				876E0D7D1982B2BF00E014DC /* NSPWeatherService.m */,
+			);
+			name = Services;
+			sourceTree = "<group>";
+		};
 		87FB58BD197D20E70079AF07 /* Libs */ = {
 			isa = PBXGroup;
 			children = (
@@ -291,7 +291,6 @@
 				87FB58BF197D20FC0079AF07 /* lz.c */,
 			);
 			name = Libs;
-			path = ..;
 			sourceTree = "<group>";
 		};
 		CC019788195AE5EB0032A0E1 /* Puck */ = {
@@ -321,8 +320,8 @@
 		CC20B17E1959A41B0084E3AB = {
 			isa = PBXGroup;
 			children = (
-				CC20B1921959A41B0084E3AB /* iEvere */,
-				CC20B1AF1959A41B0084E3AB /* iEvereTests */,
+				CC20B1921959A41B0084E3AB /* Puck Central */,
+				CC20B1AF1959A41B0084E3AB /* PuckCentralTests */,
 				CC20B1891959A41B0084E3AB /* Frameworks */,
 				CC20B1881959A41B0084E3AB /* Products */,
 				DF418DD3E5AA4EC6A888FD0C /* Pods.xcconfig */,
@@ -332,8 +331,8 @@
 		CC20B1881959A41B0084E3AB /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				CC20B1871959A41B0084E3AB /* iEvere.app */,
-				CC20B1A71959A41B0084E3AB /* iEvereTests.xctest */,
+				CC20B1871959A41B0084E3AB /* PuckCentral.app */,
+				CC20B1A71959A41B0084E3AB /* PuckCentralTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -351,7 +350,7 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		CC20B1921959A41B0084E3AB /* iEvere */ = {
+		CC20B1921959A41B0084E3AB /* Puck Central */ = {
 			isa = PBXGroup;
 			children = (
 				CC20B19B1959A41B0084E3AB /* NSPAppDelegate.h */,
@@ -359,14 +358,14 @@
 				CC3795741961522300E8A0C8 /* Constants.h */,
 				CC3795751961522300E8A0C8 /* Constants.m */,
 				CC20B1A11959A41B0084E3AB /* Images.xcassets */,
-				CC20B19E1959A41B0084E3AB /* iEvere.xcdatamodeld */,
+				CC20B19E1959A41B0084E3AB /* PuckCentral.xcdatamodeld */,
 				CC20B1931959A41B0084E3AB /* Supporting Files */,
 				CC20B1C21959AAF70084E3AB /* NSPInitialViewController.h */,
 				CC20B1C31959AAF70084E3AB /* NSPInitialViewController.m */,
 				879CAF571962E4AA00DF8492 /* NSPRuleTableViewCell.h */,
 				879CAF581962E4AA00DF8492 /* NSPRuleTableViewCell.m */,
 				CC20B1C41959AAF70084E3AB /* NSPInitialViewController.xib */,
-				879CAF561962D5A700DF8492 /* Add Rule UI */,
+				874A541D1991284B00AA0752 /* Add Rule UI */,
 				874907351964310100ED254D /* Edit Rule UI */,
 				CC888AB61966CE4100248026 /* Bluetooth */,
 				CCCC232E1977C9130002F246 /* Operations */,
@@ -383,33 +382,34 @@
 				876E0D7B1982B2AB00E014DC /* Services */,
 				876E0D7A1982AAB000E014DC /* Images */,
 			);
-			path = iEvere;
+			name = "Puck Central";
+			path = PuckCentral;
 			sourceTree = "<group>";
 		};
 		CC20B1931959A41B0084E3AB /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				CC20B1941959A41B0084E3AB /* iEvere-Info.plist */,
+				CC20B1941959A41B0084E3AB /* PuckCentral-Info.plist */,
 				CC20B1951959A41B0084E3AB /* InfoPlist.strings */,
 				CC20B1981959A41B0084E3AB /* main.m */,
-				CC20B19A1959A41B0084E3AB /* iEvere-Prefix.pch */,
+				CC20B19A1959A41B0084E3AB /* PuckCentral-Prefix.pch */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		CC20B1AF1959A41B0084E3AB /* iEvereTests */ = {
+		CC20B1AF1959A41B0084E3AB /* PuckCentralTests */ = {
 			isa = PBXGroup;
 			children = (
-				CC20B1B51959A41B0084E3AB /* iEvereTests.m */,
+				CC20B1B51959A41B0084E3AB /* PuckCentralTests.m */,
 				CC20B1B01959A41B0084E3AB /* Supporting Files */,
 			);
-			path = iEvereTests;
+			path = PuckCentralTests;
 			sourceTree = "<group>";
 		};
 		CC20B1B01959A41B0084E3AB /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				CC20B1B11959A41B0084E3AB /* iEvereTests-Info.plist */,
+				CC20B1B11959A41B0084E3AB /* PuckCentralTests-Info.plist */,
 				CC20B1B21959A41B0084E3AB /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
@@ -533,9 +533,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		CC20B1861959A41B0084E3AB /* iEvere */ = {
+		CC20B1861959A41B0084E3AB /* PuckCentral */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = CC20B1B91959A41B0084E3AB /* Build configuration list for PBXNativeTarget "iEvere" */;
+			buildConfigurationList = CC20B1B91959A41B0084E3AB /* Build configuration list for PBXNativeTarget "PuckCentral" */;
 			buildPhases = (
 				E82F3A0C603042EB86C3AB08 /* Check Pods Manifest.lock */,
 				CC20B1831959A41B0084E3AB /* Sources */,
@@ -547,14 +547,14 @@
 			);
 			dependencies = (
 			);
-			name = iEvere;
-			productName = iEvere;
-			productReference = CC20B1871959A41B0084E3AB /* iEvere.app */;
+			name = PuckCentral;
+			productName = PuckCentral;
+			productReference = CC20B1871959A41B0084E3AB /* PuckCentral.app */;
 			productType = "com.apple.product-type.application";
 		};
-		CC20B1A61959A41B0084E3AB /* iEvereTests */ = {
+		CC20B1A61959A41B0084E3AB /* PuckCentralTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = CC20B1BC1959A41B0084E3AB /* Build configuration list for PBXNativeTarget "iEvereTests" */;
+			buildConfigurationList = CC20B1BC1959A41B0084E3AB /* Build configuration list for PBXNativeTarget "PuckCentralTests" */;
 			buildPhases = (
 				CC20B1A31959A41B0084E3AB /* Sources */,
 				CC20B1A41959A41B0084E3AB /* Frameworks */,
@@ -567,9 +567,9 @@
 				CC888AAD1966A33D00248026 /* PBXTargetDependency */,
 				CC888AAF1966A35500248026 /* PBXTargetDependency */,
 			);
-			name = iEvereTests;
-			productName = iEvereTests;
-			productReference = CC20B1A71959A41B0084E3AB /* iEvereTests.xctest */;
+			name = PuckCentralTests;
+			productName = PuckCentralTests;
+			productReference = CC20B1A71959A41B0084E3AB /* PuckCentralTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -583,14 +583,19 @@
 				ORGANIZATIONNAME = "Nordic Semiconductor";
 				TargetAttributes = {
 					CC20B1861959A41B0084E3AB = {
-						DevelopmentTeam = 5SRR4YDD2S;
+						DevelopmentTeam = YLJ647697R;
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 0;
+							};
+						};
 					};
 					CC20B1A61959A41B0084E3AB = {
 						TestTargetID = CC20B1861959A41B0084E3AB;
 					};
 				};
 			};
-			buildConfigurationList = CC20B1821959A41B0084E3AB /* Build configuration list for PBXProject "iEvere" */;
+			buildConfigurationList = CC20B1821959A41B0084E3AB /* Build configuration list for PBXProject "PuckCentral" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -602,8 +607,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				CC20B1861959A41B0084E3AB /* iEvere */,
-				CC20B1A61959A41B0084E3AB /* iEvereTests */,
+				CC20B1861959A41B0084E3AB /* PuckCentral */,
+				CC20B1A61959A41B0084E3AB /* PuckCentralTests */,
 			);
 		};
 /* End PBXProject section */
@@ -703,7 +708,7 @@
 				87A1A42F1987D28000D7AD39 /* NSPLogFormatter.m in Sources */,
 				87CBE39D197EB1B700CEB373 /* NSPGattWaitForDisconnectOperation.m in Sources */,
 				876E0D7519823C5600E014DC /* NSPRemote.m in Sources */,
-				CC20B1A01959A41B0084E3AB /* iEvere.xcdatamodeld in Sources */,
+				CC20B1A01959A41B0084E3AB /* PuckCentral.xcdatamodeld in Sources */,
 				87FB58B91979530C0079AF07 /* NSPMusicActuator.m in Sources */,
 				CC379572195D8FEF00E8A0C8 /* NSPPuckController.m in Sources */,
 				87CBE3A0197F97FC00CEB373 /* NSPPuckActuator.m in Sources */,
@@ -724,7 +729,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CC20B1B61959A41B0084E3AB /* iEvereTests.m in Sources */,
+				CC20B1B61959A41B0084E3AB /* PuckCentralTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -733,17 +738,17 @@
 /* Begin PBXTargetDependency section */
 		CC20B1AE1959A41B0084E3AB /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = CC20B1861959A41B0084E3AB /* iEvere */;
+			target = CC20B1861959A41B0084E3AB /* PuckCentral */;
 			targetProxy = CC20B1AD1959A41B0084E3AB /* PBXContainerItemProxy */;
 		};
 		CC888AAD1966A33D00248026 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = CC20B1861959A41B0084E3AB /* iEvere */;
+			target = CC20B1861959A41B0084E3AB /* PuckCentral */;
 			targetProxy = CC888AAC1966A33D00248026 /* PBXContainerItemProxy */;
 		};
 		CC888AAF1966A35500248026 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = CC20B1861959A41B0084E3AB /* iEvere */;
+			target = CC20B1861959A41B0084E3AB /* PuckCentral */;
 			targetProxy = CC888AAE1966A35500248026 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -755,6 +760,7 @@
 				CC20B1961959A41B0084E3AB /* en */,
 			);
 			name = InfoPlist.strings;
+			path = ../PuckCentral;
 			sourceTree = "<group>";
 		};
 		CC20B1B21959A41B0084E3AB /* InfoPlist.strings */ = {
@@ -763,6 +769,7 @@
 				CC20B1B31959A41B0084E3AB /* en */,
 			);
 			name = InfoPlist.strings;
+			path = ../PuckCentralTests;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -861,9 +868,9 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "iEvere/iEvere-Prefix.pch";
-				INFOPLIST_FILE = "iEvere/iEvere-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				GCC_PREFIX_HEADER = "PuckCentral/PuckCentral-Prefix.pch";
+				INFOPLIST_FILE = "PuckCentral/PuckCentral-Info.plist";
+				PRODUCT_NAME = PuckCentral;
 				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos7.1;
 				WRAPPER_EXTENSION = app;
@@ -879,9 +886,9 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "iEvere/iEvere-Prefix.pch";
-				INFOPLIST_FILE = "iEvere/iEvere-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				GCC_PREFIX_HEADER = "PuckCentral/PuckCentral-Prefix.pch";
+				INFOPLIST_FILE = "PuckCentral/PuckCentral-Info.plist";
+				PRODUCT_NAME = PuckCentral;
 				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos7.1;
 				WRAPPER_EXTENSION = app;
@@ -892,20 +899,20 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/iEvere.app/iEvere";
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/PuckCentral.app/PuckCentral";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "iEvere/iEvere-Prefix.pch";
+				GCC_PREFIX_HEADER = "PuckCentral/PuckCentral-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
 				);
-				INFOPLIST_FILE = "iEvereTests/iEvereTests-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				INFOPLIST_FILE = "PuckCentralTests/PuckCentralTests-Info.plist";
+				PRODUCT_NAME = PuckCentralTests;
 				SDKROOT = iphoneos7.1;
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
@@ -916,16 +923,16 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/iEvere.app/iEvere";
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/PuckCentral.app/PuckCentral";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "iEvere/iEvere-Prefix.pch";
-				INFOPLIST_FILE = "iEvereTests/iEvereTests-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				GCC_PREFIX_HEADER = "PuckCentral/PuckCentral-Prefix.pch";
+				INFOPLIST_FILE = "PuckCentralTests/PuckCentralTests-Info.plist";
+				PRODUCT_NAME = PuckCentralTests;
 				SDKROOT = iphoneos7.1;
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
@@ -935,7 +942,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		CC20B1821959A41B0084E3AB /* Build configuration list for PBXProject "iEvere" */ = {
+		CC20B1821959A41B0084E3AB /* Build configuration list for PBXProject "PuckCentral" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				CC20B1B71959A41B0084E3AB /* Debug */,
@@ -944,7 +951,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		CC20B1B91959A41B0084E3AB /* Build configuration list for PBXNativeTarget "iEvere" */ = {
+		CC20B1B91959A41B0084E3AB /* Build configuration list for PBXNativeTarget "PuckCentral" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				CC20B1BA1959A41B0084E3AB /* Debug */,
@@ -953,7 +960,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		CC20B1BC1959A41B0084E3AB /* Build configuration list for PBXNativeTarget "iEvereTests" */ = {
+		CC20B1BC1959A41B0084E3AB /* Build configuration list for PBXNativeTarget "PuckCentralTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				CC20B1BD1959A41B0084E3AB /* Debug */,
@@ -965,13 +972,13 @@
 /* End XCConfigurationList section */
 
 /* Begin XCVersionGroup section */
-		CC20B19E1959A41B0084E3AB /* iEvere.xcdatamodeld */ = {
+		CC20B19E1959A41B0084E3AB /* PuckCentral.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
-				CC20B19F1959A41B0084E3AB /* iEvere.xcdatamodel */,
+				CC20B19F1959A41B0084E3AB /* PuckCentral.xcdatamodel */,
 			);
-			currentVersion = CC20B19F1959A41B0084E3AB /* iEvere.xcdatamodel */;
-			path = iEvere.xcdatamodeld;
+			currentVersion = CC20B19F1959A41B0084E3AB /* PuckCentral.xcdatamodel */;
+			path = PuckCentral.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
 		};

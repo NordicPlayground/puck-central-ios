@@ -35,7 +35,7 @@
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        self.title = @"iEvere";
+        self.title = @"Puck Central";
     }
     return self;
 }
@@ -124,7 +124,7 @@
 
 - (void)didLeaveZone
 {
-    self.title = @"iEvere";
+    self.title = @"Puck Central";
 }
 
 - (void)foundBeacon:(NSNotification *)notification

@@ -36,7 +36,7 @@
 - (id)init
 {
     if (self = [super init]) {
-        self.centralQueue = dispatch_queue_create("com.nordicsemi.ievere.centralqueue", DISPATCH_QUEUE_SERIAL);
+        self.centralQueue = dispatch_queue_create("com.nordicsemi.puckcentral.centralqueue", DISPATCH_QUEUE_SERIAL);
         self.centralManager = [[CBCentralManager alloc] initWithDelegate:self
                                                                    queue:self.centralQueue
                                                                  options:nil];

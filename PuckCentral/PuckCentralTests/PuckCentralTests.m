@@ -1,11 +1,11 @@
 
 #import <XCTest/XCTest.h>
 
-@interface iEvereTests : XCTestCase
+@interface PuckCentralTests : XCTestCase
 
 @end
 
-@implementation iEvereTests
+@implementation PuckCentralTests
 
 - (void)setUp
 {
