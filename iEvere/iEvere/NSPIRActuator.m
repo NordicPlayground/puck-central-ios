@@ -22,7 +22,7 @@
 
 + (NSDictionary *)remotes
 {
-    NSPRemote *appleRemote = [[NSPRemote alloc] initWithName:@"Apple"];
+    NSPRemote *appleRemote = [[NSPRemote alloc] initWithName:@"Apple" type:NSPRemoteTypeNEC];
     appleRemote.header = @[@9000, @4500];
     appleRemote.one = @[@560, @1690];
     appleRemote.zero = @[@560, @560];
@@ -34,7 +34,7 @@
                           [[NSPIRCode alloc] initWithDisplayName:@"Right" andHexCode:@0x6016],
                           ];
     
-    NSPRemote *samsungRemote = [[NSPRemote alloc] initWithName:@"Samsung"];
+    NSPRemote *samsungRemote = [[NSPRemote alloc] initWithName:@"Samsung" type:NSPRemoteTypeNEC];
     samsungRemote.header = @[@4500, @4500];
     samsungRemote.one = @[@560, @1680];
     samsungRemote.zero = @[@560, @560];
@@ -44,16 +44,13 @@
                             [[NSPIRCode alloc] initWithDisplayName:@"Power on/off" andHexCode:@0x20DF],
                             ];
 
-    NSPRemote *meetingRoom31ScreenRemote = [[NSPRemote alloc] initWithName:@"Screen at 3-1"];
-    meetingRoom31ScreenRemote.header = @[@4500, @4500];
-    meetingRoom31ScreenRemote.one = @[@560, @1680];
-    meetingRoom31ScreenRemote.zero = @[@560, @560];
-    meetingRoom31ScreenRemote.predata = 0xE0E0;
-    meetingRoom31ScreenRemote.ptrail = 560;
+    NSPRemote *meetingRoom31ScreenRemote = [[NSPRemote alloc] initWithName:@"Screen at 3-1" type:NSPRemoteTypeScreen];
+    meetingRoom31ScreenRemote.one = @[@1260, @420];
+    meetingRoom31ScreenRemote.zero = @[@420, @1260];
     meetingRoom31ScreenRemote.codes = @[
-                            [[NSPIRCode alloc] initWithDisplayName:@"Screen up" andHexCode:@0x1111],
-                            [[NSPIRCode alloc] initWithDisplayName:@"Screen middle" andHexCode:@0x1112],
-                            [[NSPIRCode alloc] initWithDisplayName:@"Screen down" andHexCode:@0x1113],
+                            [[NSPIRCode alloc] initWithDisplayName:@"Screen up" andHexCode:@0xF01],
+                            [[NSPIRCode alloc] initWithDisplayName:@"Screen middle" andHexCode:@0xF02],
+                            [[NSPIRCode alloc] initWithDisplayName:@"Screen down" andHexCode:@0xF04],
                             ];
     
     return @{
@@ -117,48 +114,105 @@
 {
     NSPRemote *remote = [[[self class] remotes] objectForKey:options[@"device"]];
     
-    NSData *headerData = [self dataWithArray:remote.header];
-    NSData *oneData = [self dataWithArray:remote.one];
-    NSData *zeroData = [self dataWithArray:remote.zero];
-    
-    NSInteger pre = CFSwapInt16(remote.predata);
-    NSData *preData = [NSData dataWithBytes:&pre length:2];
-    
-    NSInteger ptrail = CFSwapInt16(remote.ptrail);
-    NSData *ptrailData = [NSData dataWithBytes:&ptrail length:2];
-    
-    NSInteger code = CFSwapInt16([options[@"irCode"] intValue]);
-    NSData *codeData = [NSData dataWithBytes:&code length:2];
+    NSInteger code = [options[@"irCode"] intValue];
 
-    NSUUID *headerUUID  = [NSPUUIDUtils stringToUUID:@"bftj ir header  "];
-    NSUUID *oneUUID     = [NSPUUIDUtils stringToUUID:@"bftj ir one     "];
-    NSUUID *zeroUUID    = [NSPUUIDUtils stringToUUID:@"bftj ir zero    "];
-    NSUUID *ptrailUUID  = [NSPUUIDUtils stringToUUID:@"bftj ir ptrail  "];
-    NSUUID *predataUUID = [NSPUUIDUtils stringToUUID:@"bftj ir predata "];
-    NSUUID *codeUUID    = [NSPUUIDUtils stringToUUID:@"bftj ir code    "];
+    NSUUID *periodUUID  = [NSPUUIDUtils stringToUUID:@"bftj ir period  "];
+    NSUUID *commandUUID = [NSPUUIDUtils stringToUUID:@"bftj ir command "];
+    NSUUID *dataUUID    = [NSPUUIDUtils stringToUUID:@"bftj ir data    "];
+    
+    NSInteger commandStart = 0;
+    NSInteger commandEnd = 1;
+    NSInteger period = 26;
     
     self.transaction = [[NSPGattTransaction alloc] init];
     
-    [self writeValue:headerData forService:serviceUUID characteristic:headerUUID onPuck:puck];
-    [self writeValue:oneData forService:serviceUUID characteristic:oneUUID onPuck:puck];
-    [self writeValue:zeroData forService:serviceUUID characteristic:zeroUUID onPuck:puck];
-    [self writeValue:ptrailData forService:serviceUUID characteristic:ptrailUUID onPuck:puck];
-    [self writeValue:preData forService:serviceUUID characteristic:predataUUID onPuck:puck];
-    [self writeValue:codeData forService:serviceUUID characteristic:codeUUID onPuck:puck];
+    [self writeValue:[NSData dataWithBytes:&period length:1]
+          forService:serviceUUID
+      characteristic:periodUUID
+              onPuck:puck];
+    
+    [self writeValue:[NSData dataWithBytes:&commandStart length:1]
+          forService:serviceUUID
+      characteristic:commandUUID
+              onPuck:puck];
+    
+    int sourceLength = 200; // Max length
+    uint16_t source[sourceLength];
+    
+    if (remote.type == NSPRemoteTypeNEC) {
+        sourceLength = 70;
+        
+        source[0] = [remote.header[0] intValue];
+        source[1] = [remote.header[1] intValue];
+        
+        [self convertCode:remote.predata
+               withRemote:remote
+                   output:&source[2]
+                   length:16];
+        
+        [self convertCode:code
+               withRemote:remote
+                   output:&source[34]
+                   length:16];
+        
+        source[66] = remote.ptrail;
+        source[67] = 0;
+        source[68] = 0;
+        source[69] = 0;
+    } else if (remote.type == NSPRemoteTypeScreen) {
+        sourceLength = 50;
+        
+        [self convertCode:code
+               withRemote:remote
+                   output:&source[0]
+                   length:12];
+        
+        source[24] = 0;
+        source[25] = 20 * 1680;
+        
+        [self convertCode:code
+               withRemote:remote
+                   output:&source[26]
+                   length:12];
+    }
+    
+    uint8_t array[20];
+    for (int i = 0; i < sourceLength; i++) {
+        array[(i % 10) * 2] = (uint8_t) ((source[i] & 0xFF00) >> 8 );
+        array[(i % 10) * 2 + 1] = (uint8_t) (source[i] & 0xFF);
+        
+        if (i % 10 == 9) {
+            [self writeValue:[NSData dataWithBytes:array length:20]
+                  forService:serviceUUID
+              characteristic:dataUUID
+                      onPuck:puck];
+            memset(array, 0, sizeof(array));
+        }
+    }
+    
+    [self writeValue:[NSData dataWithBytes:&commandEnd length:1]
+          forService:serviceUUID
+      characteristic:commandUUID
+              onPuck:puck];
     
     [self waitForDisconnect:puck];
     
     [[NSPBluetoothManager sharedManager] queueTransaction:self.transaction];
 }
 
-- (NSData *)dataWithArray:(NSArray *)array
+- (void)convertCode:(uint16_t)code withRemote:(NSPRemote *)remote output:(uint16_t *)output length:(int)length
 {
-    uint32_t tmp = 0;
-    for (int i=0; i < array.count; i++) {
-        tmp |= [array[i] intValue] << (16 * (array.count - i - 1));
+    NSLog(@"hexcode %X", code);
+    int mask = 1 << (length - 1);
+    NSLog(@"mask %X", mask);
+    for (int i = 0; i < length * 2; i += 2) {
+        int res = code & mask;
+        NSLog(@"res %d", res);
+        NSArray *signal = res ? remote.one : remote.zero;
+        output[i] = [signal[0] intValue];
+        output[i + 1] = [signal[1] intValue];
+        code <<= 1;
     }
-    tmp = CFSwapInt32(tmp);
-    return [NSData dataWithBytes:&tmp length:(array.count * 2)];
 }
 
 #pragma mark NSPConfigureActionFormDelegate protocol
