@@ -586,7 +586,7 @@
 						DevelopmentTeam = YLJ647697R;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
-								enabled = 0;
+								enabled = 1;
 							};
 						};
 					};
