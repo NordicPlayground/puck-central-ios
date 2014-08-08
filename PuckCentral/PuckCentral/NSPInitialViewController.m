@@ -44,14 +44,14 @@
 {
     [super viewDidLoad];
     
-    UIBarButtonItem *beaconButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh
-                                                                                  target:self
-                                                                                  action:@selector(restartRanging)];
+    UIBarButtonItem *refreshButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh
+                                                                                   target:self
+                                                                                   action:@selector(restartRanging)];
     UIBarButtonItem *addRuleButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
                                                                                    target:self
                                                                                    action:@selector(addRule)];
     
-    self.navigationItem.leftBarButtonItem = beaconButton;
+    self.navigationItem.leftBarButtonItem = refreshButton;
     self.navigationItem.rightBarButtonItem = addRuleButton;
     
     NSFetchRequest *request = [[NSPPuckController sharedController] fetchRequest];
@@ -145,8 +145,8 @@
     DDLogDebug(@"start discover transaction %@", transaction);
     [[NSPBluetoothManager sharedManager] queueTransaction:transaction];
 
-    NSString *message = [NSString stringWithFormat:@"Add %04X to your beacons", self.tempPuck.minor.intValue];
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Found new beacon"
+    NSString *message = [NSString stringWithFormat:@"Add %04X to your pucks", self.tempPuck.minor.intValue];
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Found new puck"
                                                         message:message
                                                        delegate:self
                                               cancelButtonTitle:@"Cancel"
