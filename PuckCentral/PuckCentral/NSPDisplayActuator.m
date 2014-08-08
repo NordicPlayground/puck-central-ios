@@ -47,7 +47,7 @@ typedef NS_ENUM(NSUInteger, NSPImageSection) {
 
 + (NSString *)name
 {
-    return @"Display Actuator";
+    return @"E-paper Display";
 }
 
 + (NSNumber *)index
@@ -72,7 +72,6 @@ typedef NS_ENUM(NSUInteger, NSPImageSection) {
     XLFormRowDescriptor *text = [XLFormRowDescriptor formRowDescriptorWithTag:@"text"
                                                                       rowType:XLFormRowDescriptorTypeTextView
                                                                         title:@"Text"];
-    text.required = YES;
     [section addFormRow:text];
     
     XLFormRowDescriptor *puckRow = [[NSPPuckSelector alloc] initWithTag:@"minor"
@@ -86,7 +85,7 @@ typedef NS_ENUM(NSUInteger, NSPImageSection) {
 
 - (NSString *)stringForOptions:(NSDictionary *)options
 {
-    return [NSString stringWithFormat:@"Display %@: %@", options[@"type"], options[@"text"]];
+    return [NSString stringWithFormat:@"%@ %@", options[@"type"], options[@"text"]];
 }
 
 - (void)actuateOnPuck:(Puck *)puck withOptions:(NSDictionary *)options

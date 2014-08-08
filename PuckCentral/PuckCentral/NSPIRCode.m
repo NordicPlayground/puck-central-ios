@@ -1,13 +1,6 @@
 
 #import "NSPIRCode.h"
 
-@interface NSPIRCode ()
-
-@property (nonatomic, strong) NSString *displayName;
-@property (nonatomic, strong) NSNumber *hexCode;
-
-@end
-
 @implementation NSPIRCode
 
 - (id)initWithDisplayName:(NSString *)displayName andHexCode:(NSNumber *)hexCode

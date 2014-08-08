@@ -17,7 +17,7 @@ typedef NS_ENUM(NSUInteger, NSPMusicOptions) {
 
 + (NSString *)name
 {
-    return @"Music Actuator";
+    return @"Music Playback";
 }
 
 + (XLFormDescriptor *)optionsForm

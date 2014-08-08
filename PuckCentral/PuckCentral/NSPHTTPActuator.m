@@ -11,7 +11,7 @@
 
 + (NSString *)name
 {
-    return @"HTTP Actuator";
+    return @"HTTP POST";
 }
 
 + (XLFormDescriptor *)optionsForm
@@ -35,13 +35,13 @@
 - (void)actuate:(NSDictionary *)options
 {
     NSURL *URL = [NSURL URLWithString:options[@"url"]];
-    DDLogDebug(@"Post data %@ to %@", options[@"data"], URL);
+    DDLogDebug(@"%@ to %@", options[@"data"], URL);
     [self postData:options[@"data"] toURL:URL];
 }
 
 - (NSString *)stringForOptions:(NSDictionary *)options
 {
-    return [NSString stringWithFormat:@"POST %@ to %@", options[@"data"], options[@"url"]];
+    return [NSString stringWithFormat:@"%@ to %@", options[@"data"], options[@"url"]];
 }
 
 

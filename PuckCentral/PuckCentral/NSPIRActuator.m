@@ -17,7 +17,7 @@
 
 + (NSString *)name
 {
-    return @"IR Actuator";
+    return @"Infrared Control";
 }
 
 + (NSDictionary *)remotes
@@ -97,9 +97,18 @@
 - (NSString *)stringForOptions:(NSDictionary *)options
 {
     Puck *puck = [Puck puckWithMinorNumber:options[@"minor"]];
-    return [NSString stringWithFormat:@"Send %@ code %X to %@",
+    
+    NSPRemote *remote = [[[self class] remotes] objectForKey:options[@"device"]];
+    NSString *displayString = @"";
+    for (NSPIRCode *code in remote.codes) {
+        if ([code.hexCode isEqual:options[@"irCode"]]) {
+            displayString = code.displayName;
+        }
+    }
+    
+    return [NSString stringWithFormat:@"Send %@ code %@ to %@",
             options[@"device"],
-            [options[@"irCode"] intValue],
+            displayString,
             puck.name];
 }
 
